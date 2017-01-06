@@ -1,0 +1,23 @@
+<div class="btn-group">
+    <button type="button"  class="btn btn-default" (click)="firstPage();"> 
+        <i class="glyphicon glyphicon-step-backward"></i> 
+    </button>
+    <button type="button"  class="btn btn-default" (click)="prevPage();" [disabled]="index<=0">
+        <i class="glyphicon glyphicon-chevron-left"></i> 
+    </button>
+    <button type="button" class="btn btn-default" *ngFor="let a of arr; let i = index"
+            [class.active]="index==i" (click)="pageIndexChange(i);"> {{i+1}} </button>
+    <button type="button"  class="btn btn-default" (click)="nextPage();" [disabled]="index>=totalPagez-1">
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </button>
+    <button type="button"  class="btn btn-default" (click)="lastPage();">
+        <i class="glyphicon glyphicon-step-forward"></i>
+    </button>
+    <select *ngIf="allowPageSizeChange" class="form-control" style="width:65px;border-radius:10px;" 
+            [(ngModel)]="pageSize" (change)="pageSizeChange($event)">    
+        <option *ngFor="let s of sizes" value="{{s}}" >{{s}}</option>
+    </select>
+    <span *ngIf="!allowPageSizeChange">
+        Page Size: {{pageSize}}
+    </span>
+</div>

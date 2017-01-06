@@ -1,0 +1,26 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+      <customers-filter [source]="customers" (on-change)="filter($event)"></customers-filter>
+      <button class="btn btn-primary">New Customer</button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-3" *ngFor="let c of pageCustomers; let i=index;">
+    <div class="panel panel-success">
+        <div class="panel-body">
+          <span style="white-space:nowrap;">{{c.Name}}</span><br/>
+          {{c.Address}}<br/>
+          {{c.PostalCode}}<br/>
+          {{c.Phone}}
+        </div>
+        <div class="panel-footer">
+          Controls here...
+        </div>
+    </div>
+  </div>
+</div>
+
+<paging [source]="filteredCustomers" [pageSize]="pageSize" [sizes]="availablePageSizes"
+        [allowPageSizeChange]=true
+      (index-change)="pageIndexChange($event);"></paging>
