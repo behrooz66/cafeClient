@@ -259,64 +259,14 @@
       </div>
     </nav>
   </header>
+ 
+  <app-main-sidebar></app-main-sidebar>
 
-  <aside class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-      <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu">
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Home</span>
-          </a>
-        </li>
-        <li class="treeview">
-          <a routerLink="customers">
-            <i class="fa fa-files-o"></i>
-            <span>Customers</span>
-          </a>
-        </li>
-        <li>
-          <a href="pages/widgets.html">
-            <i class="fa fa-th"></i> <span>Reports</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-              <li><a href="#"><i class="fa fa-circle-o"></i>Orders</a></li>
-              <li><a href="#"><i class="fa fa-circle-o"></i>Gift Cards</a></li>
-              <li><a href="#"><i class="fa fa-circle-o"></i>Reservations</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-pie-chart"></i>
-            <span>Administration</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-              <li><a href="#"><i class="fa fa-circle-o"></i>Manager Users</a></li>
-              <li><a href="#"><i class="fa fa-circle-o"></i>My Restaurant</a></li>
-              <li><a href="#"><i class="fa fa-circle-o"></i>Support Cases</a></li>
-          </ul>
-        </li>
-        
-        <!--<li><a href="documentation/index.html"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
-        <li class="header">LABELS</li>
-        <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>-->
-      </ul>
-    </section>
-    <!-- /.sidebar -->
-  </aside>
   <div class="content-wrapper" style="padding:20px;">
-      <!--<router-outlet></router-outlet>-->
-      <customers-list></customers-list>
+      <router-outlet></router-outlet>
+      <!--<customers-list></customers-list>-->
   </div>
+
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
       <b>Version</b> 1.0.0

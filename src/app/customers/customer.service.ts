@@ -4,12 +4,7 @@ import { ICustomer } from './icustomer';
 @Injectable()
 export class CustomerService {
 
-  _customers:ICustomer[];
-  
-  constructor() { }
-
-  getCustomers():ICustomer[] {
-    let records:ICustomer[] = [{
+  _customers:ICustomer[] = [{
                 Id: 1,
                 Name: "Behrooz Dalvandi Behrooz Dalvandi Behrooz Dalvandi",
                 Phone: "2506403487",
@@ -126,7 +121,19 @@ export class CustomerService {
                 Province: "BC",
                 PostalCode: "V2N 3W8",
             }];
-        return records;
+  
+  constructor() { }
+
+  getCustomer(id: number){
+      let record:ICustomer[] = this._customers.filter(x =>
+            x.Id == id
+      );
+      return record[0];
+  }
+
+  getCustomers():ICustomer[] {
+    
+        return this._customers;
   }
 
 

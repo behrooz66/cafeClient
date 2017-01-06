@@ -9,7 +9,7 @@
   <div class="col-md-3" *ngFor="let c of pageCustomers; let i=index;">
     <div class="panel panel-success">
         <div class="panel-body">
-          <span style="white-space:nowrap;">{{c.Name}}</span><br/>
+          <a [routerLink]="['/customers', c.Id]"><span style="white-space:nowrap;">{{c.Name}}</span></a><br/>
           {{c.Address}}<br/>
           {{c.PostalCode}}<br/>
           {{c.Phone}}
