@@ -1,0 +1,35 @@
+<form [formGroup]="signupForm" (ngSubmit)="onSubmit($event)">
+  <div class="panel panel-primary">
+    <div class="panel-body">
+      <div class="form-group">
+          <label for="email">Email Address:</label>
+          <input class="form-control" 
+                 id="email" 
+                 formControlName="email"
+                 type="text" >
+          
+          <div *ngIf="signupForm.controls.email.touched && signupForm.controls.email.errors" class="alert alert-danger">
+           <ul>
+              <li *ngIf="signupForm.controls.email.errors.required">
+                  Email is Required.
+              </li>
+              <li *ngIf="signupForm.controls.email.errors.invalidEmail">
+                  Email address is invalid.
+              </li>
+              <li *ngIf="signupForm.controls.email.errors.emailAlreadyRegistered">
+                  This email address is already registered in our system.
+              </li>
+            </ul>
+          </div>
+          <br/>
+          <label for="password">Password:</label>
+          <input class="form-control" id="password" formControlName="password" type="password" />
+          <br/>
+          <label for="confirmPassword">Repeat Password:</label>
+          <input class="form-control" id="confirmPassword" formControlName="confirmPassword" type="password" />
+          <br/>
+      </div>
+          <button class="btn btn-primary" type="submit" [disabled]="!signupForm.valid" >Sign Up!</button>
+    </div>
+  </div>
+</form>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ReservationService } from '../reservation.service';
 
 @Component({
-  selector: 'app-reservation-edit',
+  selector: 'reservation-edit',
   templateUrl: './reservation-edit.component.html',
   styleUrls: ['./reservation-edit.component.css'],
   providers: [ReservationService]
