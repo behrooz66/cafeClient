@@ -33,3 +33,8 @@
     </div>
   </div>
 </form>
+
+<textarea class="form-control" [(ngModel)]="testText"></textarea>
+<button class="btn btn-warning" (click)="authTest()">Auth!</button>
+<button class="btn btn-danger" (click)="refreshToken()">Refresh!</button>
+<button class="btn btn-danger" (click)="getApi()">Api Call!</button>

@@ -7,6 +7,7 @@ import {RouterModule} from '@angular/router';
 import { AppComponent } from './app.component';
 import { AppMainSidebarComponent } from './app-main-sidebar.component';
 import { HomeComponent} from './home.component';
+import { SettingsService } from './settings.service';
 
 import {CustomersModule} from './customers/customers.module';
 import {OrdersModule} from './orders/orders.module';
@@ -45,7 +46,7 @@ import {AccountRouting} from './account/account-routing';
     AccountRouting,
     AppRouting
   ],
-  providers: [],
+  providers: [SettingsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
