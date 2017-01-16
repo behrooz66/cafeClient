@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class SettingsService {
 
+  // Set all the settings here.
+
   private apiBase = "http://localhost:5001/api/";
   private tokenEndpoint = "http://localhost:5000/connect/token";
   
@@ -11,6 +13,15 @@ export class SettingsService {
     client_secret: "secret",
     scope: "api+offline_access"
   }
+
+  private geocoder = {
+      apiUrl: "http://geocoder.ca/?locate=",
+      authToken: "xxx",
+      minimumConfidence: 0.8
+  }
+
+// *********************************************
+
 
   constructor() { }
 
@@ -36,5 +47,9 @@ export class SettingsService {
               +"&client_secret="+this.loginInfo.client_secret
               +"&scope="+this.loginInfo.scope;
       return str;
+  }
+
+  getGeocoderSettings(){
+      return this.geocoder;
   }
 }

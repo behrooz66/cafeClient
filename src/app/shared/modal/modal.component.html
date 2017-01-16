@@ -1,0 +1,34 @@
+<div class="my-modal" [style.display]="visible ? 'block':'none'">
+    <div class="my-modal-content" 
+        [class.my-modal-sm]="size == 1"
+        [class.my-modal-md]="size == 2"
+        [class.my-modal-lg]="size == 3">
+
+        <div class="panel" [class.panel-primary]="style === 'primary'"
+                           [class.panel-danger]="style === 'danger'">
+            <div *ngIf="hasHeader" class="panel-heading">
+                <i  *ngIf="hasHeader && canEscape" (click)="close()" 
+                    class="glyphicon glyphicon-remove pull-right" 
+                    style="cursor:pointer;">
+                </i>
+                <ng-content select=".content-head"></ng-content>
+            </div>
+            
+            <div class="panel-body">
+                <i  *ngIf="!hasHeader && canEscape" (click)="close()" 
+                    class="glyphicon glyphicon-remove pull-right" 
+                    style="cursor:pointer;">
+                </i>
+                <ng-content select=".content-body"></ng-content>
+            </div>
+
+            <div *ngIf="hasFooter" class="panel-footer">
+                <ng-content select=".content-footer"></ng-content>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<button (click)="toggle()">show!</button>

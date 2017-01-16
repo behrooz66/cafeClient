@@ -1,0 +1,4 @@
+<select class="form-control" [(ngModel)]="selectedValue" (change)="onSelect($event.target.value)">
+    <option *ngIf="allowNone" value="0">-- Please Select --</option>
+    <option *ngFor="let p of provinces" value="{{p.Id}}">{{p.Name}}</option>
+</select>

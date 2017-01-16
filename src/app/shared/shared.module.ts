@@ -5,6 +5,10 @@ import { HttpModule, Http, ConnectionBackend, RequestOptions, XHRBackend } from 
 import { PagingComponent } from './paging/paging.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HttpAuthService } from './http-auth.service';
+import { CitySelectComponent } from './city-select/city-select.component';
+import { ProvinceSelectComponent } from './province-select/province-select.component';
+import { CountrySelectComponent } from './country-select/country-select.component';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   imports: [
@@ -14,8 +18,18 @@ import { HttpAuthService } from './http-auth.service';
   ],
   declarations: [
     PagingComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    CitySelectComponent,
+    ProvinceSelectComponent,
+    CountrySelectComponent,
+    ModalComponent
   ],
-  exports: [PagingComponent],
+  exports: [
+    PagingComponent,
+    ProvinceSelectComponent,
+    CitySelectComponent,
+    CountrySelectComponent,
+    ModalComponent
+  ],
 })
 export class SharedModule { }

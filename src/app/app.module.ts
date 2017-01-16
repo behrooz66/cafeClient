@@ -9,6 +9,9 @@ import { AppMainSidebarComponent } from './app-main-sidebar.component';
 import { HomeComponent} from './home.component';
 import { SettingsService } from './settings.service';
 
+// todo: may not be needed later
+import {SharedModule} from './shared/shared.module';
+
 import {CustomersModule} from './customers/customers.module';
 import {OrdersModule} from './orders/orders.module';
 import {GiftCardsModule} from './giftcards/giftcards.module';
@@ -30,6 +33,7 @@ import {AccountRouting} from './account/account-routing';
     HomeComponent
   ],
   imports: [
+    SharedModule,
     BrowserModule,
     FormsModule,
     HttpModule,

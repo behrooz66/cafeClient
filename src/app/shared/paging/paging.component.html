@@ -7,7 +7,7 @@
     </button>
     <button type="button" class="btn btn-default" *ngFor="let a of arr; let i = index"
             [class.active]="index==i" (click)="pageIndexChange(i);"> {{i+1}} </button>
-    <button type="button"  class="btn btn-default" (click)="nextPage();" [disabled]="index>=totalPagez-1">
+    <button type="button"  class="btn btn-default" (click)="nextPage();" [disabled]="index>=totalPages-1">
         <i class="glyphicon glyphicon-chevron-right"></i>
     </button>
     <button type="button"  class="btn btn-default" (click)="lastPage();">

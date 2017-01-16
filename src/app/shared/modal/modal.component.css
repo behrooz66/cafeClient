@@ -1,0 +1,30 @@
+.my-modal {
+    width: 100%;
+    position: fixed;
+    display: none;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 9998;
+    background-color: red;
+    overflow: auto;
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.my-modal-content {
+    margin:100px auto;
+    z-index: 9999;
+}
+
+.my-modal-sm {
+    width: 25%;
+}
+
+.my-modal-md {
+    width: 50%;
+}
+
+.my-modal-lg {
+    width: 75%;
+}
