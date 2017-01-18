@@ -265,7 +265,11 @@
   <div class="content-wrapper" style="padding:20px;">
       <router-outlet></router-outlet>
       <!--<customers-list></customers-list>-->
+      <button class="btn btn-default" (click)="addMsg()">add</button>
+      <button class="btn btn-default" (click)="addMsg2()">add2</button>
   </div>
+
+
 
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
@@ -466,3 +470,7 @@
 
   <div class="control-sidebar-bg"></div>
 </div>
+
+<app-messages-placeholder class="flash-messages"
+    [flashMessages]="flashMessages"
+    (on-remove)="removeMessage($event);"></app-messages-placeholder>

@@ -1,29 +1,37 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import { FlashMessageService } from './shared/flash-message/flash-message.service';
 //import { GeocoderService } from './shared/geocoder.service';
+//import {ModalService} from './shared/modal/modal.service';
+
 
 @Component({
     selector: 'home',
     template: `
-        <modal [style]="'danger'" [hasHeader]=true [hasFooter]=true [size]=1> 
-            <div class="content-head">Behrooz :)</div>
-            <div class="content-body">are you sure?!</div>
-            <div class="content-footer">controls...</div>
+        <modal #m [size]=2 [type]="'confirm'" [canEscape]=true>
+            <div class="content-head">
+                Confirmation
+            </div>
+            <div class="content-body">
+                Are you really sure?
+            </div>
         </modal>
+        <button (click)="show(m);">asd</button>
     `,
-    providers: []
+    //providers: [ModalService]
 })
 
 export class HomeComponent implements OnInit {
-    
-    constructor() {}
 
-    show(){
-        console.log('ks');
-        
+    constructor() {
+
+    }
+
+    show(m){
+        m.open();
     }
 
     ngOnInit(){
-
+     
     }
 
 }

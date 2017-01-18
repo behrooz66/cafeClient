@@ -1,0 +1,9 @@
+.flash-messages {
+    display: block;
+    margin-left:2px;
+    margin-right:2px;
+    width:100%;
+    z-index: 99999;
+    bottom: 0;
+    position: fixed;
+}

@@ -9,6 +9,7 @@ import { CitySelectComponent } from './city-select/city-select.component';
 import { ProvinceSelectComponent } from './province-select/province-select.component';
 import { CountrySelectComponent } from './country-select/country-select.component';
 import { ModalComponent } from './modal/modal.component';
+//import { ModalService } from './modal/modal.service';
 
 @NgModule({
   imports: [
@@ -22,7 +23,7 @@ import { ModalComponent } from './modal/modal.component';
     CitySelectComponent,
     ProvinceSelectComponent,
     CountrySelectComponent,
-    ModalComponent
+    ModalComponent,
   ],
   exports: [
     PagingComponent,
@@ -31,5 +32,8 @@ import { ModalComponent } from './modal/modal.component';
     CountrySelectComponent,
     ModalComponent
   ],
+  providers: [
+    //ModalService
+  ]
 })
 export class SharedModule { }

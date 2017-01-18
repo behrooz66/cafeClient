@@ -22,13 +22,16 @@
                 <ng-content select=".content-body"></ng-content>
             </div>
 
-            <div *ngIf="hasFooter" class="panel-footer">
-                <ng-content select=".content-footer"></ng-content>
+            <div class="panel-footer" style="text-align:center;">
+                <!--<ng-content select=".content-footer"></ng-content>-->
+                <span *ngIf="type === 'confirm'">
+                    <button class="btn btn-primary btn-sm" (click)="confirm()"> Yes </button>
+                    <button class="btn btn-default btn-sm" (click)="close()"> No </button>
+                </span>
+                <span *ngIf="type === 'dialog'">
+                    <button class="btn btn-primary btn-sm" (click)="confirm()"> OK </button>
+                </span>
             </div>
         </div>
-
-
     </div>
 </div>
-
-<button (click)="toggle()">show!</button>

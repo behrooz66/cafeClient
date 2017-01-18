@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import {CustomerService} from '../customer.service';
 import {ICustomer} from '../icustomer';
+import {FlashMessageService} from '../../shared/flash-message/flash-message.service';
 //import {CustomersFilterComponent} from './customers-filter.component';
 
 @Component({
@@ -18,7 +19,8 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
   availablePageSizes = [3, 5, 10, 20];
 
   constructor(private _customerService:CustomerService,
-              private _cdr:ChangeDetectorRef) { }
+              private _cdr:ChangeDetectorRef,
+              private _flashMessage: FlashMessageService) { }
 
   ngOnInit() {
     this.customers = this._customerService.getCustomers();
@@ -43,8 +45,4 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
     this.pageCustomers = this.filteredCustomers.slice($event.startIndex, $event.endIndex);
   }
 
-  // private setPage(i: number){
-  //   let t = i * this.pageSize;
-  //   this.pageCustomers = this.filteredCustomers.slice(i, i+ +this.pageSize);
-  // }
 }

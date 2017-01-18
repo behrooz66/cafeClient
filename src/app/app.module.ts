@@ -7,10 +7,13 @@ import {RouterModule} from '@angular/router';
 import { AppComponent } from './app.component';
 import { AppMainSidebarComponent } from './app-main-sidebar.component';
 import { HomeComponent} from './home.component';
+import { AppMessagesPlaceholder} from './app-messages-placeholder.component';
 import { SettingsService } from './settings.service';
 
 // todo: may not be needed later
 import {SharedModule} from './shared/shared.module';
+import {ModalService} from './shared/modal/modal.service';
+import { FlashMessageService } from './shared/flash-message/flash-message.service';
 
 import {CustomersModule} from './customers/customers.module';
 import {OrdersModule} from './orders/orders.module';
@@ -30,6 +33,7 @@ import {AccountRouting} from './account/account-routing';
   declarations: [
     AppComponent,
     AppMainSidebarComponent,
+    AppMessagesPlaceholder,
     HomeComponent
   ],
   imports: [
@@ -50,7 +54,10 @@ import {AccountRouting} from './account/account-routing';
     AccountRouting,
     AppRouting
   ],
-  providers: [SettingsService],
+  providers: [
+      SettingsService,
+      FlashMessageService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
