@@ -1,0 +1,80 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Add a New Customer</h4>
+    </div>
+
+    <div class="panel-body">
+        <form [formGroup]="newCustomerForm" (ngSubmit)="submit()">
+
+            <label>Name: </label>
+            <input [(ngModel)]="customer.name" type="text" formControlName="name" class="form-control" 
+                        [class.form-input-invalid]="newCustomerForm.controls.name.invalid && 
+                                                    newCustomerForm.controls.name.touched">
+            
+            <label>Cell: </label>
+            <input [(ngModel)]="customer.cell" type="text" formControlName="cell" class="form-control">
+
+            <label>Home: </label>
+            <input [(ngModel)]="customer.home" type="text" formControlName="home" class="form-control">
+
+            <label>Work: </label>
+            <input [(ngModel)]="customer.work" type="text" formControlName="work" class="form-control">
+
+            <label>Other Phone: </label>
+            <input [(ngModel)]="customer.otherPhone" type="text" formControlName="otherPhone" class="form-control">
+
+            <label>Email: </label>
+            <input type="text" formControlName="email" class="form-control" [(ngModel)]="customer.email"
+                        [class.form-input-invalid]="newCustomerForm.controls.email.invalid &&
+                                                    newCustomerForm.controls.email.touched">
+
+            <hr/>
+            <input [(ngModel)]="customer.noAddress" type="checkbox" formControlName="noAddress" (change)="toggleNoAddress()"/>
+            <label>No Address </label>
+            <div id="adress" [hidden]="noAddress">
+                <label>Address: </label>
+                <input [(ngModel)]="customer.address" type="text" formControlName="address" class="form-control" >
+
+                <label>Postal Code: </label>
+                <input [(ngModel)]="customer.postalCode" type="text" formControlName="postalCode" class="form-control" >
+                
+                <br/>
+                {{ customer.address }}{{customer.address ? "," : "" }} {{city}},
+                {{province}}{{customer.postalCode ? "," : "" }} {{customer.postalCode}}
+            </div>
+            <br/>
+            <label>Notes: </label>
+            <textarea [(ngModel)]="customer.notes" row=3 formControlName="notes" class="form-control"></textarea>
+            
+            <br/>
+            <button class="btn btn-primary" type="submit" [disabled]="!this.newCustomerForm.valid">Create</button>
+            <button type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
+        </form>
+    </div>
+
+</div>
+
+<!--<province-select [countryId]=1 [allowNone]=false [defaultValue]=5></province-select>-->
+<!--<city-select [provinceId]=5 [allowNone]=false [defaultValue]=4></city-select>-->
+
+<modal #m1 [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="danger"
+        (on-close)="modalClose($event);">
+    <div class="content-head">
+        Address not found
+    </div>
+    <div class="content-body">
+        We were not able to locate the address. <br/>
+        Do you want to continue?
+    </div>
+</modal>
+
+<modal #m2 [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="danger"
+    (on-close)="modalClose($event);">
+    <div class="content-head">
+        Geolocator unavailable
+    </div>
+    <div class="content-body">
+        External geolocator unavailable.<br/>
+        Do you want to continue?
+    </div>
+</modal>

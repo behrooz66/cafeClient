@@ -9,6 +9,7 @@ import { CountryService } from './country.service';
 export class CountrySelectComponent implements OnInit {
 
   countries;
+  mode: string = "loading";
   selectedValue: number;
   @Input() allowNone = true;
   @Input() defaultValue = 0;
@@ -17,13 +18,23 @@ export class CountrySelectComponent implements OnInit {
   constructor(private _countryService:CountryService) { }
 
   ngOnInit() {
-      this.countries = this._countryService.getCountries();
-      this.selectedValue = this.defaultValue;
+      this.mode = "loading";
+      this._countryService.getCountries()
+            .subscribe(d => {
+                this.countries = d;
+                this.selectedValue = this.defaultValue;
+                this.onSelect(this.selectedValue);
+                this.mode = "success";
+            }, 
+            d => {
+                this.mode = "error";
+            });
   }
 
   onSelect(value){
       this.change.emit({
-          value: value
+          value: value,
+          title: this.countries.filter(x => x.id == value)[0].name
       });
   }
 }

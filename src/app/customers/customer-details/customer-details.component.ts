@@ -19,10 +19,10 @@ export class CustomerDetailsComponent implements OnInit {
               private _customerService:CustomerService) { }
 
   ngOnInit() {
-    this.sub = this._activatedRoute.params.subscribe(params => {
-      this.id = +params["id"]
-    });
-    this.customer = this._customerService.getCustomer(this.id);
+    // this.sub = this._activatedRoute.params.subscribe(params => {
+    //   this.id = +params["id"]
+    // });
+    // this.customer = this._customerService.getCustomer(this.id);
   }
 
   ngOnDestroy(){

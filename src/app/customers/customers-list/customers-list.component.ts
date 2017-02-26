@@ -23,9 +23,9 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
               private _flashMessage: FlashMessageService) { }
 
   ngOnInit() {
-    this.customers = this._customerService.getCustomers();
-    this.filteredCustomers = this.customers;
-    this.pageCustomers = this.filteredCustomers.slice(0, this.pageSize);
+    // this.customers = this._customerService.getCustomers();
+    // this.filteredCustomers = this.customers;
+    // this.pageCustomers = this.filteredCustomers.slice(0, this.pageSize);
   }
 
   ngAfterViewInit(){

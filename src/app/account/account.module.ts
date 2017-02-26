@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, Http, ConnectionBackend, XHRBackend,RequestOptions } from '@angular/http';
 import { HttpAuthService } from '../shared/http-auth.service';
 //import { SharedModule } from '../shared/shared.module';
-import { SettingsService } from '../settings.service';
+//import { SettingsService } from '../settings.service';
 
 import { AuthService } from './auth.service';
 import { SigninComponent } from './signin/signin.component';
@@ -27,7 +27,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
       ResetPasswordComponent,
   ],
   providers: [
-      SettingsService
+      //SettingsService
   ],
 })
 export class AccountModule { }

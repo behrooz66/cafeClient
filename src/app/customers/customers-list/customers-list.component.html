@@ -1,7 +1,7 @@
 <div class="panel panel-default">
   <div class="panel-body">
       <customers-filter [source]="customers" (on-change)="filter($event)"></customers-filter>
-      <button class="btn btn-primary">New Customer</button>
+      <a class="btn btn-primary" [routerLink]="['/customers/add']">New Customer</a>
   </div>
 </div>
 

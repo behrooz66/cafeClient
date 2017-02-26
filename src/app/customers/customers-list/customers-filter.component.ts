@@ -18,8 +18,8 @@ export class CustomersFilterComponent {
     onChange(){
         this.exp = this.exp.toLowerCase();
         let subset:ICustomer[] = this.source.filter(x =>
-            x.Name.toLowerCase().indexOf(this.exp) != -1
-            || x.Phone.toLowerCase().indexOf(this.exp) != -1
+            x.name.toLowerCase().indexOf(this.exp) != -1
+            || x.name.toLowerCase().indexOf(this.exp) != -1
         );
         this.change.emit({
             result: subset

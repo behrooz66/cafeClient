@@ -6,10 +6,11 @@ export class ModalService {
 
   constructor() { }
 
-  show(){
-      console.log("hit");
-      let m = new ModalComponent();
-      m.open();
+  show():Promise<any>{
+    
+      return new Promise((resolve, reject) => {
+          resolve("kir!");
+      });
   }
 
 }

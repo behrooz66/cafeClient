@@ -1,4 +1,12 @@
-<select class="form-control" [(ngModel)]="selectedValue" (change)="onSelect($event.target.value)">
-    <option *ngIf="allowNone" value="0">-- Please Select --</option>
-    <option *ngFor="let p of provinces" value="{{p.Id}}">{{p.Name}}</option>
-</select>
+<div *ngIf="mode === 'loading'">
+    Loading...
+</div>
+<div *ngIf="mode === 'success'">
+    <select class="form-control" [(ngModel)]="selectedValue" (change)="onSelect($event.target.value)">
+        <option *ngIf="allowNone" value="0">-- Please Select --</option>
+        <option *ngFor="let p of provinces" value="{{p.id}}">{{p.name}}</option>
+    </select>
+</div>
+<div *ngIf="mode === 'error'">
+    Error :(
+</div>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { SettingsService } from '../settings.service';
+import { Settings } from '../settings';
+//import { SettingsService } from '../settings.service';
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -9,12 +10,12 @@ export class GeocoderService {
   minimumConfidence: number;
   baseUrl:string ;
   authToken: string;
-  constructor(private _settings:SettingsService,
+  constructor(
               private _http:Http)
   {
-      this.minimumConfidence = this._settings.getGeocoderSettings().minimumConfidence;
-      this.baseUrl = this._settings.getGeocoderSettings().apiUrl;
-      this.authToken = this._settings.getGeocoderSettings().authToken;
+      this.minimumConfidence = Settings.geocoder.minimumConfidence;
+      this.baseUrl = Settings.geocoder.apiUrl;
+      this.authToken = Settings.geocoder.authToken;
   }
 
   geoCode(address: string) {
@@ -33,11 +34,3 @@ export class GeocoderService {
   }
 
 }
-
-/*
-interface GeocodeResult {
-    confidence: number;
-    lat: number;
-    lon: number;
-} */
-

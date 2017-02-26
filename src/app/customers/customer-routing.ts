@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { CustomersListComponent } from './customers-list/customers-list.component';
 import { CustomerDetailsComponent } from './customer-details/customer-details.component';
+import { CustomerAddComponent } from './customer-add/customer-add.component';
 
 const routes:Routes = [
     // todo : this component should navigate based on user's settings.
@@ -11,13 +12,19 @@ const routes:Routes = [
     //     component: AdminDispatcher
     // ,}
     {
-        path: 'customers',
-        component: CustomersListComponent
+        path: 'customers/add',
+        component: CustomerAddComponent
     },
     {
         path: 'customers/:id',
         component: CustomerDetailsComponent
     },
+    {
+        path: 'customers',
+        component: CustomersListComponent
+    },
+    
+
 ];
 
 export const CustomerRouting = RouterModule.forChild(routes);

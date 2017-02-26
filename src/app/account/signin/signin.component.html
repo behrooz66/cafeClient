@@ -1,3 +1,23 @@
-<p>
-  signin works!
-</p>
+<div *ngIf="error" class="alert alert-danger">
+    Login was unsuccessful. Make sure your account is active and you are using the right username and password.
+</div>
+
+<div *ngIf="success" class="alert alert-success">
+    Login successful! You will be redirected shortly...
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        Username:
+        <input type="text" class="form-control" [(ngModel)]="username">
+        <br/>
+        Password:
+        <input type="password" class="form-control" [(ngModel)]="password">
+        <br/>
+        <button class="btn btn-primary" (click)="signin()">Login</button>
+    </div>
+
+    <div class="panel-footer">
+        <i>Forgot your password? Too bad!</i>
+    </div>
+</div>

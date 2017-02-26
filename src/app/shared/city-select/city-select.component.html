@@ -1,4 +1,52 @@
-<select class="form-control" [(ngModel)]="selectedValue" (change)="onSelect($event.target.value)">
-    <option *ngIf="allowNone" value="0">-- Please Select --</option>
-    <option *ngFor="let c of cities" value="{{c.Id}}">{{c.Name}}</option>
-</select>
+<! Select Country -->
+<label>Country:</label>
+<div *ngIf="countries.mode === 'loading'">
+    Loading...
+</div>
+<div *ngIf="countries.mode === 'success'">
+    <select class="form-control" [(ngModel)]="countryId" (change)="onCountryChange($event.target.value)">
+        <option *ngIf="allowNone" value="0">-- Please Select --</option>
+        <option *ngFor="let c of countries.data" value="{{c.id}}">{{c.name}}</option>
+    </select>
+</div>
+<div *ngIf="countries.mode === 'error'">
+    Error :(
+</div>
+<br/>
+
+<!-- Select Province -->
+<label>Province:</label>
+<div *ngIf="provinces.mode === 'loading'">
+    Loading...
+</div>
+<div *ngIf="provinces.mode === 'waiting'">
+    Please select a country.
+</div>
+<div *ngIf="provinces.mode === 'success'">
+    <select class="form-control" [(ngModel)]="provinceId" (change)="onProvinceChange($event.target.value)">
+        <option *ngIf="allowNone" value="0">-- Please Select --</option>
+        <option *ngFor="let p of provinces.data" value="{{p.id}}">{{p.name}}</option>
+    </select>
+</div>
+<div *ngIf="provinces.mode === 'error'">
+    Error :(
+</div>
+<br/>
+
+<!-- Select City -->
+<label>City:</label>
+<div *ngIf="cities.mode === 'loading'">
+    Loading...
+</div>
+<div *ngIf="cities.mode ==='waiting'">
+    Please select a province.
+</div>
+<div *ngIf="cities.mode === 'success'">
+    <select class="form-control" [(ngModel)]="cityId" (change)="onCityChange($event.target.value)">
+        <option *ngIf="allowNone" value="0">-- Please Select --</option>
+        <option *ngFor="let c of cities.data" value="{{c.id}}">{{c.name}}</option>
+    </select>
+</div>
+<div *ngIf="cities.mode === 'error'">
+    Error :(
+</div>

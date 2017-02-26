@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FlashMessageService } from './shared/flash-message/flash-message.service';
 import { FlashMessage } from './shared/flash-message/flash-message';
 
+
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -13,7 +15,6 @@ export class AppComponent implements OnInit{
   flashMessages: FlashMessage[] = [];
 
   constructor(private _flashMsg:FlashMessageService){
-
   }
 
   ngOnInit(){

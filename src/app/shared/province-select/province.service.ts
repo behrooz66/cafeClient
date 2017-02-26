@@ -1,24 +1,17 @@
 import { Injectable } from '@angular/core';
+import { HttpAuthService } from '../http-auth.service';
+import { Settings } from '../../settings';
+
 
 @Injectable()
 export class ProvinceService {
 
-  provinces;
-  constructor() {
-      this.provinces = [
-        {
-            Id: 1,
-            Name: 'British Columbia'
-        },
-        {
-            Id: 2,
-            Name: 'Alberta'
-        }
-      ];
+  constructor(private _http:HttpAuthService) {
   }
 
-  getProvinces(){
-      return this.provinces;
+  getProvinces(id){
+      return this._http.get(Settings.apiBase + "province/getByCountry?countryId=" + id)
+                .map(res => res.json());
   }
 
 }

@@ -1,16 +1,19 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable, Injector, Inject } from '@angular/core';
 import { Http, ConnectionBackend, RequestOptions, RequestOptionsArgs, Response, Request, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
 import { AuthService } from '../account/auth.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class HttpAuthService extends Http {
 
   _authService: AuthService;
-  constructor(injector:Injector, authService:AuthService){
+  _router: Router;
+  constructor(router:Router, injector:Injector, authService:AuthService){
       let _http = injector.get(Http);
       super(_http._backend, _http._defaultOptions);
       this._authService = authService;
+      this._router = router;
   }
 
   
@@ -136,7 +139,7 @@ export class HttpAuthService extends Http {
 
   private redirect() {
       // todo : code the redirect to login and refactor the name
-      console.log("redirecting to login page now...");
+      this._router.navigate(["/account/signin"]);
   }
 
 
