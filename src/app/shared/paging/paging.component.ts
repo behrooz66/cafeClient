@@ -52,9 +52,14 @@ export class PagingComponent implements OnInit {
   }
 
   private setup(){
-    this.totalPages = Math.ceil(this.source.length / this.pageSize);
-    this.arr = new Array(this.totalPages);
-    this.index = 0;
+    try {
+      this.totalPages = Math.ceil(this.source.length / this.pageSize);
+      this.arr = new Array(this.totalPages);
+      this.index = 0;
+    }
+    catch(x) {
+      console.log("Exception: ",x);
+    }
   }
 
   private nextPage(){

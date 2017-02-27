@@ -102,24 +102,26 @@ export class HttpAuthService extends Http {
       });      
   }
 
-  request(url:string | Request, options?:RequestOptions)
-  {
-      return super.request(url, this.getAuthorizedOptions())
-          .catch(err => {
-              if (err && err.status === 401) {
-                  return this._authService.refreshToken()
-                    .flatMap(r => 
-                        super.request(url, this.getAuthorizedOptions())
-                    ).catch(err2 => {
-                        this.redirect();
-                        return Observable.throw(err2)
-                    });
-              }
-              else {
-                  return Observable.throw(err);
-              }
-          });
-  }
+
+//****** this piece of shit caused a whole lot of trouble as it interfered with other HTTP methods! I know right?!
+//   request(url:string | Request, options?:RequestOptions)
+//   {
+//       return super.request(url, this.getAuthorizedOptions())
+//           .catch(err => {
+//               if (err && err.status === 401) {
+//                   return this._authService.refreshToken()
+//                     .flatMap(r => 
+//                         super.request(url, this.getAuthorizedOptions())
+//                     ).catch(err2 => {
+//                         this.redirect();
+//                         return Observable.throw(err2)
+//                     });
+//               }
+//               else {
+//                   return Observable.throw(err);
+//               }
+//           });
+//   }
 
 
   private getAuthorizedOptions():RequestOptions
@@ -139,6 +141,7 @@ export class HttpAuthService extends Http {
 
   private redirect() {
       // todo : code the redirect to login and refactor the name
+      console.log("redirecting now!");
       this._router.navigate(["/account/signin"]);
   }
 

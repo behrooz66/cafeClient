@@ -12,9 +12,9 @@ import {FlashMessageService} from '../../shared/flash-message/flash-message.serv
 })
 export class CustomersListComponent implements OnInit, AfterViewInit {
 
-  customers: ICustomer[];
-  filteredCustomers: ICustomer[];
-  pageCustomers: ICustomer[];
+  customers = [];
+  filteredCustomers = [];
+  pageCustomers = [];
   pageSize: number = 5;
   availablePageSizes = [3, 5, 10, 20];
 
@@ -23,9 +23,18 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
               private _flashMessage: FlashMessageService) { }
 
   ngOnInit() {
-    // this.customers = this._customerService.getCustomers();
-    // this.filteredCustomers = this.customers;
-    // this.pageCustomers = this.filteredCustomers.slice(0, this.pageSize);
+
+      this._customerService.getCustomers()
+          .subscribe(d => {
+              console.log(d);
+              this.customers = d;
+              this.filteredCustomers = this.customers;
+              this.pageCustomers = this.filteredCustomers.slice(0, this.pageSize);
+          }, 
+          d => {
+              // to do
+              console.log("show some error...");
+          });
   }
 
   ngAfterViewInit(){

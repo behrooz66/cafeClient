@@ -20,11 +20,13 @@ export class CustomerService {
   }
 
   getCustomers(){
-    return [];
+      return this._http.get(this.apiBase+"get")
+            .map(r => r.json());
   }
 
-  getCustomer(){
-    return {};
+  getCustomer(id){
+      return this._http.get(this.addCustomer+"get/"+id)
+          .map(r => r.json());
   }
 
 

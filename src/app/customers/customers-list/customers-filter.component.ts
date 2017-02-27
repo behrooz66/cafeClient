@@ -11,15 +11,17 @@ import {ICustomer} from '../icustomer';
 export class CustomersFilterComponent {
 
     exp: string = "";
-    @Input() source: ICustomer[];
+    @Input() source = [];
     @Output('on-change') change = new EventEmitter();
         
     // todo: more fields may need to be taken into account
     onChange(){
+        console.log("exp: ", this.exp);
+        console.log("source: ", this.source);
         this.exp = this.exp.toLowerCase();
-        let subset:ICustomer[] = this.source.filter(x =>
+        let subset = this.source.filter(x =>
             x.name.toLowerCase().indexOf(this.exp) != -1
-            || x.name.toLowerCase().indexOf(this.exp) != -1
+            || x.cell.toLowerCase().indexOf(this.exp) != -1
         );
         this.change.emit({
             result: subset

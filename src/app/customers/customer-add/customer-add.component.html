@@ -57,7 +57,7 @@
 <!--<province-select [countryId]=1 [allowNone]=false [defaultValue]=5></province-select>-->
 <!--<city-select [provinceId]=5 [allowNone]=false [defaultValue]=4></city-select>-->
 
-<modal #m1 [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="danger"
+<modal #m1 [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="'danger'"
         (on-close)="modalClose($event);">
     <div class="content-head">
         Address not found
@@ -68,7 +68,7 @@
     </div>
 </modal>
 
-<modal #m2 [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="danger"
+<modal #m2 [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="'danger'"
     (on-close)="modalClose($event);">
     <div class="content-head">
         Geolocator unavailable

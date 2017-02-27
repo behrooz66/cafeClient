@@ -1,5 +1,6 @@
 <div class="panel panel-default">
   <div class="panel-body">
+      <label>Search by name or phone number:</label> 
       <customers-filter [source]="customers" (on-change)="filter($event)"></customers-filter>
       <a class="btn btn-primary" [routerLink]="['/customers/add']">New Customer</a>
   </div>
@@ -9,10 +10,10 @@
   <div class="col-md-3" *ngFor="let c of pageCustomers; let i=index;">
     <div class="panel panel-success">
         <div class="panel-body">
-          <a [routerLink]="['/customers', c.Id]"><span style="white-space:nowrap;">{{c.Name}}</span></a><br/>
-          {{c.Address}}<br/>
-          {{c.PostalCode}}<br/>
-          {{c.Phone}}
+          <a [routerLink]="['/customers', c.id]"><span style="white-space:nowrap;">{{c.name}}</span></a><br/>
+          {{c.address}}<br/>
+          {{c.postalCode}}<br/>
+          {{c.phone}}
         </div>
         <div class="panel-footer">
           Controls here...
