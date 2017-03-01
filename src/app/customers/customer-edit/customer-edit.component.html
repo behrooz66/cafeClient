@@ -1,15 +1,19 @@
+<div *ngIf="mode==='error'" class="alert alert-danger">
+    Unable to load the customer. Please try again.
+</div>
+
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h4>Add a New Customer</h4>
+        <h4>Update Customer</h4>
     </div>
 
     <div class="panel-body">
-        <form [formGroup]="newCustomerForm" (ngSubmit)="submit()">
+        <form [formGroup]="editCustomerForm" (ngSubmit)="submit()">
 
             <label>Name: </label>
             <input [(ngModel)]="customer.name" type="text" formControlName="name" class="form-control" 
-                        [class.form-input-invalid]="newCustomerForm.controls.name.invalid && 
-                                                    newCustomerForm.controls.name.touched">
+                        [class.form-input-invalid]="editCustomerForm.controls.name.invalid && 
+                                                    editCustomerForm.controls.name.touched">
             
             <label>Cell: </label>
             <input [(ngModel)]="customer.cell" type="text" formControlName="cell" class="form-control">
@@ -25,17 +29,15 @@
 
             <label>Email: </label>
             <input type="text" formControlName="email" class="form-control" [(ngModel)]="customer.email"
-                        [class.form-input-invalid]="newCustomerForm.controls.email.invalid &&
-                                                    newCustomerForm.controls.email.touched">
+                        [class.form-input-invalid]="editCustomerForm.controls.email.invalid &&
+                                                    editCustomerForm.controls.email.touched">
 
             <hr/>
-            <input [(ngModel)]="customer.noAddress" type="checkbox" formControlName="noAddress" (change)="toggleNoAddress()"/>
+            <input [(ngModel)]="customer.noAddress" type="checkbox" formControlName="noAddress" />
             <label>No Address </label>
-            <div id="adress" [hidden]="noAddress">
+            <div id="adress" [hidden]="customer.noAddress">
                 <label>Address: </label>
-                <input [(ngModel)]="customer.address" type="text" formControlName="address" class="form-control"
-                    [class.form-input-invalid]="newCustomerForm.controls.address.invalid
-                                            && newCustomerForm.controls.address.touched" >
+                <input [(ngModel)]="customer.address" type="text" formControlName="address" class="form-control" >
 
                 <label>Postal Code: </label>
                 <input [(ngModel)]="customer.postalCode" type="text" formControlName="postalCode" class="form-control" >
@@ -49,7 +51,7 @@
             <textarea [(ngModel)]="customer.notes" row=3 formControlName="notes" class="form-control"></textarea>
             
             <br/>
-            <button class="btn btn-primary" type="submit" [disabled]="!this.newCustomerForm.valid">Create</button>
+            <button class="btn btn-primary" type="submit" [disabled]="!this.editCustomerForm.valid">Update</button>
             <button type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
         </form>
     </div>
@@ -75,28 +77,5 @@
     <div class="content-body">
         External geolocator unavailable.<br/>
         Do you want to continue?
-    </div>
-</modal>
-
-<modal #mOnSumbitValidation [size]=2 [type]="'dialog'" [canEscape]=true [hasHeader]="true" [style]="'danger'">
-    <div class="content-head">
-        Validation Errors
-    </div>
-    <div class="content-body">
-        <span>Please correct the following errors and try again:</span>
-        <ul>
-            <li *ngFor="let e of onSubmitValidationErrors">
-                {{e}}
-            </li>
-        </ul>
-    </div>
-</modal>
-
-<modal #mWait [size]=1 [type]="'block'" [canEscape]=false [hasHeader]="false">
-    <div class="content-body">
-        <div class="text-center">
-            Please Wait...<br/>
-            <i class="fa fa-refresh fa-spin" aria-hidden="true"></i>
-         </div>
     </div>
 </modal>

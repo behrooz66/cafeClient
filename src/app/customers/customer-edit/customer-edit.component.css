@@ -1,0 +1,4 @@
+.form-input-invalid {
+    border: 1px solid red;
+    background-color: #FFCCC1;
+}

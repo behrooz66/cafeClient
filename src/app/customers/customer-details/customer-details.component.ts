@@ -11,18 +11,27 @@ import { ICustomer } from '../icustomer';
 })
 export class CustomerDetailsComponent implements OnInit {
 
-  customer:ICustomer;
+  customer;
   id: number;
   private sub;
+  mode:string = "";
 
   constructor(private _activatedRoute:ActivatedRoute,
               private _customerService:CustomerService) { }
 
   ngOnInit() {
-    // this.sub = this._activatedRoute.params.subscribe(params => {
-    //   this.id = +params["id"]
-    // });
-    // this.customer = this._customerService.getCustomer(this.id);
+    this.mode = "loading";
+    this.sub = this._activatedRoute.params.subscribe(params => {
+      this.id = +params["id"]
+    });
+    this._customerService.getCustomer(this.id)
+          .subscribe(d => {
+              this.customer = d;
+              this.mode = "success";
+          }, 
+          d => {
+              this.mode = "error";
+          });
   }
 
   ngOnDestroy(){

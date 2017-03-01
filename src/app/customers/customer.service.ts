@@ -25,7 +25,7 @@ export class CustomerService {
   }
 
   getCustomer(id){
-      return this._http.get(this.addCustomer+"get/"+id)
+      return this._http.get(this.apiBase+"get/"+id)
           .map(r => r.json());
   }
 

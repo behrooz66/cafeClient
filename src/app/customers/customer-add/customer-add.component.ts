@@ -1,11 +1,14 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NewCustomerValidators } from './new-customer-validators';
 import { ICustomer, Customer } from '../icustomer';
 import { GeocoderService } from '../../shared/geocoder.service';
 import { CustomerService } from '../customer.service';
 import { ModalComponent } from '../../shared/modal/modal.component';
 //import { ModalService } from '../../shared/modal/modal.service';
+import { FlashMessageService } from '../../shared/flash-message/flash-message.service';
+import { FlashMessage } from '../../shared/flash-message/flash-message';
 
 import { Settings } from '../../settings';
 
@@ -25,13 +28,19 @@ export class CustomerAddComponent implements OnInit {
 
   customer: Customer = new Customer() ;
 
-  // kossher!
+  onSubmitValidationErrors:string[] = [];
+
+  // modals!
   @ViewChild('m1') m1;
   @ViewChild('m2') m2;
+  @ViewChild('mOnSumbitValidation') mOnSumbitValidation;
+  @ViewChild('mWait') mWait;
 
-  constructor(fb: FormBuilder, private _geocoder:GeocoderService,
+  constructor(fb: FormBuilder,
+              private _router:Router, 
+              private _geocoder:GeocoderService,
               private _customerService:CustomerService,
-              private _el:ElementRef) {
+              private _flashMessage:FlashMessageService) {
 
       this.newCustomerForm = fb.group({
           name: ['', Validators.required],
@@ -41,16 +50,15 @@ export class CustomerAddComponent implements OnInit {
           otherPhone: [''],
           email: ['', Validators.compose([NewCustomerValidators.emailInvalid])],
           noAddress:[false],
-          address: [''],
+          address: ['', Validators.compose([NewCustomerValidators.addressInvalid])],
           postalCode: [''],
-          cityId: [''],
-          provinceId: [''],
-          countryId: [''],
           notes: ['']
       });
   }
 
   ngOnInit() {
+      //todo: make sure the auth token is valid or renew it.
+
       this.cityId = +localStorage.getItem("bdCityId");
       this.province = localStorage.getItem("bdProvince");
       this.city = localStorage.getItem("bdCity");
@@ -64,18 +72,15 @@ export class CustomerAddComponent implements OnInit {
   }
 
   cancel() {
-      //this.m1.open();
-      this.m1.open();
+      //todo: go back somehow!
+      
+      this._flashMessage.addMessage("kir!", "kirtar!", true, "success", 2000, 2);
   }
 
   cityChange($event){
       console.log("city change invoked.");
       this.customer.cityId = +$event.value;
 
-  }
-
-  geoCode(){
-      
   }
 
   submit() {
@@ -87,13 +92,53 @@ export class CustomerAddComponent implements OnInit {
       } 
   }
 
+  private onSubmitValidationWithAddress():boolean{
+      this.onSubmitValidationErrors = [];
+      
+      if (!this.customer.cell && !this.customer.home 
+        && !this.customer.work && !this.customer.otherPhone)
+        this.onSubmitValidationErrors.push("At least one phone number has to be provided.");
+      
+      if (!this.customer.address || this.customer.address.length==0)
+        this.onSubmitValidationErrors.push("You have to either provide an address or mark the \"No Address\" checkbox. ");
+      if (this.onSubmitValidationErrors.length > 0) return true;
+      return false;
+  }
+
+  private onSubmitValidationWithoutAddress(){
+      this.onSubmitValidationErrors = [];
+      if (!this.customer.cell && !this.customer.home 
+        && !this.customer.work && !this.customer.otherPhone)
+        this.onSubmitValidationErrors.push("At least one phone number has to be provided.");
+        if (this.onSubmitValidationErrors.length > 0) return true;
+      return false;
+  }
+
   private postCustomer(){
        this._customerService.addCustomer(this.customer)
-            .subscribe(d => console.log(d),
-            d => console.log(d));
+            .subscribe(d => {
+                this._flashMessage.addMessage("", this.customer.name+" was added successfully!", true, "success", 3000, 2);
+                this._router.navigate(["/customers", d]);
+                //console.log(d);
+            }, 
+            d => {
+                 // todo: show flash message error
+                 console.log(d);
+            },
+            () => {
+                this.mWait.close();
+            });
   }
 
   private postwithAddress() {
+      if (this.onSubmitValidationWithAddress()) {
+        this.mOnSumbitValidation.open();
+        return;
+      }
+      
+      //start the waitbox
+      this.mWait.open();
+
       let address = this.customer.address + 
             ", " + this.city +
             ", " + this.province +
@@ -108,16 +153,26 @@ export class CustomerAddComponent implements OnInit {
                     this.postCustomer();
                 }
                 else {
+                    this.mWait.close();
                     this.m1.open();
                 }
             },
             x => {
+                this.mWait.close();
                 this.m2.open();
             }
         );
   }
 
   private postWithoutAddress() {
+        if (this.onSubmitValidationWithoutAddress()) {
+            this.mOnSumbitValidation.open();
+            return;
+        }
+        
+        //start the waitbox
+        this.mWait.open();
+
         this.customer.addressFound = false;
         this.customer.address = "";
         this.customer.postalCode = "";
@@ -126,6 +181,7 @@ export class CustomerAddComponent implements OnInit {
 
   private modalClose($event){
       if ($event.result === true) {
+          this.mWait.open();
           this.customer.addressFound = false;
           this.postCustomer();
       }

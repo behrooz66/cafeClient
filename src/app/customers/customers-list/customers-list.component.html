@@ -6,6 +6,10 @@
   </div>
 </div>
 
+<div *ngIf="loading" class="center">
+    Please wait...
+</div>
+
 <div class="row">
   <div class="col-md-3" *ngFor="let c of pageCustomers; let i=index;">
     <div class="panel panel-success">

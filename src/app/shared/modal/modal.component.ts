@@ -14,7 +14,7 @@ export class ModalComponent implements OnInit {
   @Input() hasHeader: boolean = false;
   @Input() style: string = "default";
   //@Input() hasFooter: boolean = false;
-  @Input() type: string = "dialog"; // dialog vs confirm
+  @Input() type: string = "dialog"; // dialog vs confirm vs block
   @Output('on-open') show = new EventEmitter();
   @Output('on-close') hide = new EventEmitter();
 
