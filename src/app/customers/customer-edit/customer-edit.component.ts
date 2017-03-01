@@ -1,11 +1,15 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute} from '@angular/router';
+import { Router, ActivatedRoute} from '@angular/router';
 import { EditCustomerValidators } from './edit-customer-validators';
 import { Customer } from '../icustomer';
 import { GeocoderService } from '../../shared/geocoder.service';
 import { CustomerService } from '../customer.service';
 import { ModalComponent } from '../../shared/modal/modal.component';
+import { FlashMessageService } from '../../shared/flash-message/flash-message.service';
+import { FlashMessage } from '../../shared/flash-message/flash-message';
+
+import { Observable } from 'rxjs/Observable';
 
 import { Settings } from '../../settings';
 
@@ -22,12 +26,28 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
   province:string;
   customer: Customer = new Customer();
 
+  initialAddress = {
+      address: "",
+      postalCode: "",
+      noAddress: false
+  };
+
   mode: string = "";
   private sub;
 
-  constructor(fb: FormBuilder, private _geocoder:GeocoderService,
+  onSubmitErrors: string[];
+
+  @ViewChild('m1') m1;
+  @ViewChild('m2') m2;
+  @ViewChild('mOnSumbitValidation') mOnSubmitValidation;
+  @ViewChild('mWait') mWait;
+
+  constructor(fb: FormBuilder, 
+              private _geocoder:GeocoderService,
               private _customerService:CustomerService,
-              private _activatedRoute:ActivatedRoute) { 
+              private _router:Router,
+              private _activatedRoute:ActivatedRoute,
+              private _flashMessage: FlashMessageService) { 
       
        this.editCustomerForm = fb.group({
           name: [this.customer.name, Validators.required],
@@ -45,7 +65,7 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-      this.mode = "loading";
+      //this.mode = "loading";
       this.province = localStorage.getItem("bdProvince");
       this.city = localStorage.getItem("bdCity");
       let id = 0 ;
@@ -53,17 +73,16 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
           id = +params["id"]
       });
 
-      console.log("Id is: ", id);
-
       this._customerService.getCustomer(id)
             .subscribe(d => {
                 this.customer = d;
-                this.mode = "success";
-                console.log(d);
+                //this.mode = "success";
+                this.initialAddress.address = this.customer.address;
+                this.initialAddress.postalCode = this.customer.postalCode;
+                this.initialAddress.noAddress = this.customer.noAddress;
             },
             d => {
-                this.mode = "error";
-                console.log(d);
+                //this.mode = "error";
             });
   }
 
@@ -72,13 +91,108 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-      console.log(this.customer.noAddress);
+      //todo redirect somewhere!
   }
 
   toggleNoAddress() {
     console.log("Checkbox change detected!");
     this.customer.noAddress = !this.customer.noAddress;
     console.log(this.customer.noAddress)
+  }
+
+
+  // privates
+  private hasAddressChanged():boolean {
+      if (this.customer.address === this.initialAddress.address 
+            && this.customer.postalCode === this.initialAddress.postalCode 
+            && this.customer.noAddress === this.initialAddress.noAddress)
+      return false;
+      return true;
+  }
+
+  private geoCode(address:string):Observable<any> {
+      return this._geocoder.geoCode(encodeURI(address));
+  }
+
+  private save() {
+      this._customerService.updateCustomer(this.customer.id, this.customer)
+        .subscribe(
+            d => {
+                this._flashMessage.addMessage("", this.customer.name+" was updated successfully!", true, "success", 2500, 2);
+                this._router.navigate(["/customers", d.id]);
+            },
+            d => {
+                this._flashMessage.addMessage("Error", "Unable to update the customer. Please contact support if this recurring.", false, "danger", 2500, 2);
+            },
+            () => {
+                this.mWait.close();
+            }
+        );
+  }
+
+  private submit() {
+      if (this.onSubmitValidation()) {
+          this.mOnSubmitValidation.open();
+          return;
+      }
+      this.mWait.open();
+      
+      if (this.customer.noAddress) {
+          this.save();
+      }
+      else {
+          if (this.hasAddressChanged()) {
+              let address = this.customer.address + " ,"
+                          + this.city + ", "
+                          + this.province + " "
+                          + this.customer.postalCode;
+              this.geoCode(address)
+                .subscribe(d => {
+                     if (d.confidence >= 0.8) {
+                        this.customer.addressFound = true;
+                        this.customer.lat = d.lat;
+                        this.customer.lon = d.lon;
+                        this.save();
+                    }
+                    else {
+                        this.mWait.close();
+                        this.m1.open();
+
+                    }
+                }, 
+                d => {
+                    this.mWait.close();
+                    this.m2.open();
+                })
+          }
+          else {
+              this.save();
+          }
+      }
+  }
+
+  private geocodingWarningClose($event){
+      if ($event.result === true) {
+          this.mWait.open();
+          this.customer.addressFound = false;
+          this.customer.lat = null;
+          this.customer.lon = null;
+          this.save();
+      }
+  }
+
+  private onSubmitValidation():boolean{
+      this.onSubmitErrors = [];
+
+      if (!this.customer.cell && !this.customer.home 
+          && !this.customer.work && !this.customer.otherPhone)
+            this.onSubmitErrors.push("At least one phone number has to be provided.");
+      
+      if (!this.customer.address && !this.customer.noAddress)
+            this.onSubmitErrors.push("You have to either provide an address or mark the \"No Address\" checkbox. ");
+
+      if (this.onSubmitErrors.length > 0) return true;
+      return false;
   }
 
 }

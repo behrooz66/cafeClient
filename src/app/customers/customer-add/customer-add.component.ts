@@ -119,11 +119,9 @@ export class CustomerAddComponent implements OnInit {
             .subscribe(d => {
                 this._flashMessage.addMessage("", this.customer.name+" was added successfully!", true, "success", 3000, 2);
                 this._router.navigate(["/customers", d]);
-                //console.log(d);
             }, 
             d => {
-                 // todo: show flash message error
-                 console.log(d);
+                 this._flashMessage.addMessage("Error", "Unable to save the customer. Please contact support if this is a re-occuring issue.", true, "danger", 3000, 2);
             },
             () => {
                 this.mWait.close();

@@ -19,6 +19,11 @@ export class CustomerService {
              .map(r => r.json());
   }
 
+  updateCustomer(id:number, customer:Customer){
+      return this._http.put(this.apiBase+"put/" + id, customer)
+            .map(r => r.json());
+  }
+
   getCustomers(){
       return this._http.get(this.apiBase+"get")
             .map(r => r.json());

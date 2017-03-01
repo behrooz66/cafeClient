@@ -59,7 +59,7 @@
 </div>
 
 <modal #m1 [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="'danger'"
-        (on-close)="modalClose($event);">
+        (on-close)="geocodingWarningClose($event);">
     <div class="content-head">
         Address not found
     </div>
@@ -70,12 +70,36 @@
 </modal>
 
 <modal #m2 [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="'danger'"
-    (on-close)="modalClose($event);">
+    (on-close)="geocodingWarningClose($event);">
     <div class="content-head">
         Geolocator unavailable
     </div>
     <div class="content-body">
         External geolocator unavailable.<br/>
         Do you want to continue?
+    </div>
+</modal>
+
+
+<modal #mOnSumbitValidation [size]=2 [type]="'dialog'" [canEscape]=true [hasHeader]="true" [style]="'danger'">
+    <div class="content-head">
+        Validation Errors
+    </div>
+    <div class="content-body">
+        <span>Please correct the following errors and try again:</span>
+        <ul>
+            <li *ngFor="let e of onSubmitErrors">
+                {{e}}
+            </li>
+        </ul>
+    </div>
+</modal>
+
+<modal #mWait [size]=1 [type]="'block'" [canEscape]=false [hasHeader]="false">
+    <div class="content-body">
+        <div class="text-center">
+            Please Wait...<br/>
+            <i class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+         </div>
     </div>
 </modal>
