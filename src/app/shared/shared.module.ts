@@ -9,6 +9,8 @@ import { CitySelectComponent } from './city-select/city-select.component';
 import { ProvinceSelectComponent } from './province-select/province-select.component';
 import { CountrySelectComponent } from './country-select/country-select.component';
 import { ModalComponent } from './modal/modal.component';
+import { OrderTypesComponent } from './order-types/order-types.component';
+import { DatePickerComponent } from './date-picker/date-picker.component';
 //import { ModalService } from './modal/modal.service';
 
 @NgModule({
@@ -24,13 +26,17 @@ import { ModalComponent } from './modal/modal.component';
     ProvinceSelectComponent,
     CountrySelectComponent,
     ModalComponent,
+    OrderTypesComponent,
+    DatePickerComponent,
   ],
   exports: [
     PagingComponent,
     ProvinceSelectComponent,
     CitySelectComponent,
     CountrySelectComponent,
-    ModalComponent
+    ModalComponent,
+    OrderTypesComponent,
+    DatePickerComponent
   ],
   providers: [
     //ModalService

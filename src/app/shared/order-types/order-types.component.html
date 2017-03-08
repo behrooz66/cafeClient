@@ -1,0 +1,16 @@
+<div *ngIf="mode === 'loading'">
+    Loading...
+</div>
+
+<div *ngIf="mode === 'success'">
+    <select class="form-control" [(ngModel)]="typeId" (change)="onChange($event.target.value);" >
+        <option *ngIf="allowNone" value="0">-- Order Type --</option>
+        <option *ngFor="let t of orderTypes" value="{{t.id}}">
+            {{t.type}}
+        </option>
+    </select>
+</div>
+
+<div *ngIf="mode === 'error'">
+    Error... Please refresh the page
+</div>

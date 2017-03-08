@@ -1,0 +1,87 @@
+<!--<select [(ngModel)]="year" (change)="onYearChange($event.target.value)">
+    <option *ngFor="let y of years" value="{{y}}">{{y}}</option> 
+</select>
+
+<select [(ngModel)]="month" (change)="onMonthChange($event.target.value);">
+    <option  value=1>January</option>
+    <option  value=2>February</option>
+    <option  value=3>March</option>
+    <option  value=4>April</option>
+    <option  value=5>May</option>
+    <option  value=6>June</option>
+    <option  value=7>July</option>
+    <option  value=8>August</option>
+    <option  value=9>September</option>
+    <option  value=10>October</option>
+    <option  value=11>November</option>
+    <option  value=12>December</option>
+</select>
+
+<select [(ngModel)]="day" (change)="onDayChange($event.target.value);">
+    <option *ngFor="let d of days">
+        {{d}}
+    </option>
+</select>-->
+
+<div class="calendar">
+  <div class="row">
+      <div class="col-md-6">
+            <select [(ngModel)]="year" (change)="onYearChange($event.target.value)" class="form-control">
+                <option *ngFor="let y of years" value="{{y}}">{{y}}</option> 
+          </select>
+      </div>
+      <div class="col-md-6">
+            <select [(ngModel)]="month" (change)="onMonthChange($event.target.value);" class="form-control">
+                <option  value=1>January</option>
+                <option  value=2>February</option>
+                <option  value=3>March</option>
+                <option  value=4>April</option>
+                <option  value=5>May</option>
+                <option  value=6>June</option>
+                <option  value=7>July</option>
+                <option  value=8>August</option>
+                <option  value=9>September</option>
+                <option  value=10>October</option>
+                <option  value=11>November</option>
+                <option  value=12>December</option>
+          </select>
+      </div>
+  </div>
+  <div id="days">
+      <table class="table">
+          <thead>
+              <th>
+                  S
+              </th>
+              <th>
+                  M
+              </th>
+              <th>
+                  T
+              </th>
+              <th>
+                  W
+              </th>
+              <th>
+                  T
+              </th>
+              <th>
+                  F
+              </th>
+              <th>
+                  S
+              </th>
+          </thead>
+          <tbody>
+              <tr>
+                  <td *ngFor="let d of days; let i = index">
+                      {{i < 7? d: "kos" }}
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+      <!--<div *ngFor="let d of days">
+          
+      </div>-->
+  </div>
+</div>

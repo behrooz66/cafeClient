@@ -1,0 +1,8 @@
+.calendar {
+    max-width:300px;
+    border: 1px solid green;
+}
+
+#days {
+    background-color:green;
+}
