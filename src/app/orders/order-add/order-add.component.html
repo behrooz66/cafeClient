@@ -1,0 +1,30 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Add a New Order</h4>
+    </div>
+
+    <div class="panel-body">
+        <form [formGroup]="newOrderForm" (ngSubmit)="submit()">
+            
+            <date-picker></date-picker>
+            <br/>
+
+            
+            <label>Date:</label>
+            <input type="text" class="form-control" [(ngModel)]="order.date" formControlName="date"
+                [class.form-input-invalid]="newOrderForm.controls.date.invalid"><br/>
+
+            <label>Order Type:</label>
+            <order-types [allowNone]=false (on-change)="typeChange($event)"></order-types><br/>
+
+            <label>Price:</label>
+            <input type="number" class="form-control" [(ngModel)]="order.price" formControlName="price" ><br/>
+
+            <label>Notes:</label>
+            <textarea rows="3" class="form-control" [(ngModel)]="order.notes" formControlName="notes"></textarea><br/>
+
+            <button type="submit" class="btn btn-primary" [disabled]="this.newOrderForm.invalid">Save</button>
+            <button type="button" class="btn btn-default" (click)="cancel();" >Cancel</button>
+        </form>
+    </div>
+</div>

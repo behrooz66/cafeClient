@@ -1,88 +1,163 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'date-picker',
   templateUrl: './date-picker.component.html',
-  styleUrls: ['./date-picker.component.css']
+  styleUrls: ['./date-picker.component.css'],
+  host: {
+    '(document:click)': 'onClick($event)',
+  },
 })
 export class DatePickerComponent implements OnInit {
 
-  years: number[] = [];
-  days: number[] = [];
+  arr;
+  monthName: string = "";
+  year: number = 0;
+  years: number[][] = [];
   months: string[] = [];
+  monthIndex: number = 0;
+  view: string = "calendar";  // and months, and years...
+  hidden: boolean = true;
 
-  @Input() startYear: number = 2010;
-  @Input() endYear: number = 2020;
-  @Input() year: number = this.years[0];
-  @Input() month: number = 1;
-  @Input() day: number = 1;
+  @Input() defaultDate = "";
+  @Output('change') change = new EventEmitter();
 
-  @Output('on-change') change = new EventEmitter();
+  DATE:string = "";
 
+  constructor(private _eref:ElementRef) { }
 
-  constructor() { }
+  onClick(event) {
+     if (!this._eref.nativeElement.contains(event.target)) // or some similar check
+       this.onBlur();
+  }
 
   ngOnInit() {
-      for (let i=this.startYear; i<=this.endYear; i++) {
-          this.years.push(i);
+      this.make(moment().toDate());
+      this.monthIndex = moment().month();
+  }
+
+  setDate(day){
+      if (day < 10) day = "0" + day;
+      let m = + this.monthIndex+1;
+      let mm:string = m.toString();
+      if (m < 10) mm = "0" + mm;
+      this.DATE = this.year +"-" + mm + "-" + day;
+      this.hidden = true;
+      this.onChange();
+  }
+
+  make(date: Date) {
+      this.arr = this.getMonthArray(date);
+      this.monthName = moment.months(moment(date).month());
+      this.year = moment(date).year();
+  }
+
+  private getMonthArray(date: Date) {
+      let arr:number[][];
+      arr = [];
+      for (let i=0; i<6; i++) {
+          arr[i] = [];
       }
 
+      let daysInMonth = moment(date).daysInMonth();
+      let startIndex = this.getFirstDayIndex(date);
+
+      let count = 0;
+
+      for (let i=0; i < 6; i++) {
+          for (let j=0; j < 7; j++) {
+              if (i==0 && j < startIndex) {
+                  arr[i][j]=0;
+                  continue;
+              }
+              if (i>=4 && count >= daysInMonth) {
+                  arr[i][j]=0;
+                  continue;
+              }
+              arr[i][j] = ++count;
+          }
+      }
+      return arr;
+  }
+
+  private getFirstDayIndex(date: Date){
+      let newDate = new Date(date.getFullYear(), date.getMonth(), 0);
+      let index = moment(newDate).day()+1;
+      return index;
+  }
+
+  private next(){
+      this.monthIndex++;
+      let td = new Date(this.year, this.monthIndex);
+      let d = moment(td).toDate();
+      this.make(d);
+  }
+
+  private prev(){
+      this.monthIndex--;
+      let td = new Date(this.year, this.monthIndex);
+      let d = moment(td).toDate();
+      this.make(d);
+  }
+
+  private monthsView(){
+      this.view = "months";
+      this.months[0] = "Jan";
+      this.months[1] = "Feb";
+      this.months[2] = "Mar";
+      this.months[3] = "Apr";
+      this.months[4] = "May";
+      this.months[5] = "Jun";
+      this.months[6] = "Jul";
+      this.months[7] = "Aug";
+      this.months[8] = "Sep";
+      this.months[9] = "Oct";
+      this.months[10] = "Nov";
+      this.months[11] = "Dec";
+  }
+
+  private yearsView(){
+      this.view = "years";
+      for (let i=0; i<3; i++)
+          this.years[i] = [];
       
-
+      let count = 6;
+      for (let i=0; i<3; i++) {
+          for (let j=0; j<4; j++) {
+              this.years[i][j] = Math.abs((--count) - this.year);
+          }
+      }
+      console.log(this.years);
   }
 
-
-
-  onYearChange(value) {
-      this.resetDays();
-      this.emitDate();
+  private calendarView(){
+      this.view = "calendar";
   }
 
-  onMonthChange(value){
-      this.resetDays();
-      this.emitDate();
+  private setYear(val: number) {
+      let diff = val - moment().year();
+      this.make(moment(new Date(moment().year(), this.monthIndex)).add(diff, 'years').toDate());
+      this.view = "calendar";
   }
 
-  onDayChange(value) {
-      this.emitDate();
+  private setMonth(index: number) {
+      let d = new Date(this.year, index);
+      this.monthIndex = index;
+      this.make(moment(d).toDate());
+      this.view = "calendar";
   }
 
-
-  private emitDate(){
-      let month: string = this.month.toString();
-      let day: string = this.day.toString();
-      if (+this.month < 10)
-          month = "0" + month;
-      if (+this.day < 10)
-          day = "0" + day;
-      
-      let date = this.year + "-" + month + "-" + day;
-      this.change.emit(date);
+  private onFocus(){
+      this.hidden = false;
   }
 
-  private resetDays(){
-      this.days = [];
-      let numberOfDays = 0;
-      if (+this.month === 1 || +this.month === 3 || +this.month === 5
-        || +this.month === 7 || +this.month === 8 || +this.month === 10 || +this.month === 12)
-        numberOfDays = 31;
-      
-      else if (+this.month === 4 || +this.month === 6 || +this.month === 9 || +this.month === 11)
-        numberOfDays = 30;
-
-      else if (+this.month === 2)
-        if (this.isLeapYear(this.year))
-          numberOfDays = 29;
-        else
-          numberOfDays = 28;
-
-      for (let i=1; i<=numberOfDays; i++) 
-          this.days.push(i);
+  private onBlur(){
+      this.hidden = true;
   }
 
-  private isLeapYear(year: number):boolean {
-      let x: boolean = (year % 100 === 0) ? (year % 400 === 0) : (year % 4 === 0);
-      return x  
+  private onChange(){
+      this.change.emit(this.DATE);
   }
 
 }

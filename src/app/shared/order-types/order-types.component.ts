@@ -36,7 +36,7 @@ export class OrderTypesComponent implements OnInit {
   }
   
   onChange(value){
-      console.log(value);
+      this.change.emit(value);
   }
 
 }
