@@ -8,7 +8,7 @@ import { OrderAddComponent } from './order-add/order-add.component';
 
 const routes:Routes = [
     {
-        path: 'customers/:id/orders',
+        path: 'orders/list/:customerId',
         component: OrdersListComponent
     },
     {
@@ -16,7 +16,7 @@ const routes:Routes = [
         component: OrderDetailsComponent
     },
     {
-        path: 'customers/:id/order/add',
+        path: 'orders/add/:customerId',
         component: OrderAddComponent
     },
     {

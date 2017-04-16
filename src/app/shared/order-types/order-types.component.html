@@ -3,9 +3,9 @@
 </div>
 
 <div *ngIf="mode === 'success'">
-    <select class="form-control" [(ngModel)]="typeId" (change)="onChange($event.target.value);" >
-        <option *ngIf="allowNone" value="0">-- Order Type --</option>
-        <option *ngFor="let t of orderTypes" value="{{t.id}}">
+    <select class="form-control" [(ngModel)]="typeId" (change)="changed($event.target.value);" >
+        <option *ngIf="allowNone" value="0" [selected]="allowNone && typeId===0">-- Order Type --</option>
+        <option *ngFor="let t of orderTypes;" value="{{t.id}}" [selected]="t.id === typeId">
             {{t.type}}
         </option>
     </select>

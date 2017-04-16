@@ -20,7 +20,7 @@
           {{c.phone}}
         </div>
         <div class="panel-footer">
-          Controls here...
+          Controls here... <button type="button" class="btn btn-danger btn-xs" (click)="delete(c.id)">Delete</button>
         </div>
     </div>
   </div>
@@ -29,3 +29,13 @@
 <paging [source]="filteredCustomers" [pageSize]="pageSize" [sizes]="availablePageSizes"
         [allowPageSizeChange]=true
       (index-change)="pageIndexChange($event);"></paging>
+
+
+<modal #mConfirmDelete [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="'danger'" (on-close)="mConfirmDeleteClose($event);">
+    <div class="content-head">
+        Delete Customer
+    </div>
+    <div class="content-body">
+        Are you sure you want to delete this customer?
+    </div>
+</modal>

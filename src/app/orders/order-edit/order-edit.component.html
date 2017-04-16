@@ -1,3 +1,51 @@
-<p>
-  order-edit works!
-</p>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Update Order</h4>
+    </div>
+
+    <div class="panel-body">
+        <form [formGroup]="editOrderForm" (ngSubmit)="submit()">
+            
+            <label>Date:</label>
+            <date-picker formControlName="date" [(ngModel)]="order.date" ></date-picker>
+            <br/>
+
+            <label>Order Type:</label>
+            <order-types formControlName="orderTypeId" [allowNone]=false [(ngModel)]="order.orderTypeId"></order-types><br/>
+
+            <label>Price:</label>
+            <price-input formControlName="price" [price]="order.price" [required]="true" [(ngModel)]="order.price"></price-input><br/>
+
+            <label>Notes:</label>
+            <textarea rows="3" class="form-control" [(ngModel)]="order.notes" formControlName="notes"></textarea><br/>
+
+            <button type="submit" class="btn btn-primary" [disabled]="this.editOrderForm.invalid">Save</button>
+            <button type="button" class="btn btn-default" (click)="cancel();" >Cancel</button>
+        </form>
+    </div>
+</div>
+{{order | json}}
+<modal #mOnSumbitValidation [size]=2 [type]="'dialog'" [canEscape]=true [hasHeader]="true" [style]="'danger'">
+    <div class="content-head">
+        Validation Errors
+    </div>
+    <div class="content-body">
+        <span>Please correct the following errors and try again:</span>
+        <ul>
+            <li *ngFor="let e of onSubmitErrors">
+                {{e}}
+            </li>
+        </ul>
+    </div>
+</modal>
+
+
+<modal #mWait [size]=1 [type]="'block'" [canEscape]=false [hasHeader]="false">
+    <div class="content-body">
+        <div class="text-center">
+            Please Wait...<br/>
+            <i class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+         </div>
+    </div>
+</modal>
+

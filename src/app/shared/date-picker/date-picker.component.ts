@@ -1,4 +1,5 @@
-import { Component, OnInit, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ElementRef, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as moment from 'moment';
 
 @Component({
@@ -8,8 +9,20 @@ import * as moment from 'moment';
   host: {
     '(document:click)': 'onClick($event)',
   },
+  providers: [
+      {
+          provide: NG_VALUE_ACCESSOR,
+          useExisting: DatePickerComponent,
+          multi: true
+      }
+  ]
 })
-export class DatePickerComponent implements OnInit {
+export class DatePickerComponent implements OnInit, ControlValueAccessor {
+
+  @Input() date:string;
+  hidden: boolean = true;
+  onChange: (_: any) => {};
+  onTouched: () => {}
 
   arr;
   monthName: string = "";
@@ -18,33 +31,55 @@ export class DatePickerComponent implements OnInit {
   months: string[] = [];
   monthIndex: number = 0;
   view: string = "calendar";  // and months, and years...
-  hidden: boolean = true;
-
-  @Input() defaultDate = "";
-  @Output('change') change = new EventEmitter();
-
-  DATE:string = "";
 
   constructor(private _eref:ElementRef) { }
 
+  ngOnInit() {
+      this.make(moment(this.date).toDate());
+      this.monthIndex = moment(this.date).month();
+  }
+
+
   onClick(event) {
      if (!this._eref.nativeElement.contains(event.target)) // or some similar check
-       this.onBlur();
+       this.hideCanlendar();
   }
 
-  ngOnInit() {
-      this.make(moment().toDate());
-      this.monthIndex = moment().month();
+  writeValue(value: any) {
+      if (value !== undefined)
+          this.date = value;
   }
 
+  registerOnChange(fn){
+      this.onChange = fn;
+  };
+
+  registerOnTouched(fn: () => any) {
+      this.onTouched = fn;
+  }
+
+  changed(value){
+      this.onChange(value);
+  }
+
+  hideCanlendar(){
+      this.hidden = true;
+  }
+
+  showCalendar(){
+      this.hidden = false;
+  }
+
+  //**** to review */
   setDate(day){
       if (day < 10) day = "0" + day;
       let m = + this.monthIndex+1;
       let mm:string = m.toString();
       if (m < 10) mm = "0" + mm;
-      this.DATE = this.year +"-" + mm + "-" + day;
+      this.date = this.year +"-" + mm + "-" + day;
       this.hidden = true;
-      this.onChange();
+      //todo this.onChange();
+      this.changed(this.date);
   }
 
   make(date: Date) {
@@ -128,7 +163,6 @@ export class DatePickerComponent implements OnInit {
               this.years[i][j] = Math.abs((--count) - this.year);
           }
       }
-      console.log(this.years);
   }
 
   private calendarView(){
@@ -148,16 +182,8 @@ export class DatePickerComponent implements OnInit {
       this.view = "calendar";
   }
 
-  private onFocus(){
-      this.hidden = false;
-  }
-
-  private onBlur(){
-      this.hidden = true;
-  }
-
-  private onChange(){
-      this.change.emit(this.DATE);
+  private onKeyDown($event) {
+      this.hideCanlendar();
   }
 
 }

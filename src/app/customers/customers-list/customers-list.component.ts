@@ -1,7 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, AfterViewInit, ViewChild } from '@angular/core';
 import {CustomerService} from '../customer.service';
 import {ICustomer} from '../icustomer';
 import {FlashMessageService} from '../../shared/flash-message/flash-message.service';
+import { FlashMessage } from '../../shared/flash-message/flash-message';
+import { ModalComponent } from '../../shared/modal/modal.component';
 //import {CustomersFilterComponent} from './customers-filter.component';
 
 @Component({
@@ -18,6 +20,8 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
   pageCustomers = [];
   pageSize: number = 5;
   availablePageSizes = [3, 5, 10, 20];
+
+  @ViewChild('mConfirmDelete') mConfirmDelete;
 
   constructor(private _customerService:CustomerService,
               private _cdr:ChangeDetectorRef,
@@ -55,6 +59,30 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
 
   pageIndexChange($event){
     this.pageCustomers = this.filteredCustomers.slice($event.startIndex, $event.endIndex);
+  }
+
+  delete(id) {
+      this.mConfirmDelete.open();
+      this.deleteCandidateId = id;
+  }
+
+  private deleteCandidateId:number;
+
+  private mConfirmDeleteClose($event){
+      if ($event.result === true) {
+          this._customerService.deleteCustomer(this.deleteCandidateId)
+              .subscribe(d => {
+                
+                  this._flashMessage.addMessage("", "Customer successfully deleted.", true, "success", 2500, 2);
+              },
+              d => {
+                  this._flashMessage.addMessage("Error", "Could not delete customer. Please contact support if this is recurring.", false, "danger", 2500, 2);
+                  console.log("kior");
+              },
+              () => {
+                  // todo anything?
+              });
+      }
   }
 
 }

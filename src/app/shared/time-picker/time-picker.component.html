@@ -1,0 +1,24 @@
+<table class="bd-table">
+    <tbody>
+        <tr>
+            <td>
+                <select class="form-control" [(ngModel)]="hh" (change)="onChange();">
+                    <option *ngFor="let h of hours"> {{h}} </option>
+                </select>
+            </td>
+            <td>
+                :
+            </td>
+            <td>
+                <select class="form-control" [(ngModel)]="mm" (change)="onChange();">
+                    <option *ngFor="let m of minutes"> {{m}} </option>
+                </select>
+            </td>
+            <td>
+                <select class="form-control" [(ngModel)]="ap" (change)="onChange();">
+                    <option *ngFor="let x of ampm"> {{x}} </option>
+                </select>
+            </td>
+        </tr>
+    </tbody>
+</table>

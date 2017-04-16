@@ -6,19 +6,15 @@
     <div class="panel-body">
         <form [formGroup]="newOrderForm" (ngSubmit)="submit()">
             
-            <date-picker></date-picker>
+            <label>Date:</label>
+            <date-picker formControlName="date" [(ngModel)]="order.date"></date-picker>
             <br/>
 
-            
-            <label>Date:</label>
-            <input type="text" class="form-control" [(ngModel)]="order.date" formControlName="date"
-                [class.form-input-invalid]="newOrderForm.controls.date.invalid"><br/>
-
             <label>Order Type:</label>
-            <order-types [allowNone]=false (on-change)="typeChange($event)"></order-types><br/>
+            <order-types formControlName="orderTypeId" [allowNone]=false [(ngModel)]="order.orderTypeId"></order-types><br/>
 
             <label>Price:</label>
-            <input type="number" class="form-control" [(ngModel)]="order.price" formControlName="price" ><br/>
+            <price-input formControlName="price" [price]="order.price" [required]="true" [(ngModel)]="order.price"></price-input><br/>
 
             <label>Notes:</label>
             <textarea rows="3" class="form-control" [(ngModel)]="order.notes" formControlName="notes"></textarea><br/>
@@ -28,3 +24,29 @@
         </form>
     </div>
 </div>
+
+{{order | json}}
+
+<modal #mOnSumbitValidation [size]=2 [type]="'dialog'" [canEscape]=true [hasHeader]="true" [style]="'danger'">
+    <div class="content-head">
+        Validation Errors
+    </div>
+    <div class="content-body">
+        <span>Please correct the following errors and try again:</span>
+        <ul>
+            <li *ngFor="let e of onSubmitErrors">
+                {{e}}
+            </li>
+        </ul>
+    </div>
+</modal>
+
+
+<modal #mWait [size]=1 [type]="'block'" [canEscape]=false [hasHeader]="false">
+    <div class="content-body">
+        <div class="text-center">
+            Please Wait...<br/>
+            <i class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+         </div>
+    </div>
+</modal>

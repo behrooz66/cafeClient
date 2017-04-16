@@ -11,6 +11,9 @@ import { CountrySelectComponent } from './country-select/country-select.componen
 import { ModalComponent } from './modal/modal.component';
 import { OrderTypesComponent } from './order-types/order-types.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
+import { TimePickerComponent } from './time-picker/time-picker.component';
+import { PriceInputComponent } from './price-input/price-input.component';
+import { TestComponent } from './test/test.component';
 //import { ModalService } from './modal/modal.service';
 
 @NgModule({
@@ -28,6 +31,9 @@ import { DatePickerComponent } from './date-picker/date-picker.component';
     ModalComponent,
     OrderTypesComponent,
     DatePickerComponent,
+    TimePickerComponent,
+    PriceInputComponent,
+    TestComponent,
   ],
   exports: [
     PagingComponent,
@@ -36,7 +42,10 @@ import { DatePickerComponent } from './date-picker/date-picker.component';
     CountrySelectComponent,
     ModalComponent,
     OrderTypesComponent,
-    DatePickerComponent
+    DatePickerComponent,
+    TimePickerComponent,
+    PriceInputComponent,
+    TestComponent
   ],
   providers: [
     //ModalService

@@ -1,105 +1,106 @@
 <div (blur)="onBlur()">
-      <input type="text" [(ngModel)]="DATE" class="form-control" (focus)="onFocus();" (change)="onChange();">
+<input type="text" class="form-control" [(ngModel)]="date" 
+      (change)="changed($event.target.value)" (focus)="showCalendar();" (keydown)="onKeyDown($event);">
 
-      <div class="bd-panel" [hidden]="hidden">
-        
-        <div class="controls" [hidden]="view !='calendar'">
-          <button class="btn btn-xs btn-default" (click)="prev()"> << </button>
-              <button class="btn  btn-default" (click)="monthsView();"> {{monthName}} </button>
-              <button class="btn  btn-default" (click)="yearsView();"> {{year}} </button>
-          <button class="btn btn-xs btn-default" (click)="next()"> >> </button>
-        </div>
 
-        <div class="cal" [hidden]="view !='calendar'">
-            <table>
-              <tr class="titles">
-                  <td >Su</td>
-                  <td>Mo</td>
-                  <td>Tu</td>
-                  <td>We</td>
-                  <td>Th</td>
-                  <td>Fr</td>
-                  <td>Sa</td>
-              </tr>
-              <tr *ngFor="let x of arr">
+
+<div class="bd-panel" [hidden]="hidden">
+  
+  <div class="controls" [hidden]="view !='calendar'">
+    <button type="button" class="btn btn-xs btn-default" (click)="prev()"> << </button>
+        <button type="button" class="btn  btn-default" (click)="monthsView();"> {{monthName}} </button>
+        <button type="button" class="btn  btn-default" (click)="yearsView();"> {{year}} </button>
+    <button type="button" class="btn btn-xs btn-default" (click)="next()"> >> </button>
+  </div>
+
+  <div class="cal" [hidden]="view !='calendar'">
+      <table>
+        <tr class="titles">
+            <td >Su</td>
+            <td>Mo</td>
+            <td>Tu</td>
+            <td>We</td>
+            <td>Th</td>
+            <td>Fr</td>
+            <td>Sa</td>
+        </tr>
+        <tr *ngFor="let x of arr">
+            <td *ngFor="let y of x">
+                <div class="day-cell" *ngIf="y != 0" (click)="setDate(y);">
+                  {{y}}
+                </div>
+            </td>
+        </tr>
+      </table>
+  </div>
+
+  <div class="months" [hidden]="view !='months'">
+    <div class="controls">
+        <strong style="color:azure">Select the Month</strong>
+    </div>
+      <table class="bd-table">
+          <tbody>
+            <tr >
+                <td class="month-cell" (click)="setMonth(0);">
+                    Jan
+                </td>
+                <td class="month-cell" (click)="setMonth(1);">
+                    Feb
+                </td>
+                <td class="month-cell" (click)="setMonth(2);">
+                    Mar
+                </td>
+                <td class="month-cell" (click)="setMonth(3);">
+                    Apr
+                </td>
+            </tr>
+            <tr>
+                <td class="month-cell" (click)="setMonth(4);">
+                    May
+                </td>
+                <td class="month-cell" (click)="setMonth(5);">
+                    Jun
+                </td>
+                <td class="month-cell" (click)="setMonth(6);">
+                    Jul
+                </td>
+                <td class="month-cell" (click)="setMonth(7);">
+                    Aug
+                </td>
+            </tr>
+            <tr>
+                <td class="month-cell" (click)="setMonth(8);">
+                    Sep
+                </td>
+                <td class="month-cell" (click)="setMonth(9);">
+                    Oct
+                </td>
+                <td class="month-cell" (click)="setMonth(10);">
+                    Nov
+                </td>
+                <td class="month-cell" (click)="setMonth(11);">
+                    Dec
+                </td>
+            </tr>
+          </tbody>
+      </table>
+  </div>
+
+  <div class="years" [hidden]="view !='years'">
+      <div class="controls">
+        <strong style="color:azure">Select the Year</strong>
+      </div>
+      <table class="bd-table">
+          <tbody>
+              <tr *ngFor="let x of years">
                   <td *ngFor="let y of x">
-                      <div class="day-cell" *ngIf="y != 0" (click)="setDate(y);">
-                        {{y}}
+                      <div class="year-cell" (click)="setYear(y);">
+                          {{y}}
                       </div>
                   </td>
               </tr>
-            </table>
-        </div>
-
-        <div class="months" [hidden]="view !='months'">
-          <div class="controls">
-              <strong style="color:azure">Select the Month</strong>
-          </div>
-            <table class="bd-table">
-                <tbody>
-                  <tr >
-                      <td class="month-cell" (click)="setMonth(0);">
-                          Jan
-                      </td>
-                      <td class="month-cell" (click)="setMonth(1);">
-                          Feb
-                      </td>
-                      <td class="month-cell" (click)="setMonth(2);">
-                          Mar
-                      </td>
-                      <td class="month-cell" (click)="setMonth(3);">
-                          Apr
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="month-cell" (click)="setMonth(4);">
-                          May
-                      </td>
-                      <td class="month-cell" (click)="setMonth(5);">
-                          Jun
-                      </td>
-                      <td class="month-cell" (click)="setMonth(6);">
-                          Jul
-                      </td>
-                      <td class="month-cell" (click)="setMonth(7);">
-                          Aug
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="month-cell" (click)="setMonth(8);">
-                          Sep
-                      </td>
-                      <td class="month-cell" (click)="setMonth(9);">
-                          Oct
-                      </td>
-                      <td class="month-cell" (click)="setMonth(10);">
-                          Nov
-                      </td>
-                      <td class="month-cell" (click)="setMonth(11);">
-                          Dec
-                      </td>
-                  </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="years" [hidden]="view !='years'">
-            <div class="controls">
-              <strong style="color:azure">Select the Year</strong>
-            </div>
-            <table class="bd-table">
-                <tbody>
-                    <tr *ngFor="let x of years">
-                        <td *ngFor="let y of x">
-                            <div class="year-cell" (click)="setYear(y);">
-                                {{y}}
-                            </div>
-                        </td>
-                    </tr>
-              </tbody>
-            </table>
-        </div>
-      </div>
-      
-
+        </tbody>
+      </table>
+  </div>
+</div>
 </div>

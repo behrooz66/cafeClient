@@ -1,0 +1,3 @@
+<input type="text" class="form-control" [(ngModel)]="price" (change)="changed();" (keydown)="onKeyDown($event);" 
+    [class.input-invalid]="!isValid"/>
+

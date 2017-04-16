@@ -1,0 +1,11 @@
+.bd-ctrl {
+    max-width: 45px;
+}
+
+.bd-cont {
+    max-width: 300px;
+}
+
+.bd-table td {
+    padding-right:2px;
+}

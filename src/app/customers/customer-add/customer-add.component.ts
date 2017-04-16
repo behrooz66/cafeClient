@@ -9,6 +9,7 @@ import { ModalComponent } from '../../shared/modal/modal.component';
 //import { ModalService } from '../../shared/modal/modal.service';
 import { FlashMessageService } from '../../shared/flash-message/flash-message.service';
 import { FlashMessage } from '../../shared/flash-message/flash-message';
+import 'rxjs/add/operator/finally';
 
 import { Settings } from '../../settings';
 
@@ -116,15 +117,15 @@ export class CustomerAddComponent implements OnInit {
 
   private postCustomer(){
        this._customerService.addCustomer(this.customer)
+            .finally(() => {
+                this.mWait.close();
+            })
             .subscribe(d => {
                 this._flashMessage.addMessage("", this.customer.name+" was added successfully!", true, "success", 3000, 2);
                 this._router.navigate(["/customers", d]);
             }, 
             d => {
                  this._flashMessage.addMessage("Error", "Unable to save the customer. Please contact support if this is a re-occuring issue.", true, "danger", 3000, 2);
-            },
-            () => {
-                this.mWait.close();
             });
   }
 
