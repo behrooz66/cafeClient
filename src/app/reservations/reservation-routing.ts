@@ -8,7 +8,7 @@ import { ReservationAddComponent } from './reservation-add/reservation-add.compo
 
 const routes:Routes = [
     {
-        path: 'customers/:id/reservations',
+        path: 'reservations/list/:customerId',
         component: ReservationsListComponent
     },
     {
@@ -16,7 +16,7 @@ const routes:Routes = [
         component: ReservationDetailsComponent
     },
     {
-        path: 'customers/:id/reservation/add',
+        path: 'reservations/add/:customerId',
         component: ReservationAddComponent
     },
     {

@@ -1,0 +1,18 @@
+<div *ngIf="mode === 'loading'">
+    Please wait...
+</div>
+
+<div *ngIf="mode === 'success'">
+    <select class="form-control" [(ngModel)]="statusId" (change)="changed($event.target.value)">
+        <option *ngIf="allowNone" value="0" [selected]="allowNone && statusId===0">-- Reservation Status --</option>
+        <option *ngFor="let s of statuses;" value="{{s.id}}" [selected]="s.id === statusId">
+            {{s.status}}
+        </option>
+    </select>
+</div>
+
+<div *ngIf="mode === 'fail'" >
+    Error... Please refresh the page
+</div>
+
+

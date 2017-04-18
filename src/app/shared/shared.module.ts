@@ -14,6 +14,7 @@ import { DatePickerComponent } from './date-picker/date-picker.component';
 import { TimePickerComponent } from './time-picker/time-picker.component';
 import { PriceInputComponent } from './price-input/price-input.component';
 import { TestComponent } from './test/test.component';
+import { ReservationStatusesComponent } from './reservation-statuses/reservation-statuses.component';
 //import { ModalService } from './modal/modal.service';
 
 @NgModule({
@@ -34,6 +35,7 @@ import { TestComponent } from './test/test.component';
     TimePickerComponent,
     PriceInputComponent,
     TestComponent,
+    ReservationStatusesComponent,
   ],
   exports: [
     PagingComponent,
@@ -45,7 +47,8 @@ import { TestComponent } from './test/test.component';
     DatePickerComponent,
     TimePickerComponent,
     PriceInputComponent,
-    TestComponent
+    TestComponent,
+    ReservationStatusesComponent
   ],
   providers: [
     //ModalService

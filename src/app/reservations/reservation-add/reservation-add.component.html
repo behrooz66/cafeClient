@@ -1,3 +1,64 @@
-<p>
-  reservation-add works!
-</p>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Add a New Reservation</h4>
+    </div>
+    <div class="panel-body">
+        <form [formGroup]="newReservationForm" (ngSubmit)="submit()">
+            <label>Date:</label>
+            <date-picker formControlName="date" [(ngModel)]="reservation.date"></date-picker>
+            <br/>
+            
+            <label>Time:</label>
+            <time-picker formControlName="time" [(ngModel)]="reservation.time"></time-picker>
+            <br/>
+
+            <label>Number of People:</label>
+            <input type="number" class="form-control" formControlName="numberOfPeople" [(ngModel)]="reservation.numberOfPeople" >
+            <br/>
+
+            <label>Table:</label>
+            <input type="text" class="form-control" formControlName="table" [(ngModel)]="reservation.table" >
+            <br/>
+
+            <label>Revenue:</label>
+            <price-input formControlName="revenue" [(ngModel)]="reservation.revenue"></price-input>
+            <br/>
+
+            <label>Status:</label>
+            <reservation-statuses [allowNone]="false" formControlName="reservationStatusId" [(ngModel)]="reservation.reservationStatusId"></reservation-statuses>
+            <br/>
+            
+            <label>Notes:</label>
+            <textarea class="form-control" rows="3" formControlName="notes" [(ngModel)]="reservation.notes"></textarea>
+            <br/>
+            <button class="btn btn-primary" type="submit" [disabled]="newReservationForm.invalid">Save</button>
+            <button class="btn btn-default" type="button" (click)="cancel()">Cancel</button>
+        </form>
+    </div>
+</div>
+
+{{reservation | json}}
+
+<modal #mOnSumbitValidation [size]=2 [type]="'dialog'" [canEscape]=true [hasHeader]="true" [style]="'danger'">
+    <div class="content-head">
+        Validation Errors
+    </div>
+    <div class="content-body">
+        <span>Please correct the following errors and try again:</span>
+        <ul>
+            <li *ngFor="let e of onSubmitErrors">
+                {{e}}
+            </li>
+        </ul>
+    </div>
+</modal>
+
+
+<modal #mWait [size]=1 [type]="'block'" [canEscape]=false [hasHeader]="false">
+    <div class="content-body">
+        <div class="text-center">
+            Please Wait...<br/>
+            <i class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+         </div>
+    </div>
+</modal>
