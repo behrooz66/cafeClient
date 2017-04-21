@@ -9,7 +9,7 @@
             <br/>
             
             <label>Time:</label>
-            <time-picker formControlName="time" [(ngModel)]="reservation.time"></time-picker>
+            <time-picker [default]="reservation.time" formControlName="time" [(ngModel)]="reservation.time"></time-picker>
             <br/>
 
             <label>Number of People:</label>

@@ -35,7 +35,6 @@ export class CustomerService {
   }
 
   deleteCustomer(id) {
-      console.log(this.apiBase + "delete/" + id);
       return this._http.delete(this.apiBase + "delete/" + id)
           .map(r => r.json());
   }

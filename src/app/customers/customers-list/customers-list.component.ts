@@ -67,12 +67,10 @@ export class CustomersListComponent implements OnInit, AfterViewInit {
   }
 
   private deleteCandidateId:number;
-
   private mConfirmDeleteClose($event){
       if ($event.result === true) {
           this._customerService.deleteCustomer(this.deleteCandidateId)
               .subscribe(d => {
-                
                   this._flashMessage.addMessage("", "Customer successfully deleted.", true, "success", 2500, 2);
               },
               d => {

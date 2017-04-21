@@ -8,19 +8,19 @@ import { GiftCardAddComponent } from './giftcard-add/giftcard-add.component';
 
 const routes:Routes = [
     {
-        path: 'customers/:id/giftcards',
+        path: 'giftcards/list/:customerId',
         component: GiftCardsListComponent
     },
     {
-        path: 'giftcard/:id',
+        path: 'giftcards/:id',
         component: GiftCardDetailsComponent
     },
     {
-        path: 'customers/:id/giftcard/add',
+        path: 'giftcards/add/:customerId',
         component: GiftCardAddComponent
     },
     {
-        path: 'giftcard/edit/:id',
+        path: 'giftcards/edit/:id',
         component: GiftCardEditComponent
     },
 

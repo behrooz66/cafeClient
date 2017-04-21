@@ -51,7 +51,7 @@ export class ReservationAddComponent implements OnInit, OnDestroy{
           this.reservation.customerId = this.customerId;
       });
       this.reservation.date = moment().add(1, "days").format("YYYY-MM-DD").toString();
-      this.reservation.time = "18:30";
+      this.reservation.time = "19:15";
       this.reservation.reservationStatusId = 1;
       this.reservation.revenue = 0;
       this.reservation.numberOfPeople = 2;

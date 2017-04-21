@@ -15,6 +15,7 @@ import { TimePickerComponent } from './time-picker/time-picker.component';
 import { PriceInputComponent } from './price-input/price-input.component';
 import { TestComponent } from './test/test.component';
 import { ReservationStatusesComponent } from './reservation-statuses/reservation-statuses.component';
+import { GiftcardTypeComponent } from './giftcard-type/giftcard-type.component';
 //import { ModalService } from './modal/modal.service';
 
 @NgModule({
@@ -36,6 +37,7 @@ import { ReservationStatusesComponent } from './reservation-statuses/reservation
     PriceInputComponent,
     TestComponent,
     ReservationStatusesComponent,
+    GiftcardTypeComponent,
   ],
   exports: [
     PagingComponent,
@@ -48,7 +50,8 @@ import { ReservationStatusesComponent } from './reservation-statuses/reservation
     TimePickerComponent,
     PriceInputComponent,
     TestComponent,
-    ReservationStatusesComponent
+    ReservationStatusesComponent,
+    GiftcardTypeComponent
   ],
   providers: [
     //ModalService

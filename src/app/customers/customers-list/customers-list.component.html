@@ -20,7 +20,15 @@
           {{c.phone}}
         </div>
         <div class="panel-footer">
-          Controls here... <button type="button" class="btn btn-danger btn-xs" (click)="delete(c.id)">Delete</button>
+             <button type="button" class="btn btn-default btn-xs " (click)="delete(c.id)" title="Delete Customer">
+                    <img src="../../../assets/icons/user.png" style="width:25px; height: 25px;">
+             </button>
+             <button type="button" class="btn btn-default btn-xs " (click)="delete(c.id)" title="Delete Customer">
+                    <img src="../../../assets/icons/user.png" style="width:25px; height: 25px;">
+             </button>
+             <button type="button" class="btn btn-default btn-xs pull-right" (click)="delete(c.id)" title="Delete Customer">
+                    <img src="../../../assets/icons/user.png" style="width:25px; height: 25px;">
+             </button>
         </div>
     </div>
   </div>

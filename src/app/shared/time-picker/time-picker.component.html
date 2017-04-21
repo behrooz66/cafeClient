@@ -3,7 +3,7 @@
         <tr>
             <td>
                 <select class="form-control" [(ngModel)]="hh" (change)="changed();">
-                    <option *ngFor="let h of hours"> {{h}} </option>
+                    <option *ngFor="let h of hours" [selected]="h === hh"> {{h}} </option>
                 </select>
             </td>
             <td>

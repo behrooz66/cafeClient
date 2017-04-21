@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -13,7 +13,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       }
   ]
 })
-export class TimePickerComponent implements OnInit, ControlValueAccessor {
+export class TimePickerComponent implements OnInit, ControlValueAccessor, OnChanges {
 
   hours:string[] = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
   minutes:string[] = ["00", "15", "30", "45"];
@@ -21,10 +21,11 @@ export class TimePickerComponent implements OnInit, ControlValueAccessor {
 
   time: string = "";
 
-  @Input() hh:string = "06";
-  @Input() mm:string = "30";
-  @Input() ap:string = "PM";
-  @Output('on-change') change = new EventEmitter();
+  hh:string = "06";
+  mm:string = "30";
+  ap:string = "PM";
+  @Input() default:string = "18:30";
+//  @Output('on-change') change = new EventEmitter();
 
   onChange: (_:any) => {}
   onTouched: () => {}
@@ -32,7 +33,21 @@ export class TimePickerComponent implements OnInit, ControlValueAccessor {
   constructor() { }
 
   ngOnInit() {
-    
+
+  }
+
+
+ 
+  ngOnChanges(changes){
+      if (changes.default.currentValue){
+            let h:number = Number(changes.default.currentValue.substr(0,2));
+            if (h > 12) {
+                this.ap = "PM";
+                this.hh = (h - 12).toString();
+                if (this.hh.length === 1) this.hh = "0" + this.hh;
+            }
+            this.mm = this.default.substr(3,2);
+      }
   }
 
   changed() {

@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 import { GiftCardsListComponent } from './giftcards-list/giftcards-list.component';
 import { GiftCardDetailsComponent } from './giftcard-details/giftcard-details.component';
 import { GiftCardAddComponent } from './giftcard-add/giftcard-add.component';
@@ -10,7 +12,10 @@ import { GiftCardService } from './giftcard.service';
 
 @NgModule({
   imports: [
-      CommonModule
+      CommonModule,
+      SharedModule,
+      FormsModule,
+      ReactiveFormsModule
   ],
   declarations: [
       GiftCardsListComponent, 

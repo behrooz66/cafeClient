@@ -1,3 +1,61 @@
-<p>
-  giftcard-edit works!
-</p>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Update Gift Card</h4>
+    </div>
+    <div class="panel-body">
+        <form [formGroup]="editGiftCardForm" (ngSubmit)="submit()">
+
+            <label>Gift Card Number:</label>
+            <input type="text" class="form-control" formControlName="number" [(ngModel)]="giftcard.number" >
+            <br/>
+
+            <label>Amount:</label>
+            <price-input formControlName="amount" [(ngModel)]="giftcard.amount"></price-input>
+            <br/>
+
+            <label>Issue Date:</label>
+            <date-picker formControlName="issueDate" [(ngModel)]="giftcard.issueDate"></date-picker>
+            <br/>
+
+            <label>Expiry Date:</label>
+            <date-picker formControlName="expiryDate" [(ngModel)]="giftcard.expiryDate"></date-picker>
+            <br/>
+
+            <label>Type:</label>
+            <giftcard-types [allowNone]="false" formControlName="giftcardTypeId" [(ngModel)]="giftcard.giftcardTypeId"></giftcard-types>
+            <br/>
+            
+            <label>Notes:</label>
+            <textarea class="form-control" rows="3" formControlName="notes" [(ngModel)]="giftcard.notes"></textarea>
+            <br/>
+            <button class="btn btn-primary" type="submit" [disabled]="editGiftCardForm.invalid">Save</button>
+            <button class="btn btn-default" type="button" (click)="cancel()">Cancel</button>
+        </form>
+    </div>
+</div>
+
+{{giftcard | json}}
+
+<modal #mOnSumbitValidation [size]=2 [type]="'dialog'" [canEscape]=true [hasHeader]="true" [style]="'danger'">
+    <div class="content-head">
+        Validation Errors
+    </div>
+    <div class="content-body">
+        <span>Please correct the following errors and try again:</span>
+        <ul>
+            <li *ngFor="let e of onSubmitErrors">
+                {{e}}
+            </li>
+        </ul>
+    </div>
+</modal>
+
+
+<modal #mWait [size]=1 [type]="'block'" [canEscape]=false [hasHeader]="false">
+    <div class="content-body">
+        <div class="text-center">
+            Please Wait...<br/>
+            <i class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+         </div>
+    </div>
+</modal>

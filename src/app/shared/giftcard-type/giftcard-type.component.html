@@ -1,0 +1,16 @@
+<div *ngIf="mode === 'loading'">
+    Loading...
+</div>
+
+<div *ngIf="mode === 'success'">
+    <select class="form-control" [(ngModel)]="typeId" (change)="changed($event.target.value);" >
+        <option *ngIf="allowNone" value="0" [selected]="allowNone && typeId===0">-- Gift Card Type --</option>
+        <option *ngFor="let g of giftcardTypes;" value="{{g.id}}" [selected]="g.id === typeId">
+            {{g.type}}
+        </option>
+    </select>
+</div>
+
+<div *ngIf="mode === 'error'">
+    Error... Please refresh the page
+</div>
