@@ -34,9 +34,19 @@ export class CustomerService {
           .map(r => r.json());
   }
 
-  deleteCustomer(id) {
-      return this._http.delete(this.apiBase + "delete/" + id)
-          .map(r => r.json());
+//   deleteCustomer(id) {
+//       return this._http.delete(this.apiBase + "delete/" + id)
+//           .map(r => r.json());
+//   }
+
+  archiveCustomer(id: number) {
+      return this._http.put(this.apiBase + "archive/" + id, null)
+            .map(r => r.json());
+  }
+
+  getHistory(id: number) {
+      return this._http.get(this.apiBase + "history/" + id)
+            .map(r => r.json());
   }
 
 

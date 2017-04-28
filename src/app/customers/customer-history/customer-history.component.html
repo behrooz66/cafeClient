@@ -1,0 +1,85 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Customer Record History
+    </div>
+    <div class="panel-body">
+        <table class="table">
+  <thead>
+      <tr>
+          <th>
+            Name
+          </th>
+          <th>
+            Address
+          </th>
+          <th>
+            Address Found
+          </th>
+          <th>
+            NoAddress
+          </th>
+          <th>
+            Phones
+          </th>
+          <th>
+            Email
+          </th>
+          <th>
+            Notes
+          </th>
+          <th>
+            Updated At
+          </th>
+          <th>
+            Updated By
+          </th>
+      </tr>
+  </thead>
+
+  <tbody>
+      <tr *ngFor="let c of history; let i=index;">
+          <td>
+            {{c.name}}
+          </td>
+          <td>
+            {{c.address}} <br *ngIf="c.address" />
+            {{c.postalCode}}
+          </td>
+          <td>
+            {{c.addressFound}}
+          </td>
+          <td>
+            {{c.noAddress}}
+          </td>
+          <td>
+            {{c.cell}}
+          </td>
+          <td>
+            {{c.email}}
+          </td>
+          <td>
+            {{c.notes}}
+          </td>
+          <td>
+            {{c.updatedAt | date:'medium'}}
+          </td>
+          <td>
+            {{c.updatedBy}}
+          </td>
+      </tr>
+  </tbody>
+</table>
+    </div>
+</div>
+
+
+
+
+<modal #mWait [size]=1 [type]="'block'" [canEscape]=false [hasHeader]="false">
+    <div class="content-body">
+        <div class="text-center">
+            Please Wait...<br/>
+            <i class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+         </div>
+    </div>
+</modal>

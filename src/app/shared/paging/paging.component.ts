@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, AfterViewInit, ChangeDetectorRef, IterableDiffers , DoCheck} from '@angular/core';
 
 @Component({
   selector: 'paging',
   templateUrl: './paging.component.html',
   styleUrls: ['./paging.component.css']
 })
-export class PagingComponent implements OnInit {
+export class PagingComponent implements OnInit, OnChanges {
 
   @Input() pageSize: number;
   @Input() sizes: number[] = [3, 5, 10];
@@ -14,12 +14,17 @@ export class PagingComponent implements OnInit {
   @Output('index-change') indexChange = new EventEmitter();
   @Output('size-change') SizeChange = new EventEmitter();
 
+  differ: any;
+
   records: any[];
   index: number;
   totalPages: number;
   arr:any[];
 
-  constructor() { }
+  constructor(private _cdr:ChangeDetectorRef,
+              private _differs: IterableDiffers) {
+                this.differ = this._differs.find([]).create(null);
+               }
 
   ngOnInit() {
     
@@ -27,9 +32,19 @@ export class PagingComponent implements OnInit {
 
   ngOnChanges(change){
     //this.source = change.source.currentValue;
+    
+    console.log(change);
     this.setup();
     this.pageIndexChange(0);
   }
+
+  // ngDoCheck(){
+  //   let c = this.differ.diff(this.source);
+  //   console.log(this.index);
+  //   if (c)
+  //     this.afterSourceChange();
+  // }
+
 
   pageSizeChange(){
     this.setup();
@@ -49,6 +64,18 @@ export class PagingComponent implements OnInit {
       startIndex: si,
       endIndex: ei
     });
+  }
+
+  private afterSourceChange(){
+      console.log(this.index);
+      try {
+        this.totalPages = Math.ceil(this.source.length / this.pageSize);
+        this.arr = new Array(this.totalPages);
+        this.pageIndexChange(this.index);
+      }
+      catch(x) {
+        console.log("Exception: ",x);
+      }
   }
 
   private setup(){

@@ -5,6 +5,7 @@ import { CustomersListComponent } from './customers-list/customers-list.componen
 import { CustomerDetailsComponent } from './customer-details/customer-details.component';
 import { CustomerAddComponent } from './customer-add/customer-add.component';
 import { CustomerEditComponent } from './customer-edit/customer-edit.component';
+import { CustomerHistoryComponent } from './customer-history/customer-history.component';
 
 const routes:Routes = [
     // todo : this component should navigate based on user's settings.
@@ -28,6 +29,10 @@ const routes:Routes = [
         path: 'customers',
         component: CustomersListComponent
     },
+    {
+        path: 'customers/history/:id',
+        component: CustomerHistoryComponent
+    }
     
 
 ];

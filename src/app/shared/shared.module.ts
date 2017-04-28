@@ -16,6 +16,7 @@ import { PriceInputComponent } from './price-input/price-input.component';
 import { TestComponent } from './test/test.component';
 import { ReservationStatusesComponent } from './reservation-statuses/reservation-statuses.component';
 import { GiftcardTypeComponent } from './giftcard-type/giftcard-type.component';
+import { IconComponent } from './icon/icon.component';
 //import { ModalService } from './modal/modal.service';
 
 @NgModule({
@@ -38,6 +39,7 @@ import { GiftcardTypeComponent } from './giftcard-type/giftcard-type.component';
     TestComponent,
     ReservationStatusesComponent,
     GiftcardTypeComponent,
+    IconComponent,
   ],
   exports: [
     PagingComponent,
@@ -51,7 +53,8 @@ import { GiftcardTypeComponent } from './giftcard-type/giftcard-type.component';
     PriceInputComponent,
     TestComponent,
     ReservationStatusesComponent,
-    GiftcardTypeComponent
+    GiftcardTypeComponent,
+    IconComponent
   ],
   providers: [
     //ModalService

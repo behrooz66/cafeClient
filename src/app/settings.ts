@@ -17,4 +17,8 @@ export class Settings {
         authToken: "xxx",
         minimumConfidence: 0.8
     }
+
+    
+    static viewMode = "rows"; //or cards
+    static showDeletedCustomers = false;
 }

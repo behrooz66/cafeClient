@@ -1,42 +1,194 @@
-<div class="panel panel-default">
-  <div class="panel-body">
-      <label>Search by name or phone number:</label> 
-      <customers-filter [source]="customers" (on-change)="filter($event)"></customers-filter>
-      <a class="btn btn-primary" [routerLink]="['/customers/add']">New Customer</a>
-  </div>
-</div>
-
-<div *ngIf="loading" class="center">
-    Please wait...
-</div>
-
-<div class="row">
-  <div class="col-md-3" *ngFor="let c of pageCustomers; let i=index;">
-    <div class="panel panel-success">
+<!--<div class="row">
+  <div class="col-md-3" style="min-width:300px;" *ngFor="let c of pageCustomers; let i=index;">
+    <div class="panel panel-primary">      
         <div class="panel-body">
-          <a [routerLink]="['/customers', c.id]"><span style="white-space:nowrap;">{{c.name}}</span></a><br/>
-          {{c.address}}<br/>
-          {{c.postalCode}}<br/>
-          {{c.phone}}
+            <a [routerLink]="['/customers', c.id]">
+                <strong><span style="white-space:nowrap;">{{c.name}}</span></strong>
+            </a>
+            <hr style="background-color:blue;">
+            
+            <icon [type]="'home'" [size]="1"></icon>&nbsp;{{c.address}}<br/>
+            &nbsp;{{c.postalCode}}
+            <br/>
+
+            <icon [type]="'phone'" [size]="1"></icon>
+            {{c.cell?  c.cell : 'N/A' }}<br/>
+            {{c.cell}}<br/>
+            {{c.home}}<br/>
+            {{c.work}}<br/>
+            {{c.otherPhone}}
+            
+            <br/>
+            <table class="table tab"> 
+                <tbody>
+                    <tr>
+                        <td>asd</td>
+                        <td>asd</td>
+                    </tr>
+                </tbody>
+            </table>
+            
         </div>
+
         <div class="panel-footer">
-             <button type="button" class="btn btn-default btn-xs " (click)="delete(c.id)" title="Delete Customer">
-                    <img src="../../../assets/icons/user.png" style="width:25px; height: 25px;">
-             </button>
-             <button type="button" class="btn btn-default btn-xs " (click)="delete(c.id)" title="Delete Customer">
-                    <img src="../../../assets/icons/user.png" style="width:25px; height: 25px;">
-             </button>
-             <button type="button" class="btn btn-default btn-xs pull-right" (click)="delete(c.id)" title="Delete Customer">
-                    <img src="../../../assets/icons/user.png" style="width:25px; height: 25px;">
-             </button>
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-sm btn-default" title="Add Order" (click)="addOrder(c.id)">
+                    <icon [type]="'order-add'" [size]="1"></icon>
+                </button>
+                <button type="button" class="btn btn-sm btn-default" title="Add Gift Card" (click)="addGiftCard(c.id)"> 
+                    <icon [type]="'giftcard-add'" [size]="1"></icon>
+                </button>
+                <button type="button" class="btn btn-sm btn-default" title="Add Reservation" (click)="addReservation(c.id)">
+                    <icon [type]="'reservation-add'" [size]="1"></icon>
+                </button>
+            </div>
+
+            <div class="btn-group pull-right" role="group">
+                <button type="button" class="btn btn-default btn-sm" (click)="edit(c.id)" title="Edit Customer">
+                    <icon [type]="'edit'" [size]="1"></icon>
+                </button>
+                <button type="button" class="btn btn-default btn-sm" (click)="delete(c.id)" title="Delete Customer">
+                        <icon [type]="'person-delete'" [size]="1"></icon>
+                </button>
+            </div>
         </div>
+
     </div>
   </div>
+</div>-->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="input-group">
+            <span class="input-group-btn">
+                <button class="btn btn-default" (click)="refresh();">
+                    <icon [type]="'refresh'" [size]="1"></icon>
+                </button>
+            </span>
+            <customers-filter [source]="customers" (on-change)="filter($event)"></customers-filter>
+            <span class="input-group-btn">
+                <a class="btn btn-primary" [routerLink]="['/customers/add']">New Customer</a>
+            </span>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table class="table" style="text-align: left;">
+            <thead>
+                <tr>
+                    <th>
+                        Operations
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Address
+                    </th>
+                    <th>
+                        Phone Numbers
+                    </th>
+                    <th>
+                        summary
+                    </th>
+                    <th>
+                        Controls
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let c of pageCustomers; let i=index;" [class.deleted]="c.deleted">
+                    <td>
+                        <div *ngIf="!c.deleted">
+                            <button type="button" class="btn btn-sm btn-default" title="Add Order" (click)="addOrder(c.id)">
+                                <icon [type]="'order-add'" [size]="1"></icon>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-default" title="Add Gift Card" (click)="addGiftCard(c.id)"> 
+                                <icon [type]="'giftcard-add'" [size]="1"></icon>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-default" title="Add Reservation" (click)="addReservation(c.id)">
+                                <icon [type]="'reservation-add'" [size]="1"></icon>
+                            </button>
+                        </div>
+                        <div *ngIf="c.deleted">
+                            <button type="button" class="btn btn-default btn-sm" (click)="history(c.id)" title="View History">
+                                    <icon [type]="'history'" [size]="1"></icon>
+                            </button>
+                        </div>
+                    </td>
+                    <td>
+                        <a [routerLink]="['/customers', c.id]">
+                            <strong><span style="white-space:nowrap;">{{c.name}}</span></strong>
+                        </a>
+                    </td>
+                    <td>
+                        {{c.address}} <span *ngIf="c.address"><br/></span>
+                        {{c.postalCode}}
+                    </td>
+                    <td>
+                        <span *ngIf="c.cell">{{c.cell}} <br/></span>
+                        <span *ngIf="c.home">{{c.home}} <br/></span>
+                        <span *ngIf="c.work">{{c.work}} <br/></span>
+                        <span *ngIf="c.otherPhone">{{c.otherPhone}} <br/></span>
+                    </td>
+                    <td>
+                        Brief purchase summary
+                    </td>
+                    <td>
+                        <div *ngIf="!c.deleted" class="btn-group" role="group">
+                            <button type="button" class="btn btn-default btn-sm" (click)="edit(c.id)" title="Edit Customer">
+                                <icon [type]="'edit'" [size]="1"></icon>
+                            </button>
+                            <button type="button" class="btn btn-default btn-sm" (click)="delete(c.id)" title="Delete Customer">
+                                    <icon [type]="'person-delete'" [size]="1"></icon>
+                            </button>
+                        </div>
+                        <div *ngIf="c.deleted" class="btn-group" role="group">
+                            <button type="button" class="btn btn-default btn-sm" (click)="undelete(c.id)" title="Undelete">
+                                    <icon [type]="'undo'" [size]="1"></icon>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-default" title="Delete Permanently" (click)="permanentDelete(c.id)">
+                                <icon [type]="'delete'" [size]="1"></icon>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
 </div>
 
-<paging [source]="filteredCustomers" [pageSize]="pageSize" [sizes]="availablePageSizes"
+<div id="paging">
+    <div class="btn-group">
+        <button type="button" class="btn btn-default" (click)="firstPage();">
+            <i class="glyphicon glyphicon-step-backward"></i> 
+        </button>
+        <button type="button"  class="btn btn-default" (click)="prevPage();" [disabled]="index<=0" [class.disabled]="pageOptions.index <= 0">
+            <i class="glyphicon glyphicon-chevron-left"></i> 
+        </button>
+        <button class="btn btn-default" *ngFor="let p of pages; let i=index;" type="button" (click)="setPage(i)" [class.active]="pageOptions.index === i">
+            {{i+1}}
+        </button>
+        <button type="button"  class="btn btn-default" (click)="nextPage();" [disabled]="index>=totalPages-1" [class.disabled]="pageOptions.index >= pages.length - 1">
+            <i class="glyphicon glyphicon-chevron-right"></i>
+        </button>
+        <button type="button"  class="btn btn-default" (click)="lastPage();">
+            <i class="glyphicon glyphicon-step-forward"></i>
+        </button>
+        <select class="form-control" style="width:65px;border-radius:10px;" (change)="pagingSetup();" [(ngModel)]="pageOptions.pageSize">
+            <option [ngValue]="3"> 3 </option>
+            <option [ngValue]="5" selected="true"> 5 </option>
+            <option [ngValue]="10"> 10 </option>
+        </select>
+    </div>
+    <div id="page-sizes">
+        
+    </div>
+</div>
+
+<!--<paging [source]="filteredCustomers" [pageSize]="pageSize" [sizes]="availablePageSizes"
         [allowPageSizeChange]=true
-      (index-change)="pageIndexChange($event);"></paging>
+      (index-change)="pageIndexChange($event);"></paging>-->
 
 
 <modal #mConfirmDelete [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="'danger'" (on-close)="mConfirmDeleteClose($event);">
@@ -45,5 +197,14 @@
     </div>
     <div class="content-body">
         Are you sure you want to delete this customer?
+    </div>
+</modal>
+
+<modal #mWait [size]=1 [type]="'block'" [canEscape]=false [hasHeader]="false">
+    <div class="content-body">
+        <div class="text-center">
+            Please Wait...<br/>
+            <i class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+         </div>
     </div>
 </modal>
