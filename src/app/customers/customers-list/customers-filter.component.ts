@@ -37,14 +37,14 @@ export class CustomersFilterComponent implements OnInit {
     }
 
     ngOnInit(){
-        this.showDeleted = Settings.showDeletedCustomers;
+        this.showDeleted = Settings.customers.showDeletedCustomers;
         this.isManager = this._roles.isManager();
         console.log(this.isManager);
     }
 
     // todo: more fields may need to be taken into account
     onChange(){
-        Settings.showDeletedCustomers = this.showDeleted;
+        Settings.customers.showDeletedCustomers = this.showDeleted;
         this.exp = this.exp.toLowerCase();
         let subset = this.source.filter(x =>
             x.name.toLowerCase().indexOf(this.exp) != -1

@@ -5,11 +5,17 @@
     </div>-->
 
     <div class="panel-body">
-        all the fields go here
+        <h3>{{customer.name}}</h3>
+
     </div>
 
     <div class="panel-footer">
-        controls here...
+        <a class="btn btn-default" [routerLink]="['/customers/edit', customer.id]">
+                <icon [type]="'edit'" [size]="1"></icon>
+        </a>
+        <button type="button" class="btn btn-default " (click)="delete(customer.id)" title="Delete Customer">
+                <icon [type]="'person-delete'" [size]="1"></icon>    
+        </button>
     </div>
 </div>
 
@@ -21,10 +27,43 @@
                     Orders
                 </div>-->
                 <div class="panel-body">
-                    order info
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Total Orders: 
+                                </td>
+                                <td class="text-right">
+                                    <strong>{{orderSum.count}}</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Total Revenue: 
+                                </td>
+                                <td class="text-right">
+                                    $<strong>{{orderSum.total | number:'1.2'}}</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Last Order On: 
+                                </td>
+                                <td class="text-right">
+                                    <strong *ngIf="orderSum.lastDate !== 'N/A'">{{orderSum.lastDate | date:'MMM dd, yyyy'}}</strong>
+                                    <strong *ngIf="orderSum.lastDate === 'N/A'">{{orderSum.lastDate}}</strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="panel-footer">
-                    controls
+                    <a class="btn btn-default btn-sm" [routerLink]="['/orders/add', customer.id]" title="Add new order">
+                            <icon [type]="'add'" [size]="1"></icon>
+                    </a>
+                    <a class="btn btn-default btn-sm" [routerLink]="['/orders/list', customer.id]" title="View order">
+                            <icon [type]="'list'" [size]="1"></icon>
+                    </a>
                 </div>
             </div>
         </div>
@@ -34,10 +73,43 @@
                     Gift Cards
                 </div>-->
                 <div class="panel-body">
-                    gift cards info here...
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Gift Cards: 
+                                </td>
+                                <td class="text-right">
+                                    <strong>{{giftCardSum.count}}</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Total Revenue: 
+                                </td>
+                                <td class="text-right">
+                                    $<strong>{{giftCardSum.total | number:'1.2'}}</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Last Gift Card On: 
+                                </td>
+                                <td class="text-right">
+                                    <strong *ngIf="giftCardSum.lastDate !== 'N/A'">{{giftCardSum.lastDate | date:'MMM dd, yyyy'}}</strong>
+                                    <strong *ngIf="giftCardSum.lastDate === 'N/A'">{{giftCardSum.lastDate}}</strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="panel-footer">
-                    controls
+                    <a class="btn btn-default btn-sm" [routerLink]="['/giftcards/add', customer.id]" title="Add new gift card">
+                            <icon [type]="'add'" [size]="1"></icon>
+                    </a>
+                    <a class="btn btn-default btn-sm" [routerLink]="['/giftcards/list', customer.id]" title="View gift cards">
+                            <icon [type]="'list'" [size]="1"></icon>
+                    </a>
                 </div>
             </div>
         </div>
@@ -47,11 +119,64 @@
                     Reservations
                 </div>-->
                 <div class="panel-body">
-                    reservation info...
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Reservations: 
+                                </td>
+                                <td class="text-right">
+                                    <strong>{{reservationSum.count}}</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Total Revenue: 
+                                </td>
+                                <td class="text-right">
+                                    $<strong>{{reservationSum.total | number:'1.2'}}</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Last Reservatipn On: 
+                                </td>
+                                <td class="text-right">
+                                    <strong *ngIf="reservationSum.lastDate !== 'N/A'">{{reservationSum.lastDate | date:'MMM dd, yyyy'}}</strong>
+                                    <strong *ngIf="reservationSum.lastDate === 'N/A'">{{reservationSum.lastDate}}</strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="panel-footer">
-                    controls
+                    <a class="btn btn-default btn-sm" [routerLink]="['/reservations/add', customer.id]" title="Add new reservation">
+                            <icon [type]="'add'" [size]="1"></icon>
+                    </a>
+                    <a class="btn btn-default btn-sm" [routerLink]="['/reservations/list', customer.id]" title="View reservations">
+                            <icon [type]="'list'" [size]="1"></icon>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
+
+
+
+<modal #mConfirmDelete [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="'danger'" (on-close)="mConfirmDeleteClose($event);">
+    <div class="content-head">
+        Delete Customer
+    </div>
+    <div class="content-body">
+        Are you sure you want to delete this customer?
+    </div>
+</modal>
+
+<modal #mWait [size]=1 [type]="'block'" [canEscape]=false [hasHeader]="false">
+    <div class="content-body">
+        <div class="text-center">
+            Please Wait...<br/>
+            <i class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+         </div>
+    </div>
+</modal>

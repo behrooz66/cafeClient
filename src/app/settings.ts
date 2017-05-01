@@ -19,6 +19,9 @@ export class Settings {
     }
 
     
-    static viewMode = "rows"; //or cards
-    static showDeletedCustomers = false;
+    static customers = {
+        viewMode: "rows", //or cards
+        showDeletedCustomers: false
+    }
+    
 }

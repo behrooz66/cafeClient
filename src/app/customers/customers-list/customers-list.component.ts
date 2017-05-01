@@ -1,10 +1,9 @@
 import { Component, OnInit, ChangeDetectorRef, AfterViewInit, ViewChild } from '@angular/core';
 import {CustomerService} from '../customer.service';
 import {ICustomer} from '../icustomer';
-import {FlashMessageService} from '../../shared/flash-message/flash-message.service';
+import { FlashMessageService } from '../../shared/flash-message/flash-message.service';
 import { FlashMessage } from '../../shared/flash-message/flash-message';
 import { ModalComponent } from '../../shared/modal/modal.component';
-//import {CustomersFilterComponent} from './customers-filter.component';
 import { PagerService } from '../../shared/pager.service';
 import { Router } from '@angular/router';
 import { Settings } from '../../settings';
@@ -20,10 +19,8 @@ export class CustomersListComponent implements OnInit {
   customers = [];
   filteredCustomers = [];
   
-  //pageSize: number = 5;
-  //availablePageSizes = [3, 5, 10, 20];
-
   @ViewChild('mConfirmDelete') mConfirmDelete;
+  @ViewChild('mConfirmPermanentDelete') mConfirmPermanentDelete;
   @ViewChild('mWait') mWait;
 
   pageCustomers = [];
@@ -48,7 +45,7 @@ export class CustomersListComponent implements OnInit {
       this._customerService.getCustomers()
           .subscribe(d => {
               this.customers = d;
-              if (!Settings.showDeletedCustomers)
+              if (!Settings.customers.showDeletedCustomers)
                   this.filteredCustomers = this.customers.filter(c => !c.deleted);
               else
                   this.filteredCustomers = this.customers;
@@ -66,19 +63,13 @@ export class CustomersListComponent implements OnInit {
     this.pagingSetup();
   }
 
-//   pageIndexChange($event){
-//     this.pageSize =  $event.endIndex - $event.startIndex;
-//     this.pageCustomers = this.filteredCustomers.slice($event.startIndex, $event.endIndex);
-//   }
-
+  edit(id) {
+      this._router.navigate(["/customers/edit/", id]);
+  }
 
   delete(id) {
       this.mConfirmDelete.open();
       this.deleteCandidateId = id;
-  }
-
-  edit(id) {
-      this._router.navigate(["/customers/edit/", id]);
   }
 
   private deleteCandidateId:number;
@@ -88,7 +79,9 @@ export class CustomersListComponent implements OnInit {
           this._customerService.archiveCustomer(this.deleteCandidateId)
               .subscribe(d => {
                   let index = this.filteredCustomers.indexOf(this.filteredCustomers.filter(x => x.id == this.deleteCandidateId)[0]);
-                  this.filteredCustomers.splice(index, 1);
+                  this.filteredCustomers[index].deleted = true;
+                  if (!Settings.customers.showDeletedCustomers)
+                      this.filteredCustomers.splice(index, 1);
                   this.pagingSetup();
                   this.mWait.close();
                   this._flashMessage.addMessage("", "Customer successfully deleted.", true, "success", 2500, 2);
@@ -98,6 +91,29 @@ export class CustomersListComponent implements OnInit {
                   this._flashMessage.addMessage("Error", "Could not delete customer. Please contact support if this is recurring.", false, "danger", 2500, 2);
               });
      }
+  }
+
+  permanentDelete(id) {
+      this.mConfirmPermanentDelete.open();
+      this.permanentDeleteCandidateId = id;
+  }
+  private permanentDeleteCandidateId: number;
+  private mConfirmPermanentDeleteClose($event) {
+      if ($event.result === true){
+          this.mWait.open();
+          this._customerService.deleteCustomer(this.permanentDeleteCandidateId)
+                .subscribe(d => {
+                    let index = this.filteredCustomers.indexOf(this.filteredCustomers.filter(x => x.id == this.deleteCandidateId)[0]);
+                    this.filteredCustomers.splice(index, 1);
+                    this.pagingSetup();
+                    this.mWait.close();
+                    this._flashMessage.addMessage("", "Customer successfully deleted.", true, "success", 2500, 2); 
+                },
+                d => {
+                    this.mWait.close();
+                    this._flashMessage.addMessage("Error", "Could not delete customer. Please contact support if this is recurring.", false, "danger", 2500, 2);
+                });
+      }
   }
 
   addOrder(id){
@@ -120,7 +136,7 @@ export class CustomersListComponent implements OnInit {
 
   //******************* */
   private pagingSetup() {
-      console.log(this.pageOptions);
+      console.log(this.filteredCustomers.length);
       this.pages = new Array(this._pager.totalPages(this.filteredCustomers.length, this.pageOptions.pageSize));
       this.pageCustomers = this.filteredCustomers.slice(this._pager.startIndex(this.pageOptions.pageSize, this.pageOptions.index), 
           this._pager.endIndex(this.filteredCustomers.length, this.pageOptions.pageSize, this.pageOptions.index));

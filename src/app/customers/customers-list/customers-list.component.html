@@ -200,6 +200,16 @@
     </div>
 </modal>
 
+<modal #mConfirmPermanentDelete [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="'danger'" (on-close)="mConfirmPermanentDeleteClose($event);">
+    <div class="content-head">
+        Delete Customer
+    </div>
+    <div class="content-body">
+        This customer and all of their history will be permanently deleted.<br/>
+        Are you sure about this?
+    </div>
+</modal>
+
 <modal #mWait [size]=1 [type]="'block'" [canEscape]=false [hasHeader]="false">
     <div class="content-body">
         <div class="text-center">

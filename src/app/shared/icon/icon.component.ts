@@ -60,6 +60,14 @@ export class IconComponent implements OnInit {
           type: "refresh",
           path: "../../../assets/icons/refresh.png"
       },
+      {
+          type: "add",
+          path: "../../../assets/icons/add.png"
+      },
+      {
+          type: "list",
+          path: "../../../assets/icons/list.png"
+      },
   ];
 
   ngOnInit() {
