@@ -136,7 +136,6 @@ export class CustomersListComponent implements OnInit {
 
   //******************* */
   private pagingSetup() {
-      console.log(this.filteredCustomers.length);
       this.pages = new Array(this._pager.totalPages(this.filteredCustomers.length, this.pageOptions.pageSize));
       this.pageCustomers = this.filteredCustomers.slice(this._pager.startIndex(this.pageOptions.pageSize, this.pageOptions.index), 
           this._pager.endIndex(this.filteredCustomers.length, this.pageOptions.pageSize, this.pageOptions.index));

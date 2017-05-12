@@ -47,4 +47,14 @@ export class OrderService {
           .map(r => r.json());
   }
 
+  unarchive(id: number) {
+      return this._http.put(this.apiBase + "unarchive/" + id, null)
+          .map(r => r.json());
+  }
+
+  delete(id: number) {
+      return this._http.delete(this.apiBase + "delete/" + id)
+            .map(r => r.json());
+  }
+
 }

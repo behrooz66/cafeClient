@@ -68,6 +68,10 @@ export class IconComponent implements OnInit {
           type: "list",
           path: "../../../assets/icons/list.png"
       },
+      {
+          type: "back",
+          path: "../../../assets/icons/back.png"
+      },
   ];
 
   ngOnInit() {

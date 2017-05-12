@@ -23,5 +23,11 @@ export class Settings {
         viewMode: "rows", //or cards
         showDeletedCustomers: false
     }
+
+    static orders = {
+        viewMode: "rows", //or cards
+        showDeletedOrders: true,
+        pageSize: 10
+    }
     
 }

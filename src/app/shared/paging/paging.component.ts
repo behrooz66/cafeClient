@@ -67,7 +67,6 @@ export class PagingComponent implements OnInit, OnChanges {
   }
 
   private afterSourceChange(){
-      console.log(this.index);
       try {
         this.totalPages = Math.ceil(this.source.length / this.pageSize);
         this.arr = new Array(this.totalPages);
