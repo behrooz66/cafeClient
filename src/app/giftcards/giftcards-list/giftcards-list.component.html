@@ -1,3 +1,202 @@
-<p>
-  giftcards-list works!
-</p>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <button (click)="toggle();" class="btn btn-secondary">
+            <i [hidden]="showFilters" class="glyphicon" [class.glyphicon-chevron-up]="showFilters" [class.glyphicon-chevron-down]="!showFilters" ></i>
+            Filters
+        </button>
+        
+        <button *ngIf="showFilters" class="btn btn-primary pull-right" (click)="applyFilters();">Apply Filters</button>
+        <span class="pull-right">
+            &nbsp;
+        </span>
+        <button *ngIf="showFilters" class="btn btn-default pull-right" (click)="clearFilters();">Clear Filters</button>
+    </div>
+    <div class="panel-body" [hidden]="!showFilters">
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Issue:</label> <br/>
+                <tr>
+                    <td><date-picker [(ngModel)]="filtersInfo[0].from"></date-picker></td>
+                    <td>&nbsp;To:&nbsp;</td>
+                    <td><date-picker [(ngModel)]="filtersInfo[0].to"></date-picker></td>
+                </tr>
+            </div>
+            <div class="col-sm-4">
+                <label>Price:</label>
+                <tr>
+                    <td><input type="number" class="form-control" [(ngModel)]="filtersInfo[2].from"></td>
+                    <td>&nbsp;To:&nbsp;</td>
+                    <td><input type="number" class="form-control" [(ngModel)]="filtersInfo[2].to"></td>
+                </tr>
+            </div>
+            <div class="col-sm-4">
+                <label>Type:</label>                
+                <select class="form-control" [(ngModel)]="filtersInfo[1].selected">
+                    <option value="" selected="selected"> All </option>
+                    <option *ngFor="let t of giftcardTypes" [value]="t.type">{{t.type}}</option>
+                </select>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-sm-4">
+                <label>Expiry:</label> <br/>
+                <tr>
+                    <td><date-picker [(ngModel)]="filtersInfo[3].from"></date-picker></td>
+                    <td>&nbsp;To:&nbsp;</td>
+                    <td><date-picker [(ngModel)]="filtersInfo[3].to"></date-picker></td>
+                </tr>
+            </div>
+            <div class="col-sm-4">
+                <label>Number:</label>
+                <input type="text" class="form-control" [(ngModel)]="filtersInfo[4].from">
+                <!--<tr>
+                    <td><input type="number" class="form-control" [(ngModel)]="filtersInfo[2].from"></td>
+                    <td>&nbsp;To:&nbsp;</td>
+                    <td><input type="number" class="form-control" [(ngModel)]="filtersInfo[2].to"></td>
+                </tr>-->
+            </div>
+            <div class="col-sm-4">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <tr>
+            <td>
+                <a class="btn btn-default" [routerLink]="['/customers/', customerId]" title="Back to Customer">
+                    <icon [type]="'back'" [size]="1"></icon>
+                </a>
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td class="pull-right">
+                <a [routerLink]="['/giftcards/add/', customerId]" class="btn btn-default" title="Add a New Gift Card">
+                    <icon [type]="'add'" [size]=1></icon>
+                </a>
+            </td>
+            <td>
+                &nbsp;
+            </td>
+            <td>
+                <input type="checkbox" title="kir" [(ngModel)]="showDeleted" (change)="showDeletedChange();" />
+                Show Deleted
+            </td>
+        </tr>
+
+    </div>    
+
+    <div class="panel-body">
+         <table class="table" style="text-align: left;">
+            <thead>
+                <tr>
+                    <th>Issued</th>
+                    <th>Expires</th>
+                    <th>Amount</th>
+                    <th>Type</th>
+                    <th>Notes</th>
+                    <th>Updated At</th>
+                    <th>Updated By</th>
+                    <th></th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                <tr *ngFor="let r of pageCards" [class.deleted]="r.deleted">
+                    <td>{{r.issueDate | date:'MMM dd, yyyy'}}</td>
+                    <td>{{r.expiryDate | date:'MMM dd, yyyy'}}</td>
+                    <td>${{r.amount | number:'1.2'}}</td>
+                    <td>{{r.giftCardType.type}}</td>
+                    <td style="max-width: 300px;">{{r.notes}}</td>
+                    <td>{{r.updatedAt | date:'medium'}}</td>
+                    <td>{{r.updatedBy}}</td>
+                    <td>
+                        <div *ngIf="!r.deleted">
+                            <a [routerLink]="['/giftcards/edit/', r.id]" class="btn btn-default btn-sm" title="Edit">
+                                <icon [type]="'edit'" [size]="1"></icon>
+                            </a>
+                            <button type="button" class="btn btn-default btn-sm" title="Delete" (click)="delete(r.id);">
+                                <icon [type]="'delete'" [size]="1"></icon>
+                            </button>
+                        </div>
+                        <div *ngIf="r.deleted">
+                            <button type="button" class="btn btn-default btn-sm" (click)="undelete(r.id)" title="Undelete">
+                                    <icon [type]="'undo'" [size]="1"></icon>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-warning" title="Delete Permanently" (click)="deletePermanent(r.id)">
+                                <icon [type]="'delete'" [size]="1"></icon>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+         </table>
+    </div>
+    <div class="panel-footer">
+        <div id="paging">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" (click)="firstPage();">
+                    <i class="glyphicon glyphicon-step-backward"></i> 
+                </button>
+                <button type="button"  class="btn btn-default" (click)="prevPage();" [disabled]="pageInfo.index<=0" [class.disabled]="pageInfo.index <= 0">
+                    <i class="glyphicon glyphicon-chevron-left"></i> 
+                </button>
+                <button class="btn btn-default" *ngFor="let p of pages; let i=index;" type="button" (click)="setPage(i)" [class.active]="pageInfo.index === i">
+                    {{i+1}}
+                </button>
+                <button type="button"  class="btn btn-default" (click)="nextPage();" [disabled]="pageInfo.index>=totalPages-1" [class.disabled]="pageInfo.index >= pages.length - 1">
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </button>
+                <button type="button"  class="btn btn-default" (click)="lastPage();">
+                    <i class="glyphicon glyphicon-step-forward"></i>
+                </button>
+                <select class="form-control" style="width:65px;border-radius:10px;" (change)="filterAndPage();" [(ngModel)]="pageInfo.pageSize" (change)="pageSizeChange();">
+                    <option [ngValue]="3"> 3 </option>
+                    <option [ngValue]="5" selected="true"> 5 </option>
+                    <option [ngValue]="10"> 10 </option>
+                </select>
+            </div>
+    </div>
+</div>
+
+
+
+<modal #mWait [size]=1 [type]="'block'" [canEscape]=false [hasHeader]="false">
+    <div class="content-body">
+        <div class="text-center">
+            Please Wait...<br/>
+            <i class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+         </div>
+    </div>
+</modal>
+
+<modal #mConfirmDelete [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="'danger'" (on-close)="mConfirmDeleteClose($event);">
+    <div class="content-head">
+        Delete Gift Card
+    </div>
+    <div class="content-body">
+        Are you sure you want to delete this gift card?
+    </div>
+</modal>
+
+<modal #mConfirmPermanentDelete [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="'danger'" (on-close)="mConfirmDeletePermanentClose($event);">
+    <div class="content-head">
+        Delete Gift Card
+    </div>
+    <div class="content-body">
+        This gift card and all of its history will be permanently deleted.<br/>
+        Are you sure about this?
+    </div>
+</modal>
+
+<modal #mConfirmUndelete [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="'warning'" (on-close)="mConfirmUndeleteClose($event);">
+    <div class="content-head">
+        Recover Gift Card
+    </div>
+    <div class="content-body">
+        Are you sure you want to recover this deleted gift card?
+    </div>
+</modal>

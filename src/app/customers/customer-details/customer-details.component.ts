@@ -64,12 +64,15 @@ export class CustomerDetailsComponent implements OnInit {
   }
 
   private customerSummary() {
+      this.mWait.open();
       this._customerService.getCustomer(this.id)
         .subscribe(d => {
             this.customer = d;
+            this.mWait.close();
         }, 
         d => {
             this._flash.addMessage("Error", "Error in retrieving data.", true, "danger", 2500, 2);
+            this.mWait.close();
         });
   }
 

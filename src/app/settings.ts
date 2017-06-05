@@ -18,7 +18,6 @@ export class Settings {
         minimumConfidence: 0.8
     }
 
-    
     static customers = {
         viewMode: "rows", //or cards
         showDeletedCustomers: false
@@ -27,6 +26,18 @@ export class Settings {
     static orders = {
         viewMode: "rows", //or cards
         showDeletedOrders: true,
+        pageSize: 10
+    }
+
+    static giftcards = {
+        viewMode: "row", //or cards
+        showDeletedGiftCards: true,
+        pageSize: 10
+    }
+
+    static reservations = {
+        viewMode: "row", //or cards
+        showDeletedReservations: true,
         pageSize: 10
     }
     

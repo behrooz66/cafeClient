@@ -60,7 +60,7 @@
                 &nbsp;
             </td>
             <td>
-                <input type="checkbox" title="kir"/>
+                <input type="checkbox" title="kir" [(ngModel)]="showDeleted" (change)="showDeletedChange();" />
                 Show Deleted
             </td>
         </tr>
@@ -101,7 +101,7 @@
                             </button>
                         </div>
                         <div *ngIf="r.deleted">
-                            <button type="button" class="btn btn-default btn-sm" (click)="undelete(c.id)" title="Undelete">
+                            <button type="button" class="btn btn-default btn-sm" (click)="undelete(r.id)" title="Undelete">
                                     <icon [type]="'undo'" [size]="1"></icon>
                             </button>
                             <button type="button" class="btn btn-sm btn-warning" title="Delete Permanently" (click)="deletePermanent(r.id)">
@@ -137,6 +137,7 @@
                     <option [ngValue]="10"> 10 </option>
                 </select>
             </div>
+        </div>
     </div>
 </div>
 
@@ -162,10 +163,19 @@
 
 <modal #mConfirmPermanentDelete [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="'danger'" (on-close)="mConfirmDeletePermanentClose($event);">
     <div class="content-head">
-        Delete Customer
+        Delete Order
     </div>
     <div class="content-body">
         This order and all of its history will be permanently deleted.<br/>
         Are you sure about this?
+    </div>
+</modal>
+
+<modal #mConfirmUndelete [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="'warning'" (on-close)="mConfirmUndeleteClose($event);">
+    <div class="content-head">
+        Recover Order
+    </div>
+    <div class="content-body">
+        Are you sure you want to recover this deleted order?
     </div>
 </modal>

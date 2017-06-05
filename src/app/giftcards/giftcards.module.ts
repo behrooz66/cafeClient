@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { GiftCardsListComponent } from './giftcards-list/giftcards-list.component';
 import { GiftCardDetailsComponent } from './giftcard-details/giftcard-details.component';
@@ -15,7 +16,8 @@ import { GiftCardService } from './giftcard.service';
       CommonModule,
       SharedModule,
       FormsModule,
-      ReactiveFormsModule
+      ReactiveFormsModule,
+      RouterModule
   ],
   declarations: [
       GiftCardsListComponent, 

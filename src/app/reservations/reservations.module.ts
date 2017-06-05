@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { ReservationService } from './reservation.service';
 
 import { ReservationsListComponent } from './reservations-list/reservations-list.component';
@@ -14,7 +15,8 @@ import { ReservationEditComponent } from './reservation-edit/reservation-edit.co
     CommonModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
   ],
   declarations: [
       ReservationsListComponent, 

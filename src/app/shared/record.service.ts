@@ -19,6 +19,7 @@ export class RecordService {
     // list: option
     // date: from, to
     // number: from, to
+    // bool: status
     */
 
     sortInfo: any[];
@@ -74,27 +75,25 @@ export class RecordService {
 
     doFilters(dataset: any[], filtersInfo)
     {
+        let sub = dataset;
         filtersInfo.forEach(filter => {
-            switch(filter.type){
-                case "text":
-                    dataset = this.filterText(dataset, filter.field, filter.param);
-                    break;
-                case "date":
-                    dataset = this.FilterDate(dataset, filter.field, filter.from, filter.to);
-                    break;
-                case "number":
-                    dataset = this.FilterNumber(dataset, filter.field, filter.from, filter.to);
-                    break;
-                case "boolean":
-                    dataset = this.FilterBoolean(dataset, filter.field, filter.status);
-                    break;
-                case "list":
-                    dataset = this.FilterList(dataset, filter.field, filter.selected);
-                    break;
-                default:
+            if (filter.type === "text"){
+                sub = this.filterText(sub, filter.field, filter.param);
+            }
+            else if (filter.type === "date"){
+                sub = this.FilterDate(sub, filter.field, filter.from, filter.to);
+            }
+            else if (filter.type === "number"){
+                sub = this.FilterNumber(sub, filter.field, filter.from, filter.to);
+            }
+            else if (filter.type === "list"){
+                sub = this.FilterList(sub, filter.field, filter.selected);
+            }
+            else if (filter.type === "boolean") {
+                sub = this.FilterBool(sub, filter.field, filter.status);
             }
         });
-        return dataset;
+        return sub;
     }
 
 
@@ -118,13 +117,13 @@ export class RecordService {
 
   private FilterList(dataset: any[], field: string, option: string){
         let f = field.split(".");
-
         if (option){
             dataset = dataset.filter(
                 x => this.extract(x, f).toLowerCase() === option.toLowerCase()
             );
         }
         return dataset;
+        //if (dataset.length === 0) alert("empty!");
   }
 
   private extract(a: any, fields:string[])
@@ -163,11 +162,25 @@ export class RecordService {
        return dataset;
   }
 
-  private FilterBoolean(dataset: any[], field: string, status: boolean)
+  private FilterBool(dataset: any[], field: string, status: boolean) 
   {
-      dataset = dataset.filter(
-          x => x[field] === status
-      );
+    //   if (status) 
+    //   {
+    //       dataset = dataset.filter(
+    //           x => x[field] === true
+    //       );
+    //   }
+    //   if (!status) 
+    //   {
+    //       dataset = dataset.filter(
+    //           x => x[field] === false
+    //       )
+    //   }
+      if (!status) {
+          dataset = dataset.filter(
+              x => x[field] === false
+          );
+      }
       return dataset;
   }
 

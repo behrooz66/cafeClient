@@ -20,14 +20,15 @@ export class OrdersListComponent implements OnInit, OnDestroy {
 
   customerId: number;
   orders: Order[] = [];
-  orderTypes: any[] =[];
+  orderTypes: any[] = [];
   sub;
 
-  
+  showDeleted = Settings.orders.showDeletedOrders;
 
   @ViewChild('mWait') mWait;
   @ViewChild('mConfirmDelete') mConfirmDelete;
   @ViewChild('mConfirmPermanentDelete') mConfirmPermanentDelete;
+  @ViewChild('mConfirmUndelete') mConfirmUndelete;
 
 
   filtersInfo = [
@@ -47,6 +48,11 @@ export class OrdersListComponent implements OnInit, OnDestroy {
           field: "price",
           from: null,
           to: null
+      },
+      {
+          type: "boolean",
+          field: "deleted",
+          status: this.showDeleted
       }
   ];
 
@@ -65,7 +71,8 @@ export class OrdersListComponent implements OnInit, OnDestroy {
               private _record: RecordService,
               private _orderTypes: OrderTypesService) { }
 
-  showFilters=false;
+  
+  showFilters = false;
   toggle()
   {
       this.showFilters = !this.showFilters;
@@ -149,9 +156,30 @@ export class OrdersListComponent implements OnInit, OnDestroy {
     }
   }
 
+  undelete(id){
+      this.mConfirmUndelete.open();
+      this.undeleteCandidateId = id;
+  }
+
+  undeleteCandidateId: number;
+  mConfirmUndeleteClose($event) {
+      if ($event.result === true) {
+          this._orderService.unarchive(this.undeleteCandidateId)
+              .subscribe(
+                  d => {
+                      this.refresh();
+                  },
+                  d => {
+                      this._flash.addMessage("Error", "Could not perform the operation.", true, "danger", 3000, 2);
+                  }
+              );
+      }
+  }
+
 
   //*** FILTERS */
   applyFilters() {
+      console.log(this.showDeleted);
       this.pageInfo.index = 0;
       this.filterAndPage();
   }
@@ -162,7 +190,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
       this.pageOrders = x.data;
       this.pages = new Array(x.numberOfPages);
 
-      if (this.pageOrders.length === 0)
+      if (this.pageOrders.length === 0 && this.pages.length !==0)
         this.setPage(this.pageInfo.index - 1);
 
       this.mWait.close();
@@ -175,6 +203,14 @@ export class OrdersListComponent implements OnInit, OnDestroy {
       this.filtersInfo[2]["from"] = null;
       this.filtersInfo[2]["to"] = null;
       this.applyFilters();
+  }
+
+  showDeletedChange(){
+      this.mWait.open();
+      Settings.orders.showDeletedOrders = this.showDeleted;
+      this.filtersInfo[3]["status"] = this.showDeleted;
+      this.filterAndPage();
+      this.mWait.close();
   }
 
   //*** PAGING  */
