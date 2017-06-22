@@ -179,7 +179,6 @@ export class OrdersListComponent implements OnInit, OnDestroy {
 
   //*** FILTERS */
   applyFilters() {
-      console.log(this.showDeleted);
       this.pageInfo.index = 0;
       this.filterAndPage();
   }

@@ -17,6 +17,7 @@ import { TestComponent } from './test/test.component';
 import { ReservationStatusesComponent } from './reservation-statuses/reservation-statuses.component';
 import { GiftcardTypeComponent } from './giftcard-type/giftcard-type.component';
 import { IconComponent } from './icon/icon.component';
+import { MonthPickerComponent } from './month-picker/month-picker.component';
 //import { ModalService } from './modal/modal.service';
 
 @NgModule({
@@ -40,6 +41,7 @@ import { IconComponent } from './icon/icon.component';
     ReservationStatusesComponent,
     GiftcardTypeComponent,
     IconComponent,
+    MonthPickerComponent,
   ],
   exports: [
     PagingComponent,
@@ -54,7 +56,8 @@ import { IconComponent } from './icon/icon.component';
     TestComponent,
     ReservationStatusesComponent,
     GiftcardTypeComponent,
-    IconComponent
+    IconComponent,
+    MonthPickerComponent
   ],
   providers: [
     //ModalService

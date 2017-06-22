@@ -1,0 +1,29 @@
+<div *ngIf="mode === 'loading'">
+Loading...
+</div>
+
+<div *ngIf="mode ==='success'">
+    <tr>
+        <td>
+            <select class="form-control" [(ngModel)]="year" (change)="changed(year+'-'+month)">
+                <option *ngFor="let y of years" ng-value="y" [selected]="y === year">
+                    {{y}}
+                </option>
+            </select>
+        </td>
+        <td>
+          &nbsp;
+        </td>
+        <td>
+            <select class="form-control" [(ngModel)]="month" (change)="changed(year+'-'+month)">
+                <option *ngFor="let m of months" [value]="m.value" [selected]="m.value === month">
+                    {{m.title}}
+                </option>
+            </select>
+        </td>
+    </tr>
+</div>
+
+<div *ngIf="mode ==='error'">
+  Error
+</div>

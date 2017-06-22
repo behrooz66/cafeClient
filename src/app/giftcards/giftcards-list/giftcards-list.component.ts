@@ -194,6 +194,7 @@ export class GiftCardsListComponent implements OnInit, OnDestroy {
 
   filterAndPage(){
       this.mWait.open();
+      console.log(this.filtersInfo);
       let x = this._record.getPageItems(this.giftcards, this.filtersInfo, this.sortInfo, this.pageInfo);
       this.pageCards = x.data;
       this.pages = new Array(x.numberOfPages);
