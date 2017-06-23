@@ -40,5 +40,23 @@ export class Settings {
         showDeletedReservations: true,
         pageSize: 10
     }
+
+    static reports = {
+        chartColors: [
+            'rgba(184, 213, 77, 0.90)',
+            'rgba(102, 213, 77, 0.90)',
+            'rgba(73, 228, 212, 0.9)',
+            'rgba(77, 168, 213, 0.90)',
+            'rgba(77, 129, 213, 0.90)',
+            'rgba(77, 86, 213, 0.90)',
+            'rgba(125, 77, 213, 0.90)',
+            'rgba(182, 77, 213, 0.90)',
+            'rgba(213, 77, 154, 0.90)',
+            'rgba(230, 61, 61, 0.90)',
+            'rgba(230, 196, 61, 0.90)',
+            'rgba(221, 230, 61, 0.90)',
+            'rgba(0, 0, 0, 0.90)'
+        ]
+    }
     
 }
