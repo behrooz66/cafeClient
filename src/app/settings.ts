@@ -42,6 +42,11 @@ export class Settings {
     }
 
     static reports = {
+        orders: {
+            topCustomers: {
+                pageSize : 3
+            }
+        },
         chartColors: [
             'rgba(184, 213, 77, 0.90)',
             'rgba(102, 213, 77, 0.90)',

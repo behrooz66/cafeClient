@@ -40,10 +40,12 @@ export class RecordService {
     getPageItems(dataset: any[], filtersInfo, sortInfo, pageInfo){
 
         // 1. Apply filters
-        dataset = this.doFilters(dataset, filtersInfo);
+        if (filtersInfo !== null)
+            dataset = this.doFilters(dataset, filtersInfo);
         
         // 2. Apply Sorts
-        dataset = this.doSorting(dataset, sortInfo);
+        if (sortInfo !== null)
+            dataset = this.doSorting(dataset, sortInfo);
 
         // 3. Apply Paging
         let p = this.doPaging(dataset, pageInfo);

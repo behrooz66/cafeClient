@@ -1,0 +1,111 @@
+<div class="container">
+
+  <div class="panel panel-default">
+      <div class="panel-body">
+      <div class="row">
+          <div class="col-sm-3">
+              <label>Date From:</label>
+              <date-picker [(ngModel)]="dateFrom"></date-picker>
+          </div>
+          <div class="col-sm-3">
+              <label>Date To:</label>
+              <date-picker [(ngModel)]="dateTo"></date-picker>
+          </div>
+          <div class="col-sm-3">
+              <label>Minimum Number of Orders:</label>
+              <price-input [(ngModel)]="minOrders"></price-input>
+          </div>
+          <div class="col-sm-3">
+              <label>Minimum Revenue:</label>
+              <price-input [(ngModel)]="minRevenue"></price-input>
+          </div>
+          
+          <div class="col-sm-12">
+            <br/>
+            <button type="button" class="btn btn-primary pull-right" (click)="refresh();">Submit</button>
+            <div class="pull-right">&nbsp;&nbsp;&nbsp;</div>
+            <loading *ngIf="mode==='loading'" class="pull-right"></loading>
+          </div>
+      </div>
+    </div>
+  </div>
+
+<!--<div *ngIf="mode==='loading'" style="text-align: center;">
+    Please Wait... 
+</div>-->
+
+  <div id="customers" *ngIf="data.length > 0  && mode ==='success'" class="panel panel-default">
+      <div class="panel-heading">
+          <h4>Top Customers Within the Selected Period</h4>
+      </div>
+      <div class="panel-body">
+          <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        <button type="button" class="btn" [class.btn-info]="sortBy==='orders'" (click)="sortByQuantity();">Orders</button>
+                    </th>
+                    <th>
+                        <button type="button" class="btn" [class.btn-info]="sortBy==='revenue'" (click)="sortByRevenue();">Revenue</button>
+                    </th>
+                    <th>
+                        Last Order
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let c of pageRecords">
+                    <td>
+                        <a [routerLink]="['/customers', c.id]" >{{c.name}}</a>
+                    </td>
+                    <td>
+                        {{c.orders}}
+                    </td>
+                    <td>
+                        {{c.revenue}}
+                    </td>
+                    <td>
+                        {{c.lastOrderOn === 'Never'? 'Never..': (c.lastOrderOn | date:'yyyy MMM dd')}}
+                    </td>
+                </tr>
+            </tbody>
+          </table>
+
+          <br/>
+
+            
+      </div>
+      <div id="paging" class="panel-footer">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" (click)="firstPage();">
+                        <i class="glyphicon glyphicon-step-backward"></i> 
+                    </button>
+                    <button type="button"  class="btn btn-default" (click)="prevPage();" [disabled]="pageInfo.index<=0" [class.disabled]="pageInfo.index <= 0">
+                        <i class="glyphicon glyphicon-chevron-left"></i> 
+                    </button>
+                    <button class="btn btn-default" *ngFor="let p of pages; let i=index;" type="button" (click)="setPage(i)" [class.active]="pageInfo.index === i">
+                        {{i+1}}
+                    </button>
+                    <button type="button"  class="btn btn-default" (click)="nextPage();" [disabled]="pageInfo.index>=totalPages-1" [class.disabled]="pageInfo.index >= pages.length - 1">
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                    </button>
+                    <button type="button"  class="btn btn-default" (click)="lastPage();">
+                        <i class="glyphicon glyphicon-step-forward"></i>
+                    </button>
+                    <select class="form-control" style="width:65px;border-radius:10px;" (change)="sort();" [(ngModel)]="pageInfo.pageSize" (change)="pageSizeChange();">
+                        <option [ngValue]="3"> 3 </option>
+                        <option [ngValue]="5" selected="true"> 5 </option>
+                        <option [ngValue]="10"> 10 </option>
+                    </select>
+                </div>
+            </div>
+  </div>
+
+<div class="alert alert-warning panel" *ngIf="mode ==='success' && data.length === 0">
+    Your search returned no results. Try to modify your search criteria.
+</div>
+
+</div>

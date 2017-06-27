@@ -25,31 +25,15 @@ export class ReportOrderMonthlySumComponent implements OnInit {
               private _flash: FlashMessageService) { }
 
   ngOnInit() {
-    //   this._report.getOrdersMonthlySum(null, null, null)
-    //         .subscribe(
-    //             d => {
-    //                 this.data = d;
-    //                 this.revenueBarChart();
-    //                 this.quantityBarChart();
-    //                 this.revenuePieChart();
-    //                 this.quantityPieChart();
-    //             },
-    //             d => {
-                    
-    //             }
-    //         );
-      
+
   }
 
 
   refresh() 
   {
-      alert(":D");
-      console.log(this.startDate+"-10");
       this._report.getOrdersMonthlySum(this.startDate+"-10",this.endDate+"-10" , null)
             .subscribe(
                 d => {
-                    console.log("D: ", d);
                     this.data = d;
                     this.revenueBarChart();
                     this.quantityBarChart();
@@ -57,7 +41,6 @@ export class ReportOrderMonthlySumComponent implements OnInit {
                     this.quantityPieChart();
                 },
                 d => {
-                    console.log("error");
                     this._flash.addMessage("Error", "Error in generating report.", true, "danger", 3000, 2);
                 }
             );
