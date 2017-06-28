@@ -6,6 +6,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ReportIndexComponent } from './report-index/report-index.component';
 import { ReportOrderMonthlySumComponent } from './order/report-order-monthly-sum/report-order-monthly-sum.component';
 import { ReportOrderTopCustomersComponent } from './order/report-order-top-customers/report-order-top-customers.component';
+import { ReportOrderDailySumComponent } from './order/report-order-daily-sum/report-order-daily-sum.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,7 @@ import { ReportOrderTopCustomersComponent } from './order/report-order-top-custo
   ],
   declarations: [
     ReportIndexComponent,   
-    ReportOrderMonthlySumComponent, ReportOrderTopCustomersComponent
+    ReportOrderMonthlySumComponent, ReportOrderTopCustomersComponent, ReportOrderDailySumComponent
   ],
   exports: [
     ReportIndexComponent

@@ -1,0 +1,45 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row" style="max-width: 1024px;">
+            <div class="col-sm-4">
+                <label>Date From:</label>
+                <date-picker [(ngModel)]="dateFrom"></date-picker>
+            </div>
+            <div class="col-sm-4">
+                <label>Date To:</label>
+                <date-picker [(ngModel)]="dateTo"></date-picker>
+            </div>
+        </div>
+        <br/>
+        <div class="row" style="max-width: 1024px;">
+            <div class="col-sm-4">
+                <button type="button" class="btn btn-primary" (click)="refresh();" [disabled]="mode === 'loading'">Submit</button>
+                &nbsp;&nbsp;&nbsp;
+                <loading *ngIf="mode==='loading'"></loading>
+            </div>
+            <div class="col-sm-4">
+                <div *ngIf="mode === 'exceed'" class="alert alert-warning"> 
+                    The maximum period length you can generate this report for is {{maximumPeriodAllowed}} months. Please adjust the date parameters accordingly.
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+
+
+
+
+<div class="panel panel-default" [hidden]="mode !== 'success'">
+    <div class="panel-body">
+        <canvas #chartRevenue ></canvas>
+    </div>
+</div>
+
+<div class="panel panel-default" [hidden]="mode !== 'success'">
+    <div class="panel-body">
+        <canvas #chartQuantity ></canvas>
+    </div>
+</div>
