@@ -1,0 +1,74 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-4">
+                <label>Start Date: </label>
+                <date-picker [(ngModel)]="dateFrom"></date-picker>
+            </div>
+            <div class="col-sm-4">
+                <label>End Date: </label>
+                <date-picker [(ngModel)]="dateTo"></date-picker>
+            </div>
+            <div class="col-sm-4">
+                <label>Order Type</label>
+                <select *ngIf="orderTypesMode === 'success'" class="form-control" [(ngModel)]="typeId">
+                    <option [value]="0">All Types</option>
+                    <option *ngFor="let t of orderTypes" [value]="t.id">{{t.type}}</option>
+                </select>
+                <div *ngIf="orderTypesMode === 'loading'">
+                    <loading></loading>
+                </div>
+                <div *ngIf="orderTypesMode === 'error'" class="alert alert-danger">
+                    Order types did not load. Please refresh.
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <label>Price From: </label>
+                <price-input [(ngModel)]="priceFrom"></price-input>
+            </div>
+            <div class="col-sm-4">
+                <label>Price To: </label>
+                <price-input [(ngModel)]="priceTo"></price-input>
+            </div>
+            <div class="col-sm-4">
+                <br/>
+                <input type="checkbox" [(ngModel)]="includeDeleted">
+                <label>Include Deleted Records</label>
+            </div>
+        </div>
+      <br/>
+
+      <button type="button" class="btn btn-primary" (click)="refresh();" [disabled]="mode === 'loading'">Submit</button>
+      <loading *ngIf="mode === 'loading'"></loading>
+    </div>
+</div>
+
+<div *ngIf="mode === 'error'" class="alert alert-danger">
+    Error in Retrieving the records. If this continues to happen, please contact your system administrator.
+</div>
+
+<div *ngIf="mode === 'success' && data.length ===0" class="alert alert-info">
+    Your search did not return any records. You may change your search criteria and try again.
+</div>
+
+<div *ngIf="mode === 'success' && data.length > 0">
+  <div class="row">
+        <div class="col-sm-4">
+            <div class="panel panel-default" >
+                <div class="panel-body" style="text-align: center;">
+                      <h4>Total Records: {{data.length}}</h4>
+                      <button class="btn btn-success" type="button" (click)="download();">Download CSV</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8" >
+            <div class="panel panel-default">
+                <div class="panel-body">
+                      <button type="button" class="btn btn-primary" (click)="map();" [disabled]="mode === 'loading'" [hidden]="showMap">Map View</button>
+                      <div id="map">
+                      </div>
+                </div>
+            </div>
+        </div>
+  </div>
+</div>

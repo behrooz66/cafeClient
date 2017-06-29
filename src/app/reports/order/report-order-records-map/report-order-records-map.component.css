@@ -1,0 +1,10 @@
+#map {
+    width: 600px;
+    height: 400px;
+    border: 2px solid black;
+}
+
+.container {
+    width: 600px;
+    height: 400px;
+}
