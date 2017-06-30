@@ -22,7 +22,10 @@
           
           <div class="col-sm-12">
             <br/>
-            <button type="button" class="btn btn-primary pull-right" (click)="refresh();">Submit</button>
+            <button type="button" class="btn btn-primary pull-right" (click)="refresh();">
+                Submit
+                &nbsp;<icon [type]="'report'" [size]="2"></icon>
+            </button>
             <div class="pull-right">&nbsp;&nbsp;&nbsp;</div>
             <loading *ngIf="mode==='loading'" class="pull-right"></loading>
           </div>

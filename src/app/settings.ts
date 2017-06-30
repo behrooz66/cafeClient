@@ -44,7 +44,26 @@ export class Settings {
     static reports = {
         orders: {
             topCustomers: {
-                pageSize : 3
+                pageSize : 5
+            },
+            dailySum: {
+                maximumPeriodAllowed: 6 // in months
+            }
+        },
+        reservations: {
+            topCustomers: {
+                pageSize : 5
+            },
+            dailySum: {
+                maximumPeriodAllowed: 6
+            }
+        },
+        giftCards: {
+            topCustomers:{
+                pageSize : 5
+            },
+            dailySum: {
+                maximumPeriodAllowed: 6
             }
         },
         chartColors: [
@@ -62,6 +81,11 @@ export class Settings {
             'rgba(221, 230, 61, 0.90)',
             'rgba(0, 0, 0, 0.90)'
         ]
+    }
+
+    static map = {
+        tileServerAddress: 'http://144.217.81.75/hot/{z}/{x}/{y}.png',
+
     }
     
 }

@@ -22,7 +22,7 @@
             </div>
             <div class="col-sm-4">
                 <div *ngIf="mode === 'exceed'" class="alert alert-warning"> 
-                    The maximum period length you can generate this report for is six months. Please adjust the date parameters accordingly.
+                    The maximum period length you can generate this report for is {{maxAllowedPeriod}} months. Please adjust the date parameters accordingly.
                 </div>
             </div>
         </div>

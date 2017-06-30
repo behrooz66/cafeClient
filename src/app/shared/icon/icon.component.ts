@@ -18,60 +18,76 @@ export class IconComponent implements OnInit {
   iconTypes: any[] = [
       {
           type: "edit",
-          path: "../../../assets/icons/edit.png"
+          path: "./assets/icons/edit.png"
       },
       {
           type: "person-delete",
-          path: "../../../assets/icons/user_delete.png"
+          path: "./assets/icons/user_delete.png"
       },
       {
           type: "order-add",
-          path: "../../../assets/icons/order_add.png"
+          path: "./assets/icons/order_add.png"
       },
       {
           type: "giftcard-add",
-          path: "../../../assets/icons/giftcard_add.png"
+          path: "./assets/icons/giftcard_add.png"
       },
       {
           type: "reservation-add",
-          path: "../../../assets/icons/reservation_add.png"
+          path: "./assets/icons/reservation_add.png"
       },
       {
           type: "home",
-          path: "../../../assets/icons/home.png"
+          path: "./assets/icons/home.png"
       },
       {
           type: "phone",
-          path: "../../../assets/icons/phone.png"
+          path: "./assets/icons/phone.png"
       },
       {
           type: "undo",
-          path: "../../../assets/icons/undo.png"
+          path: "./assets/icons/undo.png"
       },
       {
           type: "history",
-          path: "../../../assets/icons/history.png"
+          path: "./assets/icons/history.png"
       },
       {
           type: "delete",
-          path: "../../../assets/icons/delete.png"
+          path: "./assets/icons/delete.png"
       },
       {
           type: "refresh",
-          path: "../../../assets/icons/refresh.png"
+          path: "./assets/icons/refresh.png"
       },
       {
           type: "add",
-          path: "../../../assets/icons/add.png"
+          path: "./assets/icons/add.png"
       },
       {
           type: "list",
-          path: "../../../assets/icons/list.png"
+          path: "./assets/icons/list.png"
       },
       {
           type: "back",
-          path: "../../../assets/icons/back.png"
+          path: "./assets/icons/back.png"
       },
+      {
+          type: "sheet",
+          path: "./assets/icons/sheet.png"
+      },
+      {
+          type: "map",
+          path: "./assets/icons/map.png"
+      },
+      {
+          type: "play",
+          path: "./assets/icons/play.png"
+      },
+      {
+          type: "report",
+          path: "./assets/icons/report.png"
+      }
   ];
 
   ngOnInit() {

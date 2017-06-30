@@ -6,23 +6,22 @@ import { Chart } from 'chart.js';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'report-order-daily-sum',
-  templateUrl: './report-order-daily-sum.component.html',
-  styleUrls: ['./report-order-daily-sum.component.css'],
+  selector: 'report-reservation-daily-sum',
+  templateUrl: './report-reservation-daily-sum.component.html',
+  styleUrls: ['./report-reservation-daily-sum.component.css'],
   providers:[
       ReportService,
   ]
 })
-export class ReportOrderDailySumComponent implements OnInit {
+export class ReportReservationDailySumComponent implements OnInit {
 
   data = [];
   dateFrom: string;
   dateTo: string;
-  typeId: number = 0;
+  statusId: number = 0;
   mode: string;
 
-  //setting:
-  maxAllowedPeriod: number; // in months...
+  maxAllowedPeriod: number;
 
   @ViewChild('chartRevenue') chartRevenue;
   @ViewChild('chartQuantity') chartQuantity;
@@ -30,17 +29,20 @@ export class ReportOrderDailySumComponent implements OnInit {
   constructor(private _report: ReportService,
               private _flash: FlashMessageService) { }
 
-  ngOnInit() {
-      this.maxAllowedPeriod = Settings.reports.orders.dailySum.maximumPeriodAllowed;
+  ngOnInit() 
+  {
+      this.maxAllowedPeriod = Settings.reports.reservations.dailySum.maximumPeriodAllowed;
       this.dateTo = moment().format("YYYY-MM-DD");
       this.dateFrom = moment(moment().subtract(2, "months")).format("YYYY-MM-DD");
   }
 
-  refresh() {
+
+  refresh() 
+  {
       if (this.isWithinAllowedPeriodRange())
       {
           this.mode = "loading";
-          this._report.getOrdersDailySum(this.dateFrom, this.dateTo, this.typeId)
+          this._report.getReservationsDailySum(this.dateFrom, this.dateTo, this.statusId)
             .subscribe(
                 d => {
                     this.data = d;
@@ -60,11 +62,11 @@ export class ReportOrderDailySumComponent implements OnInit {
       {
           this.mode = "exceed";
       }
-      
-      
   }
 
-  drawChartRevenue(){
+
+  drawChartRevenue()
+  {
       let chart = new Chart(this.chartRevenue.nativeElement.getContext('2d'), {
           type: 'line',
           data: {
@@ -77,29 +79,23 @@ export class ReportOrderDailySumComponent implements OnInit {
                       borderColor: 'rgba(255, 110, 0, 1.0)'
                   },
                   {
-                      label: 'Take Out',
-                      data: this.data.map(x => x.TakeOut_revenue),
+                      label: 'Shown Up',
+                      data: this.data.map(x => x.ShownUp_revenue),
                       backgroundColor: 'rgba(0, 255, 17, 0.2)',
                       borderColor: 'rgba(92, 194, 86, 1)'
                   },
                   {
-                      label: 'Delivery',
-                      data: this.data.map(x => x.Delivery_revenue),
-                      backgroundColor: 'rgba(0, 123, 255, 0.2)',
-                      borderColor: 'rgba(0, 123, 255, 1)'
+                      label: 'Unspecified',
+                      data: this.data.map(x => x.Unspecified_revenue),
+                      backgroundColor: 'rgba(0, 125, 17, 0.2)',
+                      borderColor: 'rgba(45, 94, 32, 1)'
                   },
-                  {
-                      label: 'Catering',
-                      data: this.data.map(x => x.Catering_revenue),
-                      backgroundColor: 'rgba(207, 202, 74, 0.2)',
-                      borderColor: 'rgba(207, 202, 74, 1)'
-                  }
               ]
           },
           options:{
               title: {
                   display: true,
-                  text: 'Daily Sales Revenue',
+                  text: 'Daily Reservations (recorded) Revenue',
                   fontSize: 16
               },
               scales:{
@@ -121,7 +117,8 @@ export class ReportOrderDailySumComponent implements OnInit {
   }
 
 
-  drawChartQuantity(){
+  drawChartQuantity()
+  {
       let chart = new Chart(this.chartQuantity.nativeElement.getContext('2d'), {
           type: 'line',
           data: {
@@ -134,29 +131,35 @@ export class ReportOrderDailySumComponent implements OnInit {
                       borderColor: 'rgba(255, 110, 0, 1.0)'
                   },
                   {
-                      label: 'Take Out',
-                      data: this.data.map(x => x.TakeOut_number),
+                      label: 'Shown Up',
+                      data: this.data.map(x => x.ShownUp_number),
                       backgroundColor: 'rgba(0, 255, 17, 0.2)',
                       borderColor: 'rgba(92, 194, 86, 1)'
                   },
                   {
-                      label: 'Delivery',
-                      data: this.data.map(x => x.Delivery_number),
+                      label: 'Not Shown',
+                      data: this.data.map(x => x.NotShown_number),
                       backgroundColor: 'rgba(0, 123, 255, 0.2)',
                       borderColor: 'rgba(0, 123, 255, 1)'
                   },
                   {
-                      label: 'Catering',
-                      data: this.data.map(x => x.Catering_number),
+                      label: 'Cancelled',
+                      data: this.data.map(x => x.Cancelled_number),
                       backgroundColor: 'rgba(207, 202, 74, 0.2)',
                       borderColor: 'rgba(207, 202, 74, 1)'
-                  }
+                  },
+                  {
+                      label: 'Unspecified',
+                      data: this.data.map(x => x.Unspecified_number),
+                      backgroundColor: 'rgba(0, 255, 17, 0.2)',
+                      borderColor: 'rgba(92, 194, 86, 1)'
+                  },
               ]
           },
           options:{
               title: {
                   display: true,
-                  text: 'Daily Sales Quantity',
+                  text: 'Daily Reservation Numbers',
                   fontSize: 16
               },
               scales:{
@@ -176,8 +179,12 @@ export class ReportOrderDailySumComponent implements OnInit {
 
       chart.render();
   }
+  
 
-  private normalizeData() {
+  // ********************************//
+
+  private normalizeData() 
+  {
       let index = -1;
       while (index < this.data.length - 1) {
           index++;
@@ -192,20 +199,23 @@ export class ReportOrderDailySumComponent implements OnInit {
       }
   }
 
-// inserts an all-zero object everywhere there is gap between two actual days with non-zero values.
-  private fillTheGap(date1: string, date2: string, startIndex: number){
+  // inserts an all-zero object everywhere there is gap between two actual days with non-zero values.
+  private fillTheGap(date1: string, date2: string, startIndex: number)
+  {
       let d1 = moment(date1).format('YYYY-MM-DD');
       let d2 = moment(date2).format('YYYY-MM-DD');
       let d3 = moment(date1).add(1, 'days').format('YYYY-MM-DD');
       while (d3 !== d2) {
           this.data.splice(++startIndex, 0, {
               Date: d3,
-              Catering_number: 0,
-              Catering_revenue: 0,
-              Delivery_number: 0,
-              Delivery_revenue: 0,
-              TakeOut_number: 0,
-              TakeOut_revenue: 0,
+              ShownUp_revenue: 0,
+              ShownUp_number: 0,
+              NotShown_revenue: 0,
+              NotShown_number: 0,
+              Cancelled_revenue: 0,
+              Cancelled_number: 0,
+              Unspecified_revenue: 0,
+              Unspecified_number: 0,
               TotalRevenue: 0,
               TotalNumber: 0
           });
@@ -220,12 +230,12 @@ export class ReportOrderDailySumComponent implements OnInit {
       return Math.abs(d1.diff(d2, 'days')) > 1 ? true : false
   }
 
-// unifies the date format for all, and adds the total revenue and total number to each item.
+  // unifies the date format for all, and adds the total revenue and total number to each item.
   private addTotals(){
       this.data.forEach(e => {
           if (e.Date.length > 10) e.Date = e.Date.substr(0, 10);
-          e.TotalRevenue = e.Delivery_revenue + e.TakeOut_revenue + e.Catering_revenue;
-          e.TotalNumber = e.Delivery_number + e.TakeOut_number + e.Catering_number;
+          e.TotalRevenue = e.ShownUp_revenue + e.Unspecified_revenue;
+          e.TotalNumber = e.ShownUp_number + e.NotShown_number + e.Cancelled_number + e.Unspecified_number;
       });
   }
 
@@ -234,7 +244,4 @@ export class ReportOrderDailySumComponent implements OnInit {
             return false;
       return true;
   }
-
 }
-
-

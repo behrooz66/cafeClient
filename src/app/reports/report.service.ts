@@ -44,4 +44,77 @@ export class ReportService {
           .map(r => r.json());
   }
   // orders end
+
+
+
+
+
+  // RESERVATIONS RELATED
+  getReservationsMonthlySum(dateFrom: string, dateTo: string, statusId: number){
+      let params: string = '?dateFrom=' + dateFrom + '&dateTo=' + dateTo;
+      if (statusId !== null) {
+          params += '&statusId=' + statusId.toString();
+      }
+      return this._http.get(this.apiBase+"reservationsMonthlySum" + params)
+          .map(r => r.json());
+  }
+
+  getReservationsRecords(dateFrom: string, dateTo: string, statusId: number, deleted: boolean){
+      let params: string = '?dateFrom=' + dateFrom + '&dateTo=' + dateTo + '&statusId=' + statusId.toString()
+                           + '&deleted=' + deleted;
+      return this._http.get(this.apiBase + "reservationRecords" + params)
+          .map(r => r.json());
+  }
+
+  getReservationsTopCustomers(dateFrom: string, dateTo: string, minRevenue: number, minReservation: number) {
+      let params: string = '?dateFrom=' + dateFrom + '&dateTo=' + dateTo + '&minRevenue=' + minRevenue.toString() + '&minReservation=' + minReservation.toString();
+      return this._http.get(this.apiBase + "reservationsTopCustomers" + params)
+          .map(r => r.json());
+  }
+
+  getReservationsDailySum(dateFrom: string, dateTo: string, statusId: number){
+      let params: string = '?dateFrom=' + dateFrom + '&dateTo=' + dateTo + '&statusId=' + statusId.toString();
+      return this._http.get(this.apiBase + "reservationsDailySum" + params)
+          .map(r => r.json());
+  }
+  // reservations end
+
+
+
+  // GIFTCARDS RELATED
+  getGiftCardssMonthlySum(dateFrom: string, dateTo: string){
+      let params: string = '?dateFrom=' + dateFrom + '&dateTo=' + dateTo;
+    //   if (statusId !== null) {
+    //       params += '&statusId=' + statusId.toString();
+    //   }
+      return this._http.get(this.apiBase+"giftCardsMonthlySum" + params)
+          .map(r => r.json());
+  }
+
+  getGiftCardsRecords(issueDateFrom: string, issueDateTo: string, expiryDateFrom: string, expiryDateTo: string,
+                      amountFrom: number, amountTo:number, typeId: number, deleted: boolean)
+  {
+      let params: string = '?issueDateFrom=' + issueDateFrom + '&issueDateTo=' + issueDateTo + '&typeId=' + typeId.toString()
+                           + 'expiryDateFrom=' + expiryDateFrom + '&expiryDateTo=' + expiryDateTo
+                           + 'amountFrom=' + amountFrom + '&amountTo=' + amountTo
+                           + '&deleted=' + deleted;
+      return this._http.get(this.apiBase + "giftCardRecords" + params)
+          .map(r => r.json());
+  }
+
+  getGiftCardsTopCustomers(dateFrom: string, dateTo: string, minRevenue: number, minCards: number, typeId = null) {
+      let params: string = '?dateFrom=' + dateFrom + '&dateTo=' + dateTo + '&minRevenue=' + minRevenue.toString() + '&minCards=' + minCards.toString();
+      if (typeId !== null) {
+          params += '&typeId' + typeId;
+      }
+      return this._http.get(this.apiBase + "giftCardsTopCustomers" + params)
+          .map(r => r.json());
+  }
+
+  getGiftCardsDailySum(dateFrom: string, dateTo: string, typeId: number){
+      let params: string = '?dateFrom=' + dateFrom + '&dateTo=' + dateTo + '&typeId=' + typeId.toString();
+      return this._http.get(this.apiBase + "giftCardsDailySum" + params)
+          .map(r => r.json());
+  }
+  // giftcards end
 }

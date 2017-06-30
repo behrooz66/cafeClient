@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-primary">
     <div class="panel-body">
           <div class="row">
             <div class="col-sm-4">
@@ -38,7 +38,10 @@
         </div>
       <br/>
 
-      <button type="button" class="btn btn-primary" (click)="refresh();" [disabled]="mode === 'loading'">Submit</button>
+      <button type="button" class="btn btn-primary" (click)="refresh();" [disabled]="mode === 'loading'">
+          Submit
+          &nbsp;<icon [type]="'report'" [size]="2"></icon>
+      </button>
       <loading *ngIf="mode === 'loading'"></loading>
     </div>
 </div>
@@ -54,18 +57,26 @@
 <div *ngIf="mode === 'success' && data.length > 0">
   <div class="row">
         <div class="col-sm-4">
-            <div class="panel panel-default" >
+            <div class="panel panel-primary" >
                 <div class="panel-body" style="text-align: center;">
                       <h4>Total Records: {{data.length}}</h4>
-                      <button class="btn btn-success" type="button" (click)="download();">Download CSV</button>
+                      <button class="btn btn-success" type="button" (click)="download();">
+                          <icon [type]="'sheet'" [size]="2"></icon>
+                          &nbsp;Download CSV
+                      </button>
+                      <br/><br/>
+                      <p>{{unmappable === 0? 'All ': ''}} {{data.length - unmappable}} can be shown on map.</p>
+                      <button type="button" class="btn btn-primary" (click)="map();" [disabled]="mode === 'loading'" [hidden]="showMap">
+                          <icon [type]="'map'" [size]="2"></icon>
+                          &nbsp;Map View
+                      </button>
                 </div>
             </div>
         </div>
         <div class="col-sm-8" >
-            <div class="panel panel-default">
+            <div class="panel panel-primary" [hidden]="!showMap">
                 <div class="panel-body">
-                      <button type="button" class="btn btn-primary" (click)="map();" [disabled]="mode === 'loading'" [hidden]="showMap">Map View</button>
-                      <div id="map">
+                      <div #mapPlaceHolder id="map">
                       </div>
                 </div>
             </div>

@@ -6,7 +6,10 @@
                 <label>Start Date:</label>
                 <month-picker [date]="'2017-01'" [(ngModel)]="startDate"></month-picker>
                 <br/>
-                <button class="btn btn-primary" type="button" (click)="refresh();">Submit</button>
+                <button class="btn btn-primary" type="button" (click)="refresh();">
+                    Submit
+                    &nbsp;<icon [type]="'report'" [size]="2"></icon>
+                </button>
             </div>
             <div class="col-md-3">
                 <label>End Date:</label>
