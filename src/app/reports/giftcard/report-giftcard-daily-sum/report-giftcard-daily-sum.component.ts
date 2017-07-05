@@ -6,43 +6,43 @@ import { Chart } from 'chart.js';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'report-reservation-daily-sum',
-  templateUrl: './report-reservation-daily-sum.component.html',
-  styleUrls: ['./report-reservation-daily-sum.component.css'],
+  selector: 'report-giftcard-daily-sum',
+  templateUrl: './report-giftcard-daily-sum.component.html',
+  styleUrls: ['./report-giftcard-daily-sum.component.css'],
   providers:[
       ReportService,
   ]
 })
-export class ReportReservationDailySumComponent implements OnInit {
+export class ReportGiftcardDailySumComponent implements OnInit {
 
   data = [];
   dateFrom: string;
   dateTo: string;
-  statusId: number = 0;
+  typeId: number = 0;
   mode: string;
 
-  maxAllowedPeriod: number;
+  //setting:
+  maxAllowedPeriod: number; // in months...
 
   @ViewChild('chartRevenue') chartRevenue;
   @ViewChild('chartQuantity') chartQuantity;
-  
+
   constructor(private _report: ReportService,
               private _flash: FlashMessageService) { }
 
   ngOnInit() 
   {
-      this.maxAllowedPeriod = Settings.reports.reservations.dailySum.maximumPeriodAllowed;
+      this.maxAllowedPeriod = Settings.reports.giftCards.dailySum.maximumPeriodAllowed;
       this.dateTo = moment().format("YYYY-MM-DD");
       this.dateFrom = moment(moment().subtract(2, "months")).format("YYYY-MM-DD");
   }
-
 
   refresh() 
   {
       if (this.isWithinAllowedPeriodRange())
       {
           this.mode = "loading";
-          this._report.getReservationsDailySum(this.dateFrom, this.dateTo, this.statusId)
+          this._report.getGiftCardsDailySum(this.dateFrom, this.dateTo, this.typeId)
             .subscribe(
                 d => {
                     this.data = d;
@@ -64,7 +64,6 @@ export class ReportReservationDailySumComponent implements OnInit {
       }
   }
 
-
   drawChartRevenue()
   {
       let chart = new Chart(this.chartRevenue.nativeElement.getContext('2d'), {
@@ -76,27 +75,26 @@ export class ReportReservationDailySumComponent implements OnInit {
                       label: 'Total',
                       data: this.data.map(x => x.TotalRevenue),
                       backgroundColor: 'rgba(255, 110, 0, 0.0)',
-                      borderColor: 'rgba(20, 1, 1, 1)',
-                      borderDash: [7, 5]
+                      borderColor: 'rgba(255, 110, 0, 1.0)'
                   },
                   {
-                      label: 'Shown Up',
-                      data: this.data.map(x => x.ShownUp_revenue),
+                      label: 'Purchase',
+                      data: this.data.map(x => x.Purchase_revenue),
                       backgroundColor: 'rgba(0, 255, 17, 0.2)',
                       borderColor: 'rgba(92, 194, 86, 1)'
                   },
                   {
-                      label: 'Unspecified',
-                      data: this.data.map(x => x.Unspecified_revenue),
-                      backgroundColor: 'rgba(0, 125, 17, 0.2)',
-                      borderColor: 'rgba(45, 94, 32, 1)'
-                  },
+                      label: 'Coupon',
+                      data: this.data.map(x => x.Coupon_revenue),
+                      backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                      borderColor: 'rgba(0, 123, 255, 1)'
+                  }
               ]
           },
           options:{
               title: {
                   display: true,
-                  text: 'Daily Reservations (recorded) Revenue',
+                  text: 'Daily Sales Revenue',
                   fontSize: 16
               },
               scales:{
@@ -129,39 +127,26 @@ export class ReportReservationDailySumComponent implements OnInit {
                       label: 'Total',
                       data: this.data.map(x => x.TotalNumber),
                       backgroundColor: 'rgba(255, 110, 0, 0.0)',
-                      borderColor: 'rgba(20, 1, 1, 1)',
-                      borderDash: [7, 5]
+                      borderColor: 'rgba(255, 110, 0, 1.0)'
                   },
                   {
-                      label: 'Shown Up',
-                      data: this.data.map(x => x.ShownUp_number),
+                      label: 'Purchase',
+                      data: this.data.map(x => x.Purchase_number),
                       backgroundColor: 'rgba(0, 255, 17, 0.2)',
                       borderColor: 'rgba(92, 194, 86, 1)'
                   },
                   {
-                      label: 'Not Shown',
-                      data: this.data.map(x => x.NotShown_number),
+                      label: 'Coupon',
+                      data: this.data.map(x => x.Coupon_number),
                       backgroundColor: 'rgba(0, 123, 255, 0.2)',
                       borderColor: 'rgba(0, 123, 255, 1)'
-                  },
-                  {
-                      label: 'Cancelled',
-                      data: this.data.map(x => x.Cancelled_number),
-                      backgroundColor: 'rgba(247, 59, 59, 0.2)',
-                      borderColor: 'rgba(247, 59, 59, 1)'
-                  },
-                  {
-                      label: 'Unspecified',
-                      data: this.data.map(x => x.Unspecified_number),
-                      backgroundColor: 'rgba(0, 125, 17, 0.2)',
-                      borderColor: 'rgba(45, 94, 32, 1)'
-                  },
+                  }
               ]
           },
           options:{
               title: {
                   display: true,
-                  text: 'Daily Reservation Numbers',
+                  text: 'Daily Sales Quantity',
                   fontSize: 16
               },
               scales:{
@@ -181,9 +166,7 @@ export class ReportReservationDailySumComponent implements OnInit {
 
       chart.render();
   }
-  
 
-  // ********************************//
 
   private normalizeData() 
   {
@@ -210,14 +193,10 @@ export class ReportReservationDailySumComponent implements OnInit {
       while (d3 !== d2) {
           this.data.splice(++startIndex, 0, {
               Date: d3,
-              ShownUp_revenue: 0,
-              ShownUp_number: 0,
-              NotShown_revenue: 0,
-              NotShown_number: 0,
-              Cancelled_revenue: 0,
-              Cancelled_number: 0,
-              Unspecified_revenue: 0,
-              Unspecified_number: 0,
+              Purchase_revenue: 0,
+              Purchase_number: 0,
+              Coupon_revenue: 0,
+              Coupon_number: 0,
               TotalRevenue: 0,
               TotalNumber: 0
           });
@@ -226,24 +205,28 @@ export class ReportReservationDailySumComponent implements OnInit {
 
   }
 
-  private isDateGap(date1: string, date2: string) {
+  private isDateGap(date1: string, date2: string) 
+  {
       let d1 = moment(date1);
       let d2 = moment(date2);
       return Math.abs(d1.diff(d2, 'days')) > 1 ? true : false
   }
 
   // unifies the date format for all, and adds the total revenue and total number to each item.
-  private addTotals(){
+  private addTotals()
+  {
       this.data.forEach(e => {
           if (e.Date.length > 10) e.Date = e.Date.substr(0, 10);
-          e.TotalRevenue = e.ShownUp_revenue + e.Unspecified_revenue;
-          e.TotalNumber = e.ShownUp_number + e.NotShown_number + e.Cancelled_number + e.Unspecified_number;
+          e.TotalRevenue = e.Purchase_revenue + e.Coupon_revenue;
+          e.TotalNumber = e.Purchase_number + e.Coupon_number;
       });
   }
 
-  private isWithinAllowedPeriodRange(){
+  private isWithinAllowedPeriodRange()
+  {
       if (Math.abs(moment(this.dateFrom).diff(moment(this.dateTo), "months")) > this.maxAllowedPeriod)
             return false;
       return true;
   }
+
 }

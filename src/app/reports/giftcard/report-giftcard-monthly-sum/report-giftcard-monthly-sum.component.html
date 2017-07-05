@@ -1,3 +1,4 @@
+
 <div class="panel panel-default">
     <div class="panel-body">
         <div class="row">
@@ -8,7 +9,6 @@
                 <button class="btn btn-primary" type="button" (click)="refresh();">
                     Submit
                     &nbsp;<icon [type]="'report'" [size]="2"></icon>
-                    <loading *ngIf="mode==='loading'"></loading>
                 </button>
             </div>
             <div class="col-md-3">
@@ -17,8 +17,7 @@
             </div>
             
             <div class="col-md-3">
-                <!--<canvas #revenuePie></canvas>-->
-                Nothing here...!
+                <canvas #revenuePie></canvas>
             </div>
 
             <div class="col-md-3">

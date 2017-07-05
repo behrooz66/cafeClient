@@ -60,8 +60,6 @@ export class ReportOrderDailySumComponent implements OnInit {
       {
           this.mode = "exceed";
       }
-      
-      
   }
 
   drawChartRevenue(){

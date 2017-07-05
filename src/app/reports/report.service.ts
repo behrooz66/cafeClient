@@ -66,8 +66,10 @@ export class ReportService {
           .map(r => r.json());
   }
 
-  getReservationsTopCustomers(dateFrom: string, dateTo: string, minRevenue: number, minReservation: number) {
-      let params: string = '?dateFrom=' + dateFrom + '&dateTo=' + dateTo + '&minRevenue=' + minRevenue.toString() + '&minReservation=' + minReservation.toString();
+  getReservationsTopCustomers(dateFrom: string, dateTo: string, minRevenue: number, minReservation: number, includeUnspecified: boolean) {
+      let params: string = '?dateFrom=' + dateFrom + '&dateTo=' + dateTo + '&minRevenue=' 
+                            + minRevenue.toString() + '&minReservation=' + minReservation.toString()
+                            + '&includeUnspecified=' + includeUnspecified;
       return this._http.get(this.apiBase + "reservationsTopCustomers" + params)
           .map(r => r.json());
   }
@@ -105,8 +107,9 @@ export class ReportService {
   getGiftCardsTopCustomers(dateFrom: string, dateTo: string, minRevenue: number, minCards: number, typeId = null) {
       let params: string = '?dateFrom=' + dateFrom + '&dateTo=' + dateTo + '&minRevenue=' + minRevenue.toString() + '&minCards=' + minCards.toString();
       if (typeId !== null) {
-          params += '&typeId' + typeId;
+          params += '&typeId=' + typeId;
       }
+      console.log(params);
       return this._http.get(this.apiBase + "giftCardsTopCustomers" + params)
           .map(r => r.json());
   }

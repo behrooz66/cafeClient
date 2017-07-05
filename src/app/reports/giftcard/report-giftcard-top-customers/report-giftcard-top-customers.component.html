@@ -2,42 +2,49 @@
 
   <div class="panel panel-default">
       <div class="panel-body">
-          <div class="row">
-              <div class="col-sm-3">
-                  <label>Date From:</label>
-                  <date-picker [(ngModel)]="dateFrom"></date-picker>
-              </div>
-              <div class="col-sm-3">
-                  <label>Date To:</label>
-                  <date-picker [(ngModel)]="dateTo"></date-picker>
-              </div>
-              <div class="col-sm-3">
-                  <label>Minimum Number of Reservations:</label>
-                  <price-input [(ngModel)]="minReservations"></price-input>
-              </div>
-              <div class="col-sm-3">
-                  <label>Minimum Revenue:</label>
-                  <price-input [(ngModel)]="minRevenue"></price-input>
-              </div>
+      <div class="row">
+          <div class="col-sm-3">
+              <label>Date From:</label>
+              <date-picker [(ngModel)]="dateFrom"></date-picker>
           </div>
-          <div class="row">
-              <div class="col-sm-12">
-                  <input type="checkbox" [(ngModel)]="includeUnspecified" >
-                  Include Unspecified
-              </div>
+          <div class="col-sm-3">
+              <label>Date To:</label>
+              <date-picker [(ngModel)]="dateTo"></date-picker>
           </div>
-          <div class="row"> 
-              <div class="col-sm-12">
-                <br/>
-                <button type="button" class="btn btn-primary pull-right" (click)="refresh();">
-                    Submit
-                    &nbsp;<icon [type]="'report'" [size]="2"></icon>
-                </button>
-                <div class="pull-right">&nbsp;&nbsp;&nbsp;</div>
-                <loading *ngIf="mode==='loading'" class="pull-right"></loading>
-              </div>
+          <div class="col-sm-3">
+              <label>Minimum Number of Orders:</label>
+              <price-input [(ngModel)]="minCards"></price-input>
+          </div>
+          <div class="col-sm-3">
+              <label>Minimum Revenue:</label>
+              <price-input [(ngModel)]="minRevenue"></price-input>
+          </div>
+
+          <div class="col-sm-4">
+                <label>Gift Card Type</label>
+                <select *ngIf="giftCardTypesMode === 'success'" class="form-control" [(ngModel)]="typeId">
+                    <option [value]="0">All Types</option>
+                    <option *ngFor="let t of giftCardTypes" [value]="t.id">{{t.type}}</option>
+                </select>
+                <div *ngIf="giftCardTypesMode === 'loading'">
+                    <loading></loading>
+                </div>
+                <div *ngIf="giftCardTypesMode === 'error'" class="alert alert-danger">
+                    Gift Card types did not load. Please refresh.
+                </div>
+            </div>
+          
+          <div class="col-sm-12">
+            <br/>
+            <button type="button" class="btn btn-primary pull-right" (click)="refresh();">
+                Submit
+                &nbsp;<icon [type]="'report'" [size]="2"></icon>
+            </button>
+            <div class="pull-right">&nbsp;&nbsp;&nbsp;</div>
+            <loading *ngIf="mode==='loading'" class="pull-right"></loading>
           </div>
       </div>
+    </div>
   </div>
 
   <div id="customers" *ngIf="data.length > 0  && mode ==='success'" class="panel panel-default">
@@ -52,13 +59,13 @@
                         Name
                     </th>
                     <th>
-                        <button type="button" class="btn" [class.btn-info]="sortBy==='orders'" (click)="sortByQuantity();">Reservations</button>
+                        <button type="button" class="btn" [class.btn-info]="sortBy==='giftCards'" (click)="sortByQuantity();">Gift Cards</button>
                     </th>
                     <th>
                         <button type="button" class="btn" [class.btn-info]="sortBy==='revenue'" (click)="sortByRevenue();">Revenue</button>
                     </th>
                     <th>
-                        Last Reservation
+                        Last Order
                     </th>
                 </tr>
             </thead>
@@ -68,13 +75,13 @@
                         <a [routerLink]="['/customers', c.id]" >{{c.name}}</a>
                     </td>
                     <td>
-                        {{c.reservations}}
+                        {{c.giftCards}}
                     </td>
                     <td>
                         {{c.revenue}}
                     </td>
                     <td>
-                        {{c.lastReservationOn === 'Never'? 'Never..': (c.lastReservationOn | date:'yyyy MMM dd')}}
+                        {{c.lastGiftCardOn === 'Never'? 'Never..': (c.lastGiftCardOn | date:'yyyy MMM dd')}}
                     </td>
                 </tr>
             </tbody>

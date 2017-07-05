@@ -1,20 +1,21 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReportService } from '../../report.service';
 import { FlashMessageService } from '../../../shared/flash-message/flash-message.service';
+import { GiftcardTypeService } from '../../../shared/giftcard-type/giftcard-type.service';
 import { RecordService } from '../../../shared/record.service';
 import { Settings } from '../../../settings';
-import { Chart } from 'chart.js';
 
 @Component({
-  selector: 'report-reservation-top-customers',
-  templateUrl: './report-reservation-top-customers.component.html',
-  styleUrls: ['./report-reservation-top-customers.component.css'],
-  providers: [
+  selector: 'report-giftcard-top-customers',
+  templateUrl: './report-giftcard-top-customers.component.html',
+  styleUrls: ['./report-giftcard-top-customers.component.css'],
+    providers: [
       ReportService,
-      RecordService
+      RecordService,
+      GiftcardTypeService
   ]
 })
-export class ReportReservationTopCustomersComponent implements OnInit {
+export class ReportGiftcardTopCustomersComponent implements OnInit {
 
   data= [];
   sortBy: string = "revenue";
@@ -22,9 +23,12 @@ export class ReportReservationTopCustomersComponent implements OnInit {
 
   dateFrom: string = "";
   dateTo: string = "";
-  minReservations: number = 2;
+  minCards: number = 2;
   minRevenue: number = 25;
-  includeUnspecified: boolean = false;
+  typeId: number = 0;
+
+  giftCardTypesMode: string;
+  giftCardTypes;
 
   pageInfo = {
       pageSize: 5,
@@ -36,20 +40,22 @@ export class ReportReservationTopCustomersComponent implements OnInit {
 
   constructor(private _report: ReportService,
               private _flash: FlashMessageService,
-              private _record: RecordService)
-              {
-                
-              }
+              private _record: RecordService,
+              private _gt: GiftcardTypeService)
+  {
+
+  }
 
   ngOnInit() 
   {
-      this.pageInfo.pageSize = Settings.reports.reservations.topCustomers.pageSize;
+      this.getGiftCardTypes();
+      this.pageInfo.pageSize = Settings.reports.giftCards.topCustomers.pageSize;
   }
 
   refresh() 
   {
       this.mode = "loading";
-      this._report.getReservationsTopCustomers(this.dateFrom, this.dateTo, this.minRevenue, this.minReservations, this.includeUnspecified)
+      this._report.getGiftCardsTopCustomers(this.dateFrom, this.dateTo, this.minRevenue, this.minCards, this.typeId)
           .subscribe(
               d => {
                   this.data = d;
@@ -63,19 +69,38 @@ export class ReportReservationTopCustomersComponent implements OnInit {
           )
   }
 
-  private sortByRevenue() {
+  private getGiftCardTypes() 
+  {
+      this.giftCardTypesMode = "loading";
+      this._gt.getTypes()
+          .subscribe(
+              d => {
+                  this.giftCardTypes = d;
+                  this.giftCardTypesMode = "success";
+              },
+              d => {
+                  this._flash.addMessage("Error", "Error in retrieving gift card types.", true, "danger", 2500, 2);
+                  this.giftCardTypesMode = "error";
+              }
+          );
+  }
+
+  private sortByRevenue() 
+  {
       this.sortBy = "revenue";
       let temp = this._record.getPageItems(this.data, null, { field: 'revenue', order: 'desc'}, this.pageInfo);
       this.pageRecords = temp.data;
       this.pages = new Array(temp.numberOfPages);
   }
 
-  private sortByQuantity() {
-      this.sortBy = "orders";
-      let temp = this._record.getPageItems(this.data, null, { field: 'reservations', order: 'desc'}, this.pageInfo);
+  private sortByQuantity() 
+  {
+      this.sortBy = "giftCards";
+      let temp = this._record.getPageItems(this.data, null, { field: 'giftCards', order: 'desc'}, this.pageInfo);
       this.pageRecords = temp.data;
       this.pages = new Array(temp.numberOfPages);
   }
+
 
   //********* PAGING  */
   private sort(){
@@ -117,7 +142,7 @@ export class ReportReservationTopCustomersComponent implements OnInit {
   }
 
   pageSizeChange(){
-      Settings.reports.reservations.topCustomers.pageSize = this.pageInfo.pageSize;
+      Settings.reports.giftCards.topCustomers.pageSize = this.pageInfo.pageSize;
   }
 
 }

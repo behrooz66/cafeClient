@@ -8,20 +8,29 @@ export class CityService {
   constructor(private _http: HttpAuthService) { }
 
   
-  getCountries() {
+  getCountries() 
+  {
       console.log(Settings.apiBase + 'country/get');
       return this._http.get(Settings.apiBase + 'country/get')
             .map(res => res.json());
   }
   
-  getProvinces(id){
+  getProvinces(id)
+  {
       return this._http.get(Settings.apiBase + "province/getByCountry?countryId=" + id)
                 .map(res => res.json());
   }
   
-  getCities(id){
+  getCities(id)
+  {
       return this._http.get(Settings.apiBase + "city/getByProvince?provinceId=" + id)
                     .map(res => res.json());
+  }
+
+  getCity(id: number) 
+  {
+      return this._http.get(Settings.apiBase + "city/get/" + id.toString())
+            .map(res => res.json());
   }
 
 }

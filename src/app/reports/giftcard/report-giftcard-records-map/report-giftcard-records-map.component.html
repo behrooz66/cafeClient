@@ -2,24 +2,44 @@
     <div class="panel-body">
           <div class="row">
             <div class="col-sm-4">
-                <label>Start Date: </label>
-                <date-picker [(ngModel)]="dateFrom"></date-picker>
+                <label>Issue Date From: </label>
+                <date-picker [(ngModel)]="issueDateFrom"></date-picker>
             </div>
             <div class="col-sm-4">
-                <label>End Date: </label>
-                <date-picker [(ngModel)]="dateTo"></date-picker>
+                <label>Issue Date To: </label>
+                <date-picker [(ngModel)]="issueDateTo"></date-picker>
+            </div>
+
+            <div class="col-sm-4">
+                <label>Expiry Date From: </label>
+                <date-picker [(ngModel)]="expiryDateFrom"></date-picker>
             </div>
             <div class="col-sm-4">
-                <label>Reservation Status</label>
-                <select *ngIf="reservationStatusesMode === 'success'" class="form-control" [(ngModel)]="statusId">
-                    <option [value]="0" [selected]="selected">All Statuses</option>
-                    <option *ngFor="let s of reservationStatuses" [value]="s.id">{{s.status}}</option>
+                <label>Expiry Date To: </label>
+                <date-picker [(ngModel)]="expiryDateTo"></date-picker>
+            </div>
+
+            <div class="col-sm-4">
+                <label>Amount From: </label>
+                <date-picker [(ngModel)]="amountFrom"></date-picker>
+            </div>
+            <div class="col-sm-4">
+                <label>Amount To: </label>
+                <date-picker [(ngModel)]="amountTo"></date-picker>
+            </div>
+
+
+            <div class="col-sm-4">
+                <label>Gift Card Type</label>
+                <select *ngIf="giftCardTypesMode === 'success'" class="form-control" [(ngModel)]="typeId">
+                    <option [value]="0">All Types</option>
+                    <option *ngFor="let t of giftCardTypes" [value]="t.id">{{t.type}}</option>
                 </select>
-                <div *ngIf="reservationStatusesMode === 'loading'">
+                <div *ngIf="giftCardTypesMode === 'loading'">
                     <loading></loading>
                 </div>
-                <div *ngIf="reservationStatusesMode === 'error'" class="alert alert-danger">
-                    Reservation statuses did not load. Please refresh.
+                <div *ngIf="giftCardTypesMode === 'error'" class="alert alert-danger">
+                    Gift Card types did not load. Please refresh.
                 </div>
             </div>
             <div class="col-sm-4">
@@ -68,7 +88,7 @@
         <div class="col-sm-8" >
             <div class="panel panel-primary" [hidden]="!showMap">
                 <div class="panel-body">
-                      <div #mapPlaceHolder id="map2">
+                      <div #mapPlaceHolder id="map3">
                       </div>
                 </div>
             </div>

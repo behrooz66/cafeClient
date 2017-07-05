@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ReportService } from '../../report.service';
 import { OrderTypesService } from '../../../shared/order-types/order-types.service';
+import { CityService } from '../../../shared/city-select/city.service';
 import { FlashMessageService } from '../../../shared/flash-message/flash-message.service';
 import { Settings } from '../../../settings';
-import { Chart } from 'chart.js';
 import * as moment from 'moment';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
@@ -15,7 +15,8 @@ import 'leaflet.markercluster';
   styleUrls: ['./report-order-records-map.component.css'],
   providers: [
       ReportService,
-      OrderTypesService
+      OrderTypesService,
+      CityService
   ]
 })
 export class ReportOrderRecordsMapComponent implements OnInit {
@@ -36,10 +37,9 @@ export class ReportOrderRecordsMapComponent implements OnInit {
   mymap;
   showMap: boolean = false;
 
-  @ViewChild('mapPlaceHolder') mapPlaceHolder: ElementRef;
-
   constructor(private _report: ReportService,
               private _flash: FlashMessageService,
+              private _cityService: CityService,
               private _ot: OrderTypesService) { }
 
   ngOnInit() {
@@ -71,8 +71,7 @@ export class ReportOrderRecordsMapComponent implements OnInit {
   {
       this.showMap = true;
       setTimeout(() => {
-          this.mapInitialization();
-          this.addMarkers();
+        this.renderMap();
       }, 1000);
   }
 
@@ -82,20 +81,34 @@ export class ReportOrderRecordsMapComponent implements OnInit {
       this.downloadCsv(csv);
   }
 
+  public renderMap(){
+      this.mapInitialization()
+          .subscribe(
+                d => {
+                    this.mymap = L.map('map');
+                    this.mymap.fitBounds([
+                        [d.nwLat, d.nwLon], [d.seLat, d.seLon]
+                    ]);;
+                    let x = L.tileLayer(Settings.map.tileServerAddress);
+                    x.addTo(this.mymap);
+                    this.addMarkers();
+                },
+                d => {
+                    this._flash.addMessage("Error", "Mapping failed.", true, "danger", 2500, 2);
+                },
+                () => {}
+          );
+  }
+
   public mapInitialization()
   {
-      this.mymap = L.map('map');
-      this.mymap.setView([53.901205, -122.748332], 13);
-      //let x = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-      let x = L.tileLayer(Settings.map.tileServerAddress);
-      x.addTo(this.mymap);
+      let cityId = +localStorage.getItem("bdCityId");
+      return this._cityService.getCity(cityId);
   }
 
   public addMarkers() 
   {
       var markerClusters = L.markerClusterGroup();
-
-
       this.data.forEach(e => {
           if (e.lat && e.lon){
             let a = `Customer: <b>${e.customer}</b> <br/>
@@ -145,15 +158,6 @@ export class ReportOrderRecordsMapComponent implements OnInit {
       a.href = url;
       a.download = 'orders.csv';
       a.click();
-  }
-
-  private wait(ms)
-  {
-        var start = new Date().getTime();
-        var end = start;
-        while(end < start + ms) {
-            end = new Date().getTime();
-        }
   }
 
 }

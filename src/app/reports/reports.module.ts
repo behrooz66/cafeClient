@@ -12,6 +12,10 @@ import { ReportReservationDailySumComponent } from './reservation/report-reserva
 import { ReportReservationMonthlySumComponent } from './reservation/report-reservation-monthly-sum/report-reservation-monthly-sum.component';
 import { ReportReservationTopCustomersComponent } from './reservation/report-reservation-top-customers/report-reservation-top-customers.component';
 import { ReportReservationRecordsMapComponent } from './reservation/report-reservation-records-map/report-reservation-records-map.component';
+import { ReportGiftcardDailySumComponent } from './giftcard/report-giftcard-daily-sum/report-giftcard-daily-sum.component';
+import { ReportGiftcardMonthlySumComponent } from './giftcard/report-giftcard-monthly-sum/report-giftcard-monthly-sum.component';
+import { ReportGiftcardRecordsMapComponent } from './giftcard/report-giftcard-records-map/report-giftcard-records-map.component';
+import { ReportGiftcardTopCustomersComponent } from './giftcard/report-giftcard-top-customers/report-giftcard-top-customers.component';
 
 @NgModule({
   imports: [
@@ -30,7 +34,11 @@ import { ReportReservationRecordsMapComponent } from './reservation/report-reser
     ReportReservationDailySumComponent,
     ReportReservationMonthlySumComponent,
     ReportReservationTopCustomersComponent,
-    ReportReservationRecordsMapComponent
+    ReportReservationRecordsMapComponent,
+    ReportGiftcardDailySumComponent,
+    ReportGiftcardMonthlySumComponent,
+    ReportGiftcardRecordsMapComponent,
+    ReportGiftcardTopCustomersComponent
   ],
   exports: [
     ReportIndexComponent

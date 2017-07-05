@@ -46,7 +46,8 @@ export class ReportOrderTopCustomersComponent implements OnInit {
      this.pageInfo.pageSize = Settings.reports.orders.topCustomers.pageSize;
   }
 
-  refresh() {
+  refresh() 
+  {
       this.mode = "loading";
       this._report.getOrdersTopCustomers(this.dateFrom, this.dateTo, this.minRevenue, this.minOrders)
           .subscribe(
