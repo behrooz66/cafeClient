@@ -87,6 +87,18 @@ export class IconComponent implements OnInit {
       {
           type: "report",
           path: "./assets/icons/report.png"
+      },
+      {
+          type: "power",
+          path: "./assets/icons/power.png"
+      },
+      {
+          type: "block",
+          path: "./assets/icons/block.png"
+      },
+      {
+          type: "key",
+          path: "./assets/icons/key.png"
       }
   ];
 

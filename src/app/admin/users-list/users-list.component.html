@@ -1,3 +1,79 @@
-<p>
-  users-list works!
-</p>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <tr>
+            <td>
+                <button class="btn btn-default btn-sm" (click)="addUser();">
+                    <icon [type]="'add'" [size]="2">
+                    </icon>
+                </button>
+            </td>
+            <td>&nbsp;&nbsp;</td>
+            <td>
+                <button class="btn btn-default btn-sm" (click)="refresh();">
+                    <icon [type]="'refresh'" [size]="2">
+                    </icon>
+                </button>
+            </td>
+
+        </tr>
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Employee
+                    </th>
+                    <th>
+                        Username
+                    </th>
+                    <th>
+                        Active
+                    </th>
+                    <th>
+                        Controls
+                    </th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                <tr *ngFor="let u of users" [class.red]="!u.active">
+                    <td>
+                        {{u.name}}
+                    </td>
+                    <td>
+                        {{u.username}}
+                    </td>
+                    <td>
+                        {{u.active}}
+                    </td>
+                    <td>
+                        <button *ngIf="u.active" class="btn btn-default btn-sm" title="Deactivate" (click)="deactivate(u.id)">
+                            <icon [type]="'block'" [size]="1"></icon>
+                        </button>
+                        <button *ngIf="!u.active" class="btn btn-default btn-sm" title="Activate" (click)="activate(u.id)">
+                            <icon [type]="'power'" [size]="1"></icon>
+                        </button>
+                        <button class="btn btn-default btn-sm" title="Delete" (click)="delete(u.id)">
+                            <icon [type]="'delete'" [size]="1"></icon>
+                        </button>
+                        &nbsp;&nbsp;&nbsp;
+                        <button class="btn btn-warning btn-sm" title="Reset Password" (click)="resetPassword(u.id)">
+                            <icon [type]="'key'" [size]="1"></icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<modal #mWait [size]=1 [type]="'block'" [canEscape]=false [hasHeader]="false">
+    <div class="content-body">
+        <div class="text-center">
+            Please Wait...<br/>
+            <i class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+         </div>
+    </div>
+</modal>

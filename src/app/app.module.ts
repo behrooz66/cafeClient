@@ -23,6 +23,7 @@ import {GiftCardsModule} from './giftcards/giftcards.module';
 import {ReservationsModule} from './reservations/reservations.module';
 import {AccountModule} from './account/account.module';
 import {ReportsModule} from './reports/reports.module';
+import {AdminModule} from './admin/admin.module';
 
 import {AppRouting} from './app-routing';
 import {CustomerRouting} from './customers/customer-routing';
@@ -31,6 +32,7 @@ import {GiftCardRouting} from './giftcards/giftcard-routing';
 import {ReservationRouting} from './reservations/reservation-routing';
 import {AccountRouting} from './account/account-routing';
 import {ReportRouting} from './reports/report-routing';
+import {AdminRouting} from './admin/admin-routing';
 
 
 @NgModule({
@@ -58,6 +60,8 @@ import {ReportRouting} from './reports/report-routing';
     AccountRouting,
     ReportsModule,
     ReportRouting,
+    AdminModule,
+    AdminRouting,
     AppRouting
   ],
   providers: [

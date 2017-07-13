@@ -1,0 +1,40 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h4>Add a New User</h4>
+    </div>
+
+    <div class="panel-body">
+        <label>Employee's Name:</label>
+        <input class="form-control" type="text" [(ngModel)]="user.name" >
+        <br/>
+
+        <label>Username:</label>
+        <input class="form-control" type="text" [(ngModel)]="user.username" >
+        <br/>
+
+        <button class="btn btn-primary" type="button" (click)="submit();"
+          [disabled]="!user.name || !user.username ">
+          Save
+        </button>
+
+    </div>
+</div>
+
+<div class="alert alert-success text-center" *ngIf="showPassword">
+
+The user {{user.username}} was created. The temporary password is <h3> {{password}} </h3>
+
+<p>
+  The user will be advised to change their password after the first login.
+</p>
+</div>
+
+
+<modal #mWait [size]=1 [type]="'block'" [canEscape]=false [hasHeader]="false">
+    <div class="content-body">
+        <div class="text-center">
+            Please Wait...<br/>
+            <i class="fa fa-refresh fa-spin" aria-hidden="true"></i>
+         </div>
+    </div>
+</modal>

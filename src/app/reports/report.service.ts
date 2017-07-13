@@ -104,7 +104,8 @@ export class ReportService {
           .map(r => r.json());
   }
 
-  getGiftCardsTopCustomers(dateFrom: string, dateTo: string, minRevenue: number, minCards: number, typeId = null) {
+  getGiftCardsTopCustomers(dateFrom: string, dateTo: string, minRevenue: number, minCards: number, typeId = null) 
+  {
       let params: string = '?dateFrom=' + dateFrom + '&dateTo=' + dateTo + '&minRevenue=' + minRevenue.toString() + '&minCards=' + minCards.toString();
       if (typeId !== null) {
           params += '&typeId=' + typeId;
