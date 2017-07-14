@@ -3,14 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { SignupComponent } from './signup/signup.component';
 import { SigninComponent} from './signin/signin.component';
-//import { CustomerDetailsComponent } from './customer-details/customer-details.component';
+import { UpdatePasswordComponent } from './update-password/update-password.component';
+import { SignoutComponent } from './signout/signout.component';
+
 
 const routes:Routes = [
-    // todo : this component should navigate based on user's settings.
-    // {
-    //     path: '',
-    //     component: AdminDispatcher
-    // ,}
     {
         path: 'account/signup',
         component: SignupComponent
@@ -18,6 +15,14 @@ const routes:Routes = [
     {
         path: 'account/signin',
         component: SigninComponent
+    },
+    {
+        path: 'account/update-password/:mustChangePassword',
+        component: UpdatePasswordComponent,
+    }, 
+    {
+        path: 'account/signout',
+        component: SignoutComponent
     }
 ];
 

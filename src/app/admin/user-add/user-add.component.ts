@@ -56,10 +56,8 @@ export class UserAddComponent implements OnInit {
                          2
                       );
                   else {
-                      this._flash.addMessage("Error", "Unable to create the user.", true, "danger", 2500, 2);
+                      this._flash.addMessage("Error", "Unable to create the user.", true, "danger", 3500, 2);
                   }
-
-                  console.log(d);
               }
           );
   }

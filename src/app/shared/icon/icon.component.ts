@@ -99,6 +99,10 @@ export class IconComponent implements OnInit {
       {
           type: "key",
           path: "./assets/icons/key.png"
+      },
+      {
+          type: "ok",
+          path: "./assets/icons/ok.png"
       }
   ];
 

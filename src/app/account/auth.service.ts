@@ -37,12 +37,11 @@ export class AuthService {
               localStorage.setItem('bdCityId', this.parseJwt(d.access_token).cityId);
                 localStorage.setItem('bdProvince', this.parseJwt(d.access_token).province);
                 localStorage.setItem('bdRestaurant', this.parseJwt(d.access_token).restaurantId);
+                //localStorage.setItem('bdMustChangePassword', this.parseJwt(d.access_token).mustChangePassword);
               this.saveRoles(d.access_token);
-              console.log("Token obtained");
               return d;
           })
           .catch(error => {
-              console.log("token obtain failed.");
               this.clearAuthData();
               return Observable.throw(error)
           });
@@ -76,8 +75,8 @@ export class AuthService {
                 localStorage.setItem('bdCityId', this.parseJwt(d.access_token).cityId);
                 localStorage.setItem('bdProvince', this.parseJwt(d.access_token).province);
                 localStorage.setItem('bdRestaurant', this.parseJwt(d.access_token).restaurantId);
+                //localStorage.setItem('bdMustChangePassword', this.parseJwt(d.access_token).mustChangePassword);
                 this.saveRoles(d.access_token);
-                console.log("refresh success");
                 return data;
             }
        );

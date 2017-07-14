@@ -49,6 +49,7 @@ export class UsersListComponent implements OnInit {
             .subscribe(
                 d => {
                     this.refresh();
+                    this._flash.addMessage("Success", "The user was activated.", true, "success", 2500, 2);
                 },
                 d => {
                     this._flash.addMessage("Error", "Unable to perform the operation.", true, "danger", 2500, 2);
@@ -62,6 +63,7 @@ export class UsersListComponent implements OnInit {
             .subscribe(
                 d => {
                     this.refresh();
+                    this._flash.addMessage("Success", "The user was deactivated.", true, "success", 2500, 2);
                 },
                 d => {
                     this._flash.addMessage("Error", "Unable to perform the operation.", true, "danger", 2500, 2);
@@ -71,7 +73,30 @@ export class UsersListComponent implements OnInit {
 
   delete(id)
   {
-      
+      this._admin.deleteUser(id)
+            .subscribe(
+                d => {
+                    this.refresh();
+                    this._flash.addMessage("Success", "The user was deleted.", true, "success", 2500, 2);
+                },
+                d => {
+                    this._flash.addMessage("Error", "Unable to perform the operation.", true, "danger", 2500, 2);
+                }
+            );
+  }
+
+  resetPassword(id)
+  {
+      this._admin.resetPassword(id)
+          .subscribe(
+              d => {
+                  this._flash.addMessage("Success", "The new temporary password is " + d._body , false, "success", 3000, 2);
+              },
+              d => {
+                  this._flash.addMessage("Error", "Unable to perform the operation.", true, "danger", 2500, 2);
+                  console.log(d);
+              }
+          )
   }
 
   

@@ -2,14 +2,14 @@
     <div class="panel-heading">
         <tr>
             <td>
-                <button class="btn btn-default btn-sm" (click)="addUser();">
+                <a class="btn btn-default btn-sm" [routerLink]="['/users/add']" title="Add a New User">
                     <icon [type]="'add'" [size]="2">
                     </icon>
-                </button>
+                </a>
             </td>
             <td>&nbsp;&nbsp;</td>
             <td>
-                <button class="btn btn-default btn-sm" (click)="refresh();">
+                <button class="btn btn-default btn-sm" (click)="refresh();" title="Refresh">
                     <icon [type]="'refresh'" [size]="2">
                     </icon>
                 </button>

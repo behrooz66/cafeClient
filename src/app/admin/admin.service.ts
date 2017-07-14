@@ -46,22 +46,26 @@ export class AdminService {
 
   deactivateUser(id: string) 
   {
-      console.log(this.apiBase + 'deactivateUser/' + id);
-      return this._http.put(this.apiBase + 'deactivateUser?userid=' + id, null)
+      return this._http.put(this.apiBase + 'deactivateUser/' + id, null)
           //.map(res => res.json());
   }
-
-  // todo: delete. Server side code should not take id from body
-
-  // todo: udpate password, but not sure if I will leave the server side code in the same controller or not.
 
   updatePassword(oldPassword: string, newPassword: string)
   {
       return this._http.put(this.apiBase + 'updatePassword', {
           oldPassword: oldPassword,
           newPassword: newPassword
-      })
-      .map(res => res.json());
+      });
+  }
+
+  deleteUser(id: string) 
+  {
+      return this._http.delete(this.apiBase + 'deleteUser/' + id);
+  }
+
+  resetPassword(id: string)
+  {
+      return this._http.put(this.apiBase + 'resetPassword/' + id, {});
   }
 
 }

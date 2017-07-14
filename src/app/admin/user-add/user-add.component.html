@@ -21,12 +21,18 @@
 </div>
 
 <div class="alert alert-success text-center" *ngIf="showPassword">
+    
+        The user was created and can login using the following credentials:<br/>
+        Username: <h4>{{user.username}}</h4>
+        Password: <h4>{{password}}</h4>
 
-The user {{user.username}} was created. The temporary password is <h3> {{password}} </h3>
-
-<p>
-  The user will be advised to change their password after the first login.
-</p>
+        <p>
+        The user will be advised to change their password after the first login.
+        </p>
+        <br/>
+        <a class="btn btn-default" [routerLink]="['/users']" style="color:black;">
+            OK <icon [type]="'ok'" [size]="2"></icon>
+        </a>
 </div>
 
 

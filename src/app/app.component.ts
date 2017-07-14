@@ -21,6 +21,7 @@ export class AppComponent implements OnInit{
       this._flashMsg.messagesChanged.subscribe(
           d => this.flashMessages = d
       )
+      console.log("app created!");
   }
 
   addMsg(){
