@@ -103,6 +103,34 @@ export class IconComponent implements OnInit {
       {
           type: "ok",
           path: "./assets/icons/ok.png"
+      },
+      {
+          type: "login",
+          path: "./assets/icons/login.png"
+      },
+      {
+          type: "logout",
+          path: "./assets/icons/logout.png"
+      },
+      {
+          type: "customers",
+          path: "./assets/icons/customers.png"
+      },
+      {
+          type: "reports",
+          path: "./assets/icons/reports.png"
+      },
+      {
+          type: "control",
+          path: "./assets/icons/control.png"
+      },
+      {
+          type: "eye",
+          path: "./assets/icons/eye.png"
+      },
+      {
+          type: "users",
+          path: "./assets/icons/users.png"
       }
   ];
 

@@ -11,7 +11,7 @@ import {Observable} from 'rxjs/Rx';
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css'],
-  providers: [HttpAuthService, AuthService]
+  providers: [HttpAuthService]
 })
 export class SignupComponent implements OnInit {
 

@@ -1,6 +1,7 @@
 import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import {ICustomer} from '../icustomer';
 import { RolesService } from '../../shared/roles.service';
+import { AuthService } from '../../account/auth.service';
 import { Settings } from '../../settings';
 
 @Component({
@@ -20,7 +21,9 @@ import { Settings } from '../../settings';
         <input *ngIf="!isManager" class="form-control form-inline" type="text" [(ngModel)]="exp" 
                     (input)="onChange()" placeholder="Search by name or phone number..." />
     `,
-    providers: [ RolesService]
+    providers: [ 
+        //RolesService
+    ]
 })
 
 export class CustomersFilterComponent implements OnInit {
@@ -32,7 +35,7 @@ export class CustomersFilterComponent implements OnInit {
 
     isManager: boolean = false;
         
-    constructor(private _roles: RolesService){
+    constructor(private _roles: AuthService){
 
     }
 

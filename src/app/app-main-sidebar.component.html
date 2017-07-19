@@ -8,57 +8,65 @@
             <i class="fa fa-dashboard"></i> <span>Home</span>
           </a>
         </li>
-        <li class="treeview">
+        <li *ngIf="isLoggedIn" class="treeview">
           <a routerLink="customers">
-            <i class="fa fa-files-o"></i>
-            <span>Customers</span>
+            <tr>
+                <td><icon [type]="'customers'" [size]="3"></icon> &nbsp;</td>
+                <td><h4>Customers</h4></td>
+            </tr>
           </a>
         </li>
-        <li>
-          <a href="pages/widgets.html">
-            <i class="fa fa-th"></i>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-            <span>Reports</span>
+        <li *ngIf="isLoggedIn && isManager">
+          <a href="#">
+            <tr>
+                <td><icon [type]="'reports'" [size]="3"></icon> &nbsp;</td>
+                <td><h4>Reports</h4></td>
+            </tr>
           </a>
           <ul class="treeview-menu">
               <li><a routerLink="reports">
-                    <i class="fa fa-circle-o"></i>Summary
+                    <icon [type]="'eye'" [size]="1"></icon>&nbsp; Summary
                   </a>
               </li>
-              <li><a href="#"><i class="fa fa-circle-o"></i>Orders</a></li>
-              <li><a href="#"><i class="fa fa-circle-o"></i>Gift Cards</a></li>
-              <li><a href="#"><i class="fa fa-circle-o"></i>Reservations</a></li>
+              <li><a href="#"><icon [type]="'order-add'" [size]="1"></icon>&nbsp; Orders</a></li>
+              <li><a href="#"><icon [type]="'giftcard-add'" [size]="1"></icon>&nbsp; Gift Cards</a></li>
+              <li><a href="#"><icon [type]="'reservation-add'" [size]="1"></icon>&nbsp; Reservations</a></li>
           </ul>
         </li>
-        <li class="treeview">
+        <li *ngIf="isLoggedIn && isManager" class="treeview">
           <a href="#">
-            <i class="fa fa-pie-chart"></i>
-            <span>Administration</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+            <tr>
+                <td><icon [type]="'control'" [size]="3"></icon> &nbsp;</td>
+                <td><h4>Administration</h4></td>
+            </tr>
           </a>
           <ul class="treeview-menu">
               <li>
                   <a routerLink="users">
-                    <i class="fa fa-files-o"></i>
+                    <icon [type]="'users'" [size]="1"></icon> &nbsp;
                     <span>Manage Users</span>
                   </a>
               </li>
               <li><a href="#"><i class="fa fa-circle-o"></i>My Restaurant</a></li>
               <li><a href="#"><i class="fa fa-circle-o"></i>Support Cases</a></li>
-              <li><a [routerLink]="['/account/signin']"><i class="fa fa-circle-o"></i>Sign In</a></li>
-              <li><a [routerLink]="['/account/signout']"><i class="fa fa-circle-o"></i>Sign Out</a></li>
           </ul>
         </li>
-        
-        <!--<li><a href="documentation/index.html"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
-        <li class="header">LABELS</li>
-        <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>-->
+        <li *ngIf="!isLoggedIn" class="treeview">
+          <a [routerLink]="['/account/signin']">
+            <tr>
+                <td><icon [type]="'login'" [size]="3"></icon> &nbsp;</td>
+                <td><h4>Sign In</h4></td>
+            </tr>
+          </a>
+        </li>
+        <li *ngIf="isLoggedIn" class="treeview">
+          <a [routerLink]="['/account/signout']">
+            <tr>
+                <td><icon [type]="'logout'" [size]="3"></icon> &nbsp;</td>
+                <td><h4>Sign Out</h4></td>
+            </tr>
+          </a>
+        </li>
       </ul>
     </section>
     <!-- /.sidebar -->

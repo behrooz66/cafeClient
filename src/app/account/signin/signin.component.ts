@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.css'],
   providers: [
-      AuthService
+      //AuthService
   ]
 })
 export class SigninComponent implements OnInit {

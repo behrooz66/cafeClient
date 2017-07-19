@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FlashMessageService } from './shared/flash-message/flash-message.service';
 import { FlashMessage } from './shared/flash-message/flash-message';
+import { Observable } from "rxjs/Observable";
 
 
 
@@ -15,6 +16,7 @@ export class AppComponent implements OnInit{
   flashMessages: FlashMessage[] = [];
 
   constructor(private _flashMsg:FlashMessageService){
+      
   }
 
   ngOnInit(){

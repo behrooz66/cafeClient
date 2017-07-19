@@ -35,34 +35,37 @@ import {ReportRouting} from './reports/report-routing';
 import {AdminRouting} from './admin/admin-routing';
 
 
+
+
+
 @NgModule({
   declarations: [
-    AppComponent,
-    AppMainSidebarComponent,
-    AppMessagesPlaceholder,
-    HomeComponent
+      AppComponent,
+      AppMainSidebarComponent,
+      AppMessagesPlaceholder,
+      HomeComponent
   ],
   imports: [
-    SharedModule,
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    CustomersModule,
-    OrdersModule,
-    GiftCardsModule,
-    ReservationsModule,
-    AccountModule,
-    RouterModule,
-    CustomerRouting,
-    OrderRouting,
-    GiftCardRouting,
-    ReservationRouting,
-    AccountRouting,
-    ReportsModule,
-    ReportRouting,
-    AdminModule,
-    AdminRouting,
-    AppRouting
+      SharedModule,
+      BrowserModule,
+      FormsModule,
+      HttpModule,
+      CustomersModule,
+      OrdersModule,
+      GiftCardsModule,
+      ReservationsModule,
+      AccountModule,
+      RouterModule,
+      CustomerRouting,
+      OrderRouting,
+      GiftCardRouting,
+      ReservationRouting,
+      AccountRouting,
+      ReportsModule,
+      ReportRouting,
+      AdminModule,
+      AdminRouting,
+      AppRouting
   ],
   providers: [
       //SettingsService,
