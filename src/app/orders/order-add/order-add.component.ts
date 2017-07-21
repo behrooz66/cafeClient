@@ -24,7 +24,7 @@ export class OrderAddComponent implements OnInit, OnDestroy {
 
   onSubmitErrors = [];
   @ViewChild('mOnSumbitValidation') mOnSubmitValidation;
-  @ViewChild('mWait') mWait;
+  waiting: boolean = false;
 
   constructor(fb: FormBuilder,
               private _orderService: OrderService,
@@ -63,7 +63,7 @@ export class OrderAddComponent implements OnInit, OnDestroy {
   }
 
   cancel(){
-      this.mWait.open();
+      this.waiting = true;
       this._flashMessage.addMessage("Error", "Unable to update the customer. Please contact support if this recurring.", false, "danger", 2500, 2);
   }
 
@@ -72,7 +72,7 @@ export class OrderAddComponent implements OnInit, OnDestroy {
           this.mOnSubmitValidation.open();
       }
       else {
-          this.mWait.open();
+          this.waiting = true;
           this._orderService.post(this.order)
               .subscribe(d => {
                   this._flashMessage.addMessage("", "Order successfully added.", true, "success", 2500, 2);
@@ -80,10 +80,10 @@ export class OrderAddComponent implements OnInit, OnDestroy {
               }, 
               d => {
                   this._flashMessage.addMessage("Error", "Unable to add the order. Please contact support if this recurring.", false, "danger", 2500, 2);
-                  this.mWait.close();
+                  this.waiting = false;
               },
               () => {
-                  this.mWait.close();
+                  this.waiting = false;
               });
       }
   }

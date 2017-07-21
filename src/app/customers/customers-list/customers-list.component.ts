@@ -21,7 +21,6 @@ export class CustomersListComponent implements OnInit {
   
   @ViewChild('mConfirmDelete') mConfirmDelete;
   @ViewChild('mConfirmPermanentDelete') mConfirmPermanentDelete;
-  @ViewChild('mWait') mWait;
 
   pageCustomers = [];
   pages = [];
@@ -29,6 +28,8 @@ export class CustomersListComponent implements OnInit {
       pageSize: 5,
       index: 0
   };
+
+  waiting = false;
 
   constructor(private _customerService:CustomerService,
               private _cdr:ChangeDetectorRef,
@@ -41,7 +42,7 @@ export class CustomersListComponent implements OnInit {
   }
 
   refresh() {
-      this.mWait.open();
+      this.waiting = true;
       this._customerService.getCustomers()
           .subscribe(d => {
               this.customers = d;
@@ -50,10 +51,10 @@ export class CustomersListComponent implements OnInit {
               else
                   this.filteredCustomers = this.customers;
               this.pagingSetup();
-              this.mWait.close();
+              this.waiting = false;
           },
           d => {
-              this.mWait.close();
+              this.waiting = false;
               this._flashMessage.addMessage("Error", "Could not retrieve customer. Please refresh.", false, "danger", 2000, 2);
           });
   }
@@ -75,7 +76,7 @@ export class CustomersListComponent implements OnInit {
   private deleteCandidateId:number;
   private mConfirmDeleteClose($event){
       if ($event.result === true) {
-          this.mWait.open();
+          this.waiting = true;
           this._customerService.archiveCustomer(this.deleteCandidateId)
               .subscribe(d => {
                   let index = this.filteredCustomers.indexOf(this.filteredCustomers.filter(x => x.id == this.deleteCandidateId)[0]);
@@ -83,11 +84,11 @@ export class CustomersListComponent implements OnInit {
                   if (!Settings.customers.showDeletedCustomers)
                       this.filteredCustomers.splice(index, 1);
                   this.pagingSetup();
-                  this.mWait.close();
+                  this.waiting = false;
                   this._flashMessage.addMessage("", "Customer successfully deleted.", true, "success", 2500, 2);
               },
               d => {
-                  this.mWait.close();
+                  this.waiting = false;
                   this._flashMessage.addMessage("Error", "Could not delete customer. Please contact support if this is recurring.", false, "danger", 2500, 2);
               });
      }
@@ -100,17 +101,17 @@ export class CustomersListComponent implements OnInit {
   private permanentDeleteCandidateId: number;
   private mConfirmPermanentDeleteClose($event) {
       if ($event.result === true){
-          this.mWait.open();
+          this.waiting = true;
           this._customerService.deleteCustomer(this.permanentDeleteCandidateId)
                 .subscribe(d => {
                     let index = this.filteredCustomers.indexOf(this.filteredCustomers.filter(x => x.id == this.deleteCandidateId)[0]);
                     this.filteredCustomers.splice(index, 1);
                     this.pagingSetup();
-                    this.mWait.close();
+                    this.waiting = false;
                     this._flashMessage.addMessage("", "Customer successfully deleted.", true, "success", 2500, 2); 
                 },
                 d => {
-                    this.mWait.close();
+                    this.waiting = false;
                     this._flashMessage.addMessage("Error", "Could not delete customer. Please contact support if this is recurring.", false, "danger", 2500, 2);
                 });
       }

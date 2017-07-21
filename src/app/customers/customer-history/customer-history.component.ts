@@ -15,8 +15,8 @@ export class CustomerHistoryComponent implements OnInit, OnDestroy {
 
   sub;
   history: any[] = [];
-  
-  @ViewChild('mWait') mWait;
+
+  waiting = false;
 
   constructor(private _customerService: CustomerService,
               private _activatedRoute: ActivatedRoute,
@@ -25,7 +25,7 @@ export class CustomerHistoryComponent implements OnInit, OnDestroy {
 
 
  ngOnInit() {
-      this.mWait.open();
+      this.waiting = true;
       let id: number;
       this.sub = this._activatedRoute.params.subscribe(
            params => {
@@ -36,10 +36,10 @@ export class CustomerHistoryComponent implements OnInit, OnDestroy {
       this._customerService.getHistory(id).subscribe(
         d => {
             this.history = d;
-            this.mWait.close();
+            this.waiting = false;
         },
         d => {
-            this.mWait.close();
+            this.waiting = false;
             this._flashMessage.addMessage("Error", "Error in retrieving history. Please refresh the page.", false, "danger", 2000, 2);
         }
       )

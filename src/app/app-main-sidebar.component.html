@@ -5,23 +5,21 @@
       <ul class="sidebar-menu">
         <li class="treeview">
           <a routerLink="">
-            <i class="fa fa-dashboard"></i> <span>Home</span>
+            <icon [type]="'home2'" [size]="2"></icon> &nbsp; <span>Home</span>
           </a>
         </li>
         <li *ngIf="isLoggedIn" class="treeview">
           <a routerLink="customers">
-            <tr>
-                <td><icon [type]="'customers'" [size]="3"></icon> &nbsp;</td>
-                <td><h4>Customers</h4></td>
-            </tr>
+            <icon [type]="'customers'" [size]="2"></icon> &nbsp;<span>Customers</span>
+            <!--<tr>
+                <td></td>
+                <td></td>
+            </tr>-->
           </a>
         </li>
         <li *ngIf="isLoggedIn && isManager">
           <a href="#">
-            <tr>
-                <td><icon [type]="'reports'" [size]="3"></icon> &nbsp;</td>
-                <td><h4>Reports</h4></td>
-            </tr>
+            <icon [type]="'reports'" [size]="2"></icon>&nbsp;&nbsp;<span>Reports</span>
           </a>
           <ul class="treeview-menu">
               <li><a routerLink="reports">
@@ -35,10 +33,11 @@
         </li>
         <li *ngIf="isLoggedIn && isManager" class="treeview">
           <a href="#">
-            <tr>
-                <td><icon [type]="'control'" [size]="3"></icon> &nbsp;</td>
-                <td><h4>Administration</h4></td>
-            </tr>
+            <icon [type]="'control'" [size]="2"></icon> &nbsp;<span>Administration</span>
+            <!--<tr>
+                <td></td>
+                <td><h4></h4></td>
+            </tr>-->
           </a>
           <ul class="treeview-menu">
               <li>
@@ -53,18 +52,12 @@
         </li>
         <li *ngIf="!isLoggedIn" class="treeview">
           <a [routerLink]="['/account/signin']">
-            <tr>
-                <td><icon [type]="'login'" [size]="3"></icon> &nbsp;</td>
-                <td><h4>Sign In</h4></td>
-            </tr>
+            <icon [type]="'login'" [size]="2"></icon> &nbsp;<span>Sign In</span>
           </a>
         </li>
         <li *ngIf="isLoggedIn" class="treeview">
           <a [routerLink]="['/account/signout']">
-            <tr>
-                <td><icon [type]="'logout'" [size]="3"></icon> &nbsp;</td>
-                <td><h4>Sign Out</h4></td>
-            </tr>
+            <icon [type]="'logout'" [size]="2"></icon> &nbsp;<span>Sign Out</span>
           </a>
         </li>
       </ul>

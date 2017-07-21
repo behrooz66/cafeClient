@@ -35,7 +35,8 @@ export class CustomerAddComponent implements OnInit {
   @ViewChild('m1') m1;
   @ViewChild('m2') m2;
   @ViewChild('mOnSumbitValidation') mOnSumbitValidation;
-  @ViewChild('mWait') mWait;
+
+  waiting: boolean = false;
 
   constructor(fb: FormBuilder,
               private _router:Router, 
@@ -118,7 +119,7 @@ export class CustomerAddComponent implements OnInit {
   private postCustomer(){
        this._customerService.addCustomer(this.customer)
             .finally(() => {
-                this.mWait.close();
+               this.waiting = false;
             })
             .subscribe(d => {
                 this._flashMessage.addMessage("", this.customer.name+" was added successfully!", true, "success", 3000, 2);
@@ -136,7 +137,7 @@ export class CustomerAddComponent implements OnInit {
       }
       
       //start the waitbox
-      this.mWait.open();
+      this.waiting = true;
 
       let address = this.customer.address + 
             ", " + this.city +
@@ -152,12 +153,12 @@ export class CustomerAddComponent implements OnInit {
                     this.postCustomer();
                 }
                 else {
-                    this.mWait.close();
+                    this.waiting = false;
                     this.m1.open();
                 }
             },
             x => {
-                this.mWait.close();
+                this.waiting = false;
                 this.m2.open();
             }
         );
@@ -170,7 +171,7 @@ export class CustomerAddComponent implements OnInit {
         }
         
         //start the waitbox
-        this.mWait.open();
+        this.waiting = true;
 
         this.customer.addressFound = false;
         this.customer.address = "";
@@ -180,7 +181,7 @@ export class CustomerAddComponent implements OnInit {
 
   private modalClose($event){
       if ($event.result === true) {
-          this.mWait.open();
+          this.waiting = true;
           this.customer.addressFound = false;
           this.postCustomer();
       }

@@ -1,0 +1,33 @@
+.wait {
+    width: 100%;
+    position: fixed;
+    display: none;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 9998;
+    background-color: red;
+    overflow: auto;
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.wait-content {
+    margin:100px auto;
+    z-index: 9999;
+}
+
+.wait-sm {
+    width: 15%;
+    min-width:180px;
+}
+
+.wait-md {
+    width: 50%;
+    min-width:250px;
+}
+
+.wait-lg {
+    width: 75%;
+    min-width:280px;
+}

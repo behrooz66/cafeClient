@@ -22,7 +22,7 @@ export class ReservationsListComponent implements OnInit {
 
   showDeleted = Settings.orders.showDeletedOrders;
 
-  @ViewChild('mWait') mWait;
+  waiting: boolean = false;
   @ViewChild('mConfirmDelete') mConfirmDelete;
   @ViewChild('mConfirmPermanentDelete') mConfirmPermanentDelete;
   @ViewChild('mConfirmUndelete') mConfirmUndelete;
@@ -83,16 +83,16 @@ export class ReservationsListComponent implements OnInit {
   }
 
   refresh() {
-      this.mWait.open();
+      this.waiting = true;
       this._reservationService.getReservationsByCustomer(this.customerId)
           .subscribe(
               d => {
                   this.reservations = d;
-                  this.mWait.close();
+                  this.waiting = false;
                   this.filterAndPage();
               },
               d => {
-                  this.mWait.close();
+                  this.waiting = false;
                   this._flash.addMessage("Error", "Error in retrieving the reservations", false, "danger", 2500, 2);
               }
       );
@@ -181,7 +181,7 @@ export class ReservationsListComponent implements OnInit {
   }
 
   filterAndPage(){
-      this.mWait.open();
+      this.waiting = true;
       let x = this._record.getPageItems(this.reservations, this.filtersInfo, this.sortInfo, this.pageInfo);
       this.pageReservations = x.data;
       this.pages = new Array(x.numberOfPages);
@@ -189,7 +189,7 @@ export class ReservationsListComponent implements OnInit {
       if (this.pageReservations.length === 0 && this.pages.length !==0)
         this.setPage(this.pageInfo.index - 1);
 
-      this.mWait.close();
+      this.waiting = false;
   }
 
   clearFilters() {
@@ -202,11 +202,11 @@ export class ReservationsListComponent implements OnInit {
   }
 
   showDeletedChange(){
-      this.mWait.open();
+      this.waiting = true;
       Settings.reservations.showDeletedReservations = this.showDeleted;
       this.filtersInfo[3]["status"] = this.showDeleted;
       this.filterAndPage();
-      this.mWait.close();
+      this.waiting = false;
   }
 
 

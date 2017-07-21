@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-success">
     <div class="panel-heading">
         <div class="input-group">
             <span class="input-group-btn">
@@ -8,7 +8,7 @@
             </span>
             <customers-filter [source]="customers" (on-change)="filter($event)"></customers-filter>
             <span class="input-group-btn">
-                <a class="btn btn-primary" [routerLink]="['/customers/add']">New Customer</a>
+                <a class="btn btn-default" [routerLink]="['/customers/add']"><icon [type]="'add'" [size]="1"></icon>&nbsp;&nbsp;Create</a>
             </span>
         </div>
     </div>
@@ -128,11 +128,6 @@
     </div>
 </div>
 
-<!--<paging [source]="filteredCustomers" [pageSize]="pageSize" [sizes]="availablePageSizes"
-        [allowPageSizeChange]=true
-      (index-change)="pageIndexChange($event);"></paging>-->
-
-
 <modal #mConfirmDelete [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="'danger'" (on-close)="mConfirmDeleteClose($event);">
     <div class="content-head">
         Delete Customer
@@ -152,11 +147,4 @@
     </div>
 </modal>
 
-<modal #mWait [size]=1 [type]="'block'" [canEscape]=false [hasHeader]="false">
-    <div class="content-body">
-        <div class="text-center">
-            Please Wait...<br/>
-            <i class="fa fa-refresh fa-spin" aria-hidden="true"></i>
-         </div>
-    </div>
-</modal>
+<wait [visible]="waiting"></wait>

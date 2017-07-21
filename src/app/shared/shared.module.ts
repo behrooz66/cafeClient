@@ -19,6 +19,7 @@ import { GiftcardTypeComponent } from './giftcard-type/giftcard-type.component';
 import { IconComponent } from './icon/icon.component';
 import { MonthPickerComponent } from './month-picker/month-picker.component';
 import { LoadingComponent } from './loading/loading.component';
+import { WaitComponent } from './wait/wait.component';
 //import { ModalService } from './modal/modal.service';
 
 @NgModule({
@@ -44,6 +45,7 @@ import { LoadingComponent } from './loading/loading.component';
     IconComponent,
     MonthPickerComponent,
     LoadingComponent,
+    WaitComponent,
   ],
   exports: [
     PagingComponent,
@@ -60,7 +62,8 @@ import { LoadingComponent } from './loading/loading.component';
     GiftcardTypeComponent,
     IconComponent,
     MonthPickerComponent,
-    LoadingComponent
+    LoadingComponent,
+    WaitComponent
   ],
   providers: [
     //ModalService

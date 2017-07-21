@@ -23,7 +23,7 @@ export class GiftCardsListComponent implements OnInit, OnDestroy {
 
   showDeleted = Settings.giftcards.showDeletedGiftCards;
 
-  @ViewChild('mWait') mWait;
+  waiting: boolean = false;
   @ViewChild('mConfirmDelete') mConfirmDelete;
   @ViewChild('mConfirmPermanentDelete') mConfirmPermanentDelete;
   @ViewChild('mConfirmUndelete') mConfirmUndelete;
@@ -95,17 +95,17 @@ export class GiftCardsListComponent implements OnInit, OnDestroy {
   }
 
   refresh() {
-      this.mWait.open();
+      this.waiting = true;
       this._giftCardService.getGiftCardsByCustomer(this.customerId)
           .subscribe(
               d => {
                   this.giftcards = d;
-                  this.mWait.close();
+                  this.waiting = false;
                   this.filterAndPage();
                   console.log(this.giftcards);
               },
               d => {
-                  this.mWait.close();
+                  this.waiting = false;
                   this._flash.addMessage("Error", "Error in retrieving the gift cards.", false, "danger", 2500, 2);
               }
       );
@@ -193,7 +193,7 @@ export class GiftCardsListComponent implements OnInit, OnDestroy {
   }
 
   filterAndPage(){
-      this.mWait.open();
+      this.waiting = true;
       console.log(this.filtersInfo);
       let x = this._record.getPageItems(this.giftcards, this.filtersInfo, this.sortInfo, this.pageInfo);
       this.pageCards = x.data;
@@ -202,7 +202,7 @@ export class GiftCardsListComponent implements OnInit, OnDestroy {
       if (this.pageCards.length === 0 && this.pages.length !==0)
         this.setPage(this.pageInfo.index - 1);
 
-      this.mWait.close();
+      this.waiting = false;
   }
 
   clearFilters() {
@@ -220,13 +220,13 @@ export class GiftCardsListComponent implements OnInit, OnDestroy {
   }
 
   showDeletedChange(){
-      this.mWait.open();
+      this.waiting = true;
       Settings.giftcards.showDeletedGiftCards = this.showDeleted;
       
       // todo: adjust this
       this.filtersInfo[5]["status"] = this.showDeleted;
       this.filterAndPage();
-      this.mWait.close();
+      this.waiting = false;
   }
 
 

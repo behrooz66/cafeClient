@@ -40,7 +40,8 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
   @ViewChild('m1') m1;
   @ViewChild('m2') m2;
   @ViewChild('mOnSumbitValidation') mOnSubmitValidation;
-  @ViewChild('mWait') mWait;
+  
+  waiting = false;
 
   constructor(fb: FormBuilder, 
               private _geocoder:GeocoderService,
@@ -66,6 +67,7 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
       //this.mode = "loading";
+      this.waiting = true;
       this.province = localStorage.getItem("bdProvince");
       this.city = localStorage.getItem("bdCity");
       let id = 0 ;
@@ -80,9 +82,11 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
                 this.initialAddress.address = this.customer.address;
                 this.initialAddress.postalCode = this.customer.postalCode;
                 this.initialAddress.noAddress = this.customer.noAddress;
+                this.waiting = false;
             },
             d => {
                 //this.mode = "error";
+                this.waiting = false;
             });
   }
 
@@ -95,9 +99,7 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
   }
 
   toggleNoAddress() {
-    console.log("Checkbox change detected!");
     this.customer.noAddress = !this.customer.noAddress;
-    console.log(this.customer.noAddress)
   }
 
 
@@ -115,6 +117,7 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
   }
 
   private save() {
+      this.waiting = true;
       this._customerService.updateCustomer(this.customer.id, this.customer)
         .subscribe(
             d => {
@@ -125,7 +128,7 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
                 this._flashMessage.addMessage("Error", "Unable to update the customer. Please contact support if this recurring.", false, "danger", 2500, 2);
             },
             () => {
-                this.mWait.close();
+                this.waiting = false;
             }
         );
   }
@@ -135,7 +138,7 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
           this.mOnSubmitValidation.open();
           return;
       }
-      this.mWait.open();
+      this.waiting = true;
       
       if (this.customer.noAddress) {
           this.save();
@@ -155,13 +158,13 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
                         this.save();
                     }
                     else {
-                        this.mWait.close();
+                        this.waiting = false;
                         this.m1.open();
 
                     }
                 }, 
                 d => {
-                    this.mWait.close();
+                    this.waiting = false;
                     this.m2.open();
                 })
           }
@@ -173,7 +176,7 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
 
   private geocodingWarningClose($event){
       if ($event.result === true) {
-          this.mWait.open();
+          this.waiting = true;
           this.customer.addressFound = false;
           this.customer.lat = null;
           this.customer.lon = null;

@@ -20,6 +20,8 @@ export class SigninComponent implements OnInit {
   username: string;
   password: string;
   
+  waiting: boolean = false;
+
   constructor(private _auth:AuthService,
               private _router: Router) { }
 
@@ -30,6 +32,7 @@ export class SigninComponent implements OnInit {
   signin(){
       this.success = false;
       this.error = false;
+      this.waiting = true;
       this._auth.login(this.username, this.password)
                 .subscribe(d => {
                     this.success = true;
@@ -37,9 +40,11 @@ export class SigninComponent implements OnInit {
                         this._router.navigate(['/account/update-password', 'True'])
                     else 
                         this._router.navigate(['/customers'])
+                    this.waiting = false;
                 },
                 d => {
                     this.error = true
+                    this.waiting = false;
                 });
   }
 

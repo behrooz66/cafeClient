@@ -154,6 +154,11 @@ export class AuthService {
   getRole(): string {
         let r = localStorage.getItem("bdRole"); 
         return r;
+  }
+
+  getUsername(): string {
+      let u = localStorage.getItem("bdUsername"); 
+      return u;
   }   
 
   isManager() {

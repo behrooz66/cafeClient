@@ -22,7 +22,13 @@ export class CustomerDetailsComponent implements OnInit {
   private sub;
 
   @ViewChild('mConfirmDelete') mConfirmDelete;
-  @ViewChild('mWait') mWait;
+
+  waiting = {
+      customerSummary: false,
+      orderSummary: false,
+      giftCardSummary: false,
+      reservationSummary: false
+  };
 
   constructor(private _activatedRoute:ActivatedRoute,
               private _router: Router,
@@ -30,7 +36,6 @@ export class CustomerDetailsComponent implements OnInit {
               private _flash: FlashMessageService) { }
 
   ngOnInit() {
-    this.mWait.open();
     this.sub = this._activatedRoute.params.subscribe(params => {
         this.id = +params["id"]
     });
@@ -38,7 +43,6 @@ export class CustomerDetailsComponent implements OnInit {
     this.orderSummary();
     this.giftCardSummary();
     this.reservationSummary();
-    this.mWait.close();
   }
 
 
@@ -48,11 +52,9 @@ export class CustomerDetailsComponent implements OnInit {
 
   private mConfirmDeleteClose($event){
       if ($event.result) {
-          this.mWait.open();
           this._customerService.archiveCustomer(this.id)
               .subscribe( 
                   d => {
-                      this.mWait.close();
                       this._flash.addMessage("Success", "The customer was deleted.", true, "success", 2500, 2);
                       this._router.navigate(["customers"]);
                   },
@@ -64,50 +66,60 @@ export class CustomerDetailsComponent implements OnInit {
   }
 
   private customerSummary() {
-      this.mWait.open();
+      this.waiting.customerSummary = true;
       this._customerService.getCustomer(this.id)
         .subscribe(d => {
             this.customer = d;
-            this.mWait.close();
+            this.waiting.customerSummary = false;
         }, 
         d => {
             this._flash.addMessage("Error", "Error in retrieving data.", true, "danger", 2500, 2);
-            this.mWait.close();
+             this.waiting.customerSummary = false;
         });
   }
 
   private orderSummary() {
+      this.waiting.orderSummary = true;
       this._customerService.orderSummary(this.id)
+          .finally(() => {
+              this.waiting.orderSummary = false;
+          })
           .subscribe(
               d => {
                   this.orderSum = d;
               },
               d => {
-                  // todo
+                  this._flash.addMessage("Error", "Order summary could not be fetched.", true, "danger", 2500, 2);
               }
-          );
+          )
   }
 
   private giftCardSummary() {
+      this.waiting.giftCardSummary = true;
       this._customerService.giftCardSummary(this.id)
           .subscribe(
               d => {
                   this.giftCardSum = d;
+                  this.waiting.giftCardSummary = false;
               },
               d => {
-                  // todo
+                  this.waiting.giftCardSummary = false;
+                  this._flash.addMessage("Error", "Gift Cards summary could not be fetched.", true, "danger", 2500, 2);
               }
           );
   }
 
   private reservationSummary() {
+      this.waiting.reservationSummary = true;
       this._customerService.reservationSummary(this.id)
           .subscribe(
               d => {
                   this.reservationSum = d;
+                  this.waiting.reservationSummary = false;
               },
               d => {
-                  // todo
+                  this.waiting.reservationSummary = false;
+                  this._flash.addMessage("Error", "Reservation summary could not be fetched.", true, "danger", 2500, 2);
               }
           );
   }

@@ -27,7 +27,7 @@ export class GiftCardEditComponent implements OnInit, OnDestroy {
   onSubmitErrors: string[] = [];
 
   @ViewChild('mOnSumbitValidation') mOnSumbitValidation;
-  @ViewChild('mWait') mWait;
+  waiting: boolean = false;
 
   constructor(private _fb: FormBuilder,
               private _activatedRoute: ActivatedRoute,
@@ -99,7 +99,7 @@ export class GiftCardEditComponent implements OnInit, OnDestroy {
           this.mOnSumbitValidation.open();
       }
       else {
-          this.mWait.open();
+          this.waiting = true;
           this._giftcardService.put(this.giftcard.id, this.giftcard)
               .subscribe(
                   d => {
@@ -108,10 +108,10 @@ export class GiftCardEditComponent implements OnInit, OnDestroy {
                   },
                   d => {
                       this._flashMessage.addMessage("Error", "Unable to add the gift card. Please contact support if this recurring.", false, "danger", 2500, 2);
-                      this.mWait.close();
+                      this.waiting = false;
                   },
                   () => {
-                      this.mWait.close();
+                      this.waiting = false;
                   }
               );
       }

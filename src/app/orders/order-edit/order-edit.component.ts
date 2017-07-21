@@ -25,7 +25,7 @@ export class OrderEditComponent implements OnInit, OnDestroy {
 
   onSubmitErrors = [];
   @ViewChild('mOnSumbitValidation') mOnSubmitValidation;
-  @ViewChild('mWait') mWait;
+  waiting: boolean = false;
 
   constructor(fb: FormBuilder,
               private _orderService: OrderService,
@@ -93,10 +93,10 @@ export class OrderEditComponent implements OnInit, OnDestroy {
           this.mOnSubmitValidation.open();
       }
       else {
-          this.mWait.open();
+          this.waiting = true;
           this._orderService.put(this.order.id, this.order)
               .finally(() => {
-                  this.mWait.close();
+                  this.waiting = false;
               })
               .subscribe(d => {
                   this._flashMessage.addMessage("", "Order successfully updated.", true, "success", 2500, 2);

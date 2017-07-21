@@ -131,6 +131,10 @@ export class IconComponent implements OnInit {
       {
           type: "users",
           path: "./assets/icons/users.png"
+      },
+      {
+          type: "home2",
+          path: "./assets/icons/home2.png"
       }
   ];
 

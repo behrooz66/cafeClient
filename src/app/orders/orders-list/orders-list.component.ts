@@ -25,7 +25,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
 
   showDeleted = Settings.orders.showDeletedOrders;
 
-  @ViewChild('mWait') mWait;
+  waiting: boolean = false;
   @ViewChild('mConfirmDelete') mConfirmDelete;
   @ViewChild('mConfirmPermanentDelete') mConfirmPermanentDelete;
   @ViewChild('mConfirmUndelete') mConfirmUndelete;
@@ -87,16 +87,16 @@ export class OrdersListComponent implements OnInit, OnDestroy {
   }
 
   refresh() {
-      this.mWait.open();
+      this.waiting = true;
       this._orderService.getOrdersByCustomer(this.customerId)
           .subscribe(
               d => {
                   this.orders = d;
-                  this.mWait.close();
+                  this.waiting = false;
                   this.filterAndPage();
               },
               d => {
-                  this.mWait.close();
+                  this.waiting = false;
                   this._flash.addMessage("Error", "Error in retrieving the orders", false, "danger", 2500, 2);
               }
       );
@@ -184,7 +184,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
   }
 
   filterAndPage(){
-      this.mWait.open();
+      this.waiting = true;
       let x = this._record.getPageItems(this.orders, this.filtersInfo, this.sortInfo, this.pageInfo);
       this.pageOrders = x.data;
       this.pages = new Array(x.numberOfPages);
@@ -192,7 +192,7 @@ export class OrdersListComponent implements OnInit, OnDestroy {
       if (this.pageOrders.length === 0 && this.pages.length !==0)
         this.setPage(this.pageInfo.index - 1);
 
-      this.mWait.close();
+      this.waiting = false;
   }
 
   clearFilters() {
@@ -205,11 +205,11 @@ export class OrdersListComponent implements OnInit, OnDestroy {
   }
 
   showDeletedChange(){
-      this.mWait.open();
+      this.waiting = true;
       Settings.orders.showDeletedOrders = this.showDeleted;
       this.filtersInfo[3]["status"] = this.showDeleted;
       this.filterAndPage();
-      this.mWait.close();
+      this.waiting = false;
   }
 
   //*** PAGING  */
