@@ -1,0 +1,15 @@
+1. Update the server side to calculate "DateTime.Now" occurances based on a restaurant's timezone.
+
+2. The user delete does not work and needs direct test. 
+
+3. Today's number of reservations, and list.
+
+4. Support Cases
+
+5. Report organizing, etc.
+
+6. Customer purchase summary in the listing.
+
+7. remove right side panel
+
+8. 

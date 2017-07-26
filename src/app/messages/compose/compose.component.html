@@ -1,0 +1,20 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+      <h4>Send Message</h4>
+  </div>
+  <div class="panel-body">
+      <form [formGroup]="msgForm" (ngSubmit)="submit();">
+        <label>Select Receivers:</label><br/>
+        <label *ngFor="let u of users"> <input type="checkbox" (change)="change(u.id);" >{{u.name}} &nbsp;&nbsp;&nbsp;&nbsp;</label><br/>
+
+        <br/>
+        <label>Subject:</label>
+        <input type="text" formControlName="subject" [(ngModel)]="message.subject" class="form-control" /><br/>
+
+        <label>Body:</label>
+        <textarea formControlName="body" [(ngModel)]="message.body" class="form-control" rows="5"></textarea><br/>
+
+        <button class="btn btn-primary" type="submit" >Submit</button>
+      </form>
+  </div>
+</div>

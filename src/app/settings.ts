@@ -83,6 +83,10 @@ export class Settings {
         ]
     }
 
+    static messages = {
+        pageSize: 5
+    }
+
     static map = {
         tileServerAddress: 'http://144.217.81.75/hot/{z}/{x}/{y}.png',
 

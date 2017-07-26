@@ -1,0 +1,22 @@
+.unread {
+    background-color:beige;
+}
+
+.message-body 
+{
+    
+}
+
+.msg {
+    width: 100%;
+    -position: fixed;
+    display: block;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 9998;
+    background-color: red;
+    overflow: auto;
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}

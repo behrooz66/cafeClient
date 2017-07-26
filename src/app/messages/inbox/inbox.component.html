@@ -1,0 +1,70 @@
+
+<div class="panel panel-default">
+<div class="panel-heading">
+    <h4>Inbox</h4>
+</div>
+<div class="panel-body">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>From</th>
+                <th>Subject</th>
+                <th>Received</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let m of pageRecords" [class.unread]="!m.read">
+                <td>{{m.sender}}</td>
+                <td>{{m.subject}}</td>
+                <td>{{m.createDate|date:'yyyy-MM-dd'}} &nbsp; {{m.createTime}}</td>
+                <td>
+                    <a [routerLink]="['/messages/view/', m.id]" class="btn btn-default btn-sm" type="button" Title="Open">
+                        <icon [type]="'mail'" [size]="1"></icon>
+                    </a>
+                    <button *ngIf="!m.read" class="btn btn-default btn-sm" type="button" (click)="markAsRead(m.id);" Title="Mark as Read">
+                        <icon [type]="'ok'" [size]="1"></icon>
+                    </button>
+                    <button *ngIf="m.read" class="btn btn-default btn-sm" type="button" (click)="markAsUnread(m.id);" Title="Mark as Unread">
+                        <icon [type]="'undo'" [size]="1"></icon>
+                    </button>
+                    <button class="btn btn-default btn-sm" type="button" (click)="delete(m.id);" Title="Delete">
+                        <icon [type]="'delete'" [size]="1"></icon>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="paging" class="panel-footer">
+    <div class="btn-group">
+        <button type="button" class="btn btn-default" (click)="firstPage();">
+            <i class="glyphicon glyphicon-step-backward"></i> 
+        </button>
+        <button type="button"  class="btn btn-default" (click)="prevPage();" [disabled]="pageInfo.index<=0" [class.disabled]="pageInfo.index <= 0">
+            <i class="glyphicon glyphicon-chevron-left"></i> 
+        </button>
+        <button class="btn btn-default" *ngFor="let p of pages; let i=index;" type="button" (click)="setPage(i)" [class.active]="pageInfo.index === i">
+            {{i+1}}
+        </button>
+        <button type="button"  class="btn btn-default" (click)="nextPage();" [disabled]="pageInfo.index>=totalPages-1" [class.disabled]="pageInfo.index >= pages.length - 1">
+            <i class="glyphicon glyphicon-chevron-right"></i>
+        </button>
+        <button type="button"  class="btn btn-default" (click)="lastPage();">
+            <i class="glyphicon glyphicon-step-forward"></i>
+        </button>
+        <select class="form-control" style="width:65px;border-radius:10px;" (change)="pageSetup();" [(ngModel)]="pageInfo.pageSize" (change)="pageSizeChange();">
+            <option [ngValue]="3"> 3 </option>
+            <option [ngValue]="5" selected="true"> 5 </option>
+            <option [ngValue]="10"> 10 </option>
+        </select>
+    </div>
+</div>
+
+</div>
+
+
+
+<wait [visible]="waiting"></wait>
+

@@ -230,10 +230,14 @@
             <div class="dropdown-menu" style="background-color: #00A65A" *ngIf="isLoggedIn">
                 <div style="padding:5px;  text-align: center;" class="center;">
                     
-                        <b>{{username}} - {{role}}</b><br/>
+                        <div class="username">{{username}} - {{role}}</div><br/>
                     
-                    <a [routerLink]="['/account/update-password']" class="btn btn-primary btn-flat btn-sm pull-left">Update Password</a>
-                    <a [routerLink]="['/account/update-password']" class="btn btn-danger btn-flat btn-sm pull-right">Sign out</a>
+                    <a [routerLink]="['/account/update-password']" class="btn btn-default btn-flat btn-sm pull-left">
+                        <icon [type]="'key'" [size]="1"></icon>&nbsp; Update Password
+                    </a>
+                    <a [routerLink]="['/account/update-password']" class="btn btn-default btn-flat btn-sm pull-right">
+                        Sign out <icon [type]="'logout'" [size]="1"></icon>
+                    </a>
                 </div>
                 <br/>
                 &nbsp;

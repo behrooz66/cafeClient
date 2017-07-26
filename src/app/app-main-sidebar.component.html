@@ -5,7 +5,7 @@
       <ul class="sidebar-menu">
         <li class="treeview">
           <a routerLink="">
-            <icon [type]="'home2'" [size]="2"></icon> &nbsp; <span>Home</span>
+            <icon [type]="'home2'" [size]="2"></icon> &nbsp;<span>Home</span>
           </a>
         </li>
         <li *ngIf="isLoggedIn" class="treeview">
@@ -17,6 +17,43 @@
             </tr>-->
           </a>
         </li>
+        
+        <li *ngIf="isLoggedIn" class="treeview">
+          <a [routerLink]="['/messages']">
+            <icon [type]="'todo'" [size]="2"></icon> &nbsp;<span>Today</span>
+          </a>
+        </li>
+
+        <!--<li *ngIf="isLoggedIn" class="treeview">
+          <a [routerLink]="['/messages/inbox']">
+            <icon [type]="'mail'" [size]="2"></icon> &nbsp;<span>Messages</span>
+          </a>
+        </li>-->
+
+        <li *ngIf="isLoggedIn">
+          <a href="#">
+            <icon [type]="'mail'" [size]="2"></icon> &nbsp;<span>Messages &nbsp;
+                <span *ngIf="newMessages > 0" class="badge" style="background-color:darkseagreen"> {{newMessages}} Unread</span></span>
+          </a>
+          <ul class="treeview-menu">
+              <li>
+                  <a [routerLink]="['/messages/inbox']">
+                    <icon [type]="'mail'" [size]="1"></icon> &nbsp;<span>Inbox </span>
+                  </a>
+              </li>
+              <li>
+                  <a [routerLink]="['/messages/compose', 0]">
+                      <icon [type]="'compose'" [size]="1"></icon>&nbsp; Compose
+                  </a>
+              </li>
+              <li>
+                  <a [routerLink]="['/messages/sent']">
+                      <icon [type]="'sent'" [size]="1"></icon>&nbsp; Sent
+                  </a>
+              </li>
+          </ul>
+        </li>
+
         <li *ngIf="isLoggedIn && isManager">
           <a href="#">
             <icon [type]="'reports'" [size]="2"></icon>&nbsp;&nbsp;<span>Reports</span>
@@ -49,6 +86,11 @@
               <li><a href="#"><i class="fa fa-circle-o"></i>My Restaurant</a></li>
               <li><a href="#"><i class="fa fa-circle-o"></i>Support Cases</a></li>
           </ul>
+        </li>
+        <li *ngIf="isLoggedIn" class="treeview">
+          <a [routerLink]="['/account/update-password', 'False']">
+            <icon [type]="'key2'" [size]="2"></icon> &nbsp;<span>Update Password</span>
+          </a>
         </li>
         <li *ngIf="!isLoggedIn" class="treeview">
           <a [routerLink]="['/account/signin']">

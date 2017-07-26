@@ -1,0 +1,26 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <a [routerLink]="['/messages/inbox']" type="button" class="btn btn-default" title="Back to Inbox">
+            <icon [type]="'back'" [size]="1"></icon>
+        </a>
+    </div>
+    <div class="panel-body">
+        <h3>{{message.subject}}</h3>
+        <i> Sent on: <b>{{message.createDate | date:'yyyy-MM-dd'}}</b> at <b>{{message.createTime}}</b> by <b>{{message.sender}}</b></i><br/>
+        <i> Sent To: <b>{{message.receivers}}</b></i>
+        <hr/>
+        <p>
+          {{message.body}}
+        </p>
+    </div>
+    <div class="panel-footer">
+        <button type="button" class="btn btn-default btn-sm" (click)="reply();" title="Reply">
+            <icon [type]="'reply'" [size]="1"></icon>
+        </button>
+        <button type="button" class="btn btn-default btn-sm" (click)="delete();" title="Delete">
+            <icon [type]="'delete'" [size]="1"></icon>
+        </button>
+        
+    </div>
+</div>
+<wait [visible]="waiting"></wait>

@@ -7,3 +7,8 @@
     bottom: 0;
     position: fixed;
 }
+
+.username {
+    color: white;
+    font-size: larger;
+}

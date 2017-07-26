@@ -16,6 +16,7 @@ import { FlashMessageService } from './shared/flash-message/flash-message.servic
 
 import { HttpAuthService } from './shared/http-auth.service';
 import { AuthService } from './account/auth.service';
+import { MessagesService } from './messages/messages.service';
 
 import {CustomersModule} from './customers/customers.module';
 import {OrdersModule} from './orders/orders.module';
@@ -24,6 +25,8 @@ import {ReservationsModule} from './reservations/reservations.module';
 import {AccountModule} from './account/account.module';
 import {ReportsModule} from './reports/reports.module';
 import {AdminModule} from './admin/admin.module';
+import {MessagesModule } from './messages/messages.module';
+
 
 import {AppRouting} from './app-routing';
 import {CustomerRouting} from './customers/customer-routing';
@@ -33,6 +36,7 @@ import {ReservationRouting} from './reservations/reservation-routing';
 import {AccountRouting} from './account/account-routing';
 import {ReportRouting} from './reports/report-routing';
 import {AdminRouting} from './admin/admin-routing';
+import {MessagesRouting} from './messages/messages-routing'; 
 
 
 
@@ -65,13 +69,16 @@ import {AdminRouting} from './admin/admin-routing';
       ReportRouting,
       AdminModule,
       AdminRouting,
+      MessagesModule,
+      MessagesRouting,
       AppRouting
   ],
   providers: [
       //SettingsService,
       FlashMessageService,
       AuthService,
-      HttpAuthService
+      HttpAuthService,
+      MessagesService
   ],
   bootstrap: [AppComponent]
 })

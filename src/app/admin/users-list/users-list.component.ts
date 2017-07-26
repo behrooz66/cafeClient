@@ -81,6 +81,7 @@ export class UsersListComponent implements OnInit {
                 },
                 d => {
                     this._flash.addMessage("Error", "Unable to perform the operation.", true, "danger", 2500, 2);
+                    console.log(d);
                 }
             );
   }

@@ -135,6 +135,30 @@ export class IconComponent implements OnInit {
       {
           type: "home2",
           path: "./assets/icons/home2.png"
+      },
+      {
+          type: "key2",
+          path: "./assets/icons/key2.png"
+      },
+      {
+          type: "mail",
+          path: "./assets/icons/mail.png"
+      },
+      {
+          type: "todo",
+          path: "./assets/icons/todo.png"
+      },
+      {
+          type: "reply",
+          path: "./assets/icons/reply.png"
+      },
+      {
+          type: "compose",
+          path: "./assets/icons/compose.png"
+      },
+      {
+          type: "sent",
+          path: "./assets/icons/sent.png"
       }
   ];
 
