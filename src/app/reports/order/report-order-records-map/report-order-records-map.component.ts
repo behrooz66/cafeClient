@@ -42,11 +42,13 @@ export class ReportOrderRecordsMapComponent implements OnInit {
               private _cityService: CityService,
               private _ot: OrderTypesService) { }
 
-  ngOnInit() {
+  ngOnInit() 
+  {
       this.getOrderTypes();
   }
 
-  refresh() {
+  refresh() 
+  {
       this.unmappable = 0;
       this.mode = "loading";
       this.showMap = false;

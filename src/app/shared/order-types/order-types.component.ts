@@ -37,7 +37,6 @@ export class OrderTypesComponent implements OnInit, ControlValueAccessor {
               this.mode = "success";
           },
           d => {
-              console.log("error: ", d);
               this.mode = "error";
           },
           () => {

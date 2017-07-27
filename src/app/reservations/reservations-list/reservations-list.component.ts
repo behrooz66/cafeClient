@@ -99,7 +99,6 @@ export class ReservationsListComponent implements OnInit {
       this._reservationStatuses.getStatuses().subscribe(
           d => {
               this.reservationStatuses = d;
-              console.log(d);
           },
           d => {
               this._flash.addMessage("Error", "Error in retrieving reservation statuses.", true, "danger", 2500, 2);

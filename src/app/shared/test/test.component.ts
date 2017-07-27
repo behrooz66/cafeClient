@@ -28,12 +28,11 @@ export class TestComponent implements OnInit, ControlValueAccessor {
   }
 
   registerOnChange(fn) {
-      console.log("register on change!");
       this.value = fn;
   }
 
   registerOnTouched(fn) {
-      console.log("register on touched!");
+
   }
 
 

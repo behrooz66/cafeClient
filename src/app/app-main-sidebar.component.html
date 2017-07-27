@@ -19,8 +19,10 @@
         </li>
         
         <li *ngIf="isLoggedIn" class="treeview">
-          <a [routerLink]="['/messages']">
-            <icon [type]="'todo'" [size]="2"></icon> &nbsp;<span>Today</span>
+          <a [routerLink]="['/reservations/by/date']">
+            <icon [type]="'todo'" [size]="2"></icon> &nbsp;<span>
+                    Reservations &nbsp; <span *ngIf="reservationsForToday > 0" class="badge" style="background-color: seagreen"> {{reservationsForToday}} today</span>
+                </span>
           </a>
         </li>
 
@@ -33,7 +35,7 @@
         <li *ngIf="isLoggedIn">
           <a href="#">
             <icon [type]="'mail'" [size]="2"></icon> &nbsp;<span>Messages &nbsp;
-                <span *ngIf="newMessages > 0" class="badge" style="background-color:darkseagreen"> {{newMessages}} Unread</span></span>
+                <span *ngIf="newMessages > 0" class="badge" style="background-color: seagreen"> {{newMessages}} Unread</span></span>
           </a>
           <ul class="treeview-menu">
               <li>
@@ -83,8 +85,8 @@
                     <span>Manage Users</span>
                   </a>
               </li>
-              <li><a href="#"><i class="fa fa-circle-o"></i>My Restaurant</a></li>
-              <li><a href="#"><i class="fa fa-circle-o"></i>Support Cases</a></li>
+              <!--<li><a href="#"><i class="fa fa-circle-o"></i>My Restaurant</a></li>-->
+              <li><a [routerLink]="['/support/tickets/list']"><i class="fa fa-circle-o"></i>Support</a></li>
           </ul>
         </li>
         <li *ngIf="isLoggedIn" class="treeview">

@@ -10,7 +10,6 @@ export class CityService {
   
   getCountries() 
   {
-      console.log(Settings.apiBase + 'country/get');
       return this._http.get(Settings.apiBase + 'country/get')
             .map(res => res.json());
   }

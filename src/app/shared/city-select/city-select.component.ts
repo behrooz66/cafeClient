@@ -84,7 +84,6 @@ export class CitySelectComponent implements OnInit, OnChanges {
               this.countries.mode = "success";
           },
           d => {
-              console.log("countries not found");
               this.countries.mode = "error";
           }
       );
@@ -98,7 +97,6 @@ export class CitySelectComponent implements OnInit, OnChanges {
               this.provinces.mode = "success";
           },
           d => {
-              console.log("provinces not found");
               this.provinces.mode = "error";
           });
   }
@@ -111,38 +109,9 @@ export class CitySelectComponent implements OnInit, OnChanges {
               this.cities.mode = "success";
           },
           d => {
-              console.log("cities not found");
               this.cities.mode = "error";
           }
       )
   }
-
-  // onSelect(value){
-  //     this.change.emit({
-  //       value: value,
-  //       title: this.cities.filter(x => x.id == value)[0].name
-  //     });
-  // }
-
-  // update(){
-  //     this.mode = "loading";
-  //     this._cityService.getCities(this.provinceId)
-  //                      .subscribe(d => {
-  //                         this.cities = d;
-  //                         this.selectedValue = this.defaultValue;
-  //                         console.log("selected value:", this.selectedValue);
-  //                         try {
-  //                           this.onSelect(this.selectedValue);
-  //                         }
-  //                         catch(e){
-  //                           this.defaultValue = this.cities[0].id;
-  //                           this.onSelect(this.selectedValue);
-  //                         }
-  //                         this.mode = "success";
-  //                      },
-  //                      d => {
-  //                         this.mode = "error";
-  //                      });
-  // }
 
 }

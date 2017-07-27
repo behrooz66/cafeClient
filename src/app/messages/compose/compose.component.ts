@@ -91,7 +91,6 @@ export class ComposeComponent implements OnInit, OnDestroy {
 
   submit() 
   {
-        console.log(this.message);
         let replyId: number = null;
         if (this.message.replyToMessageId === 0) replyId = null;
         else replyId = this.message.replyToMessageId;
@@ -111,7 +110,6 @@ export class ComposeComponent implements OnInit, OnDestroy {
                 }, 1000);
             },
             d => {
-                console.log(d);
                 this._flash.addMessage("Error", "Could not send the message", true, "danger", 2500, 2);
             }
         );

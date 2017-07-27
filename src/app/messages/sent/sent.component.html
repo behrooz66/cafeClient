@@ -45,7 +45,7 @@
         <button type="button"  class="btn btn-default" (click)="lastPage();">
             <i class="glyphicon glyphicon-step-forward"></i>
         </button>
-        <select class="form-control" style="width:65px;border-radius:10px;" (change)="pageSetup();" [(ngModel)]="pageInfo.pageSize" (change)="pageSizeChange();">
+        <select class="form-control" style="width:65px;border-radius:10px;" [(ngModel)]="pageInfo.pageSize" (change)="pageSizeChange();">
             <option [ngValue]="3"> 3 </option>
             <option [ngValue]="5" selected="true"> 5 </option>
             <option [ngValue]="10"> 10 </option>

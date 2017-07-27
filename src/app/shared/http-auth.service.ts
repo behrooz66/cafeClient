@@ -141,7 +141,6 @@ export class HttpAuthService extends Http {
 
   private redirect() {
       // todo : code the redirect to login and refactor the name
-      console.log("redirecting now!");
       this._router.navigate(["/account/signin"]);
   }
 

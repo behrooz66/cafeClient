@@ -30,20 +30,10 @@ export class PagingComponent implements OnInit, OnChanges {
     
   }
 
-  ngOnChanges(change){
-    //this.source = change.source.currentValue;
-    
-    console.log(change);
+  ngOnChanges(change){ 
     this.setup();
     this.pageIndexChange(0);
   }
-
-  // ngDoCheck(){
-  //   let c = this.differ.diff(this.source);
-  //   console.log(this.index);
-  //   if (c)
-  //     this.afterSourceChange();
-  // }
 
 
   pageSizeChange(){
@@ -73,7 +63,7 @@ export class PagingComponent implements OnInit, OnChanges {
         this.pageIndexChange(this.index);
       }
       catch(x) {
-        console.log("Exception: ",x);
+        
       }
   }
 
@@ -84,7 +74,7 @@ export class PagingComponent implements OnInit, OnChanges {
       this.index = 0;
     }
     catch(x) {
-      console.log("Exception: ",x);
+      
     }
   }
 

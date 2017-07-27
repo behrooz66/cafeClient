@@ -41,7 +41,7 @@ export class SignupComponent implements OnInit {
   authTest(){
       this._auth.login("behrooz66", "bbcliqa")
           .subscribe(data => {
-              console.log("data came in");
+              // todo ?!
           });
   }
 
@@ -49,15 +49,8 @@ export class SignupComponent implements OnInit {
     this._auth.refreshToken();
   }
 
-  getApi(){
-      this._http.get('http://localhost:5001/api/values')
-          .map(res => res.json())
-          .subscribe(d => console.log(d),
-                    e => console.log("error: ", e));
-  }
-
   onSubmit($event){
-    console.log(this.signupForm);
+    // todo ?!
   }
 
 }

@@ -80,7 +80,6 @@ export class CustomerAddComponent implements OnInit {
   }
 
   cityChange($event){
-      console.log("city change invoked.");
       this.customer.cityId = +$event.value;
 
   }

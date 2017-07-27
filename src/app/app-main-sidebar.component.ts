@@ -3,6 +3,8 @@ import { FlashMessageService } from './shared/flash-message/flash-message.servic
 //** TRIALS */
 import {AuthService} from './account/auth.service';
 import { MessagesService } from './messages/messages.service';
+import { ReservationService } from './reservations/reservation.service';
+import * as moment from 'moment';
 import { Observable } from "rxjs/Observable";
 
 @Component({
@@ -19,9 +21,12 @@ export class AppMainSidebarComponent implements OnInit{
     isManager: boolean = false;
 
     newMessages: number = 0;
+    reservationsForToday: number = 0;
+
     constructor(private _auth: AuthService,
                 private _flash: FlashMessageService,
-                private _msg: MessagesService){}
+                private _msg: MessagesService,
+                private _reservationService: ReservationService){}
 
     ngOnInit()
     {
@@ -46,7 +51,7 @@ export class AppMainSidebarComponent implements OnInit{
                     
                 }
             );
-
+        
         // gets triggerd if the message count is manipulated in messages section by the user.
         this._msg.isCountChanged()
             .subscribe(
@@ -57,6 +62,12 @@ export class AppMainSidebarComponent implements OnInit{
 
         // initiates the timer to peridically check for new messages
         this.checkForMessages();
+
+        // initiates the timer to peridically check for new reservations
+        this.getReservationsForToday();
+        this.checkForReservations();
+
+        
     }
 
     getNewMessageCount()
@@ -84,4 +95,30 @@ export class AppMainSidebarComponent implements OnInit{
         );
     }
 
+    getReservationsForToday()
+    {
+        this._reservationService.getReservationsByRestaurant(moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD'))
+                        .subscribe(
+                            d => {
+                                this.reservationsForToday = d.length;
+                            }
+                        );
+    }
+
+    checkForReservations()
+    {
+        Observable.timer(3 * 60 * 1000, 6 * 60 * 1000)
+            .subscribe(
+                d => {
+                    this._reservationService.getReservationsByRestaurant(moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD'))
+                        .subscribe(
+                            d => {
+                                if (this.reservationsForToday < d.length)
+                                    this._flash.addMessage("New Reservation", "New reservation for today", true, "success", 2500, 2);
+                                this.reservationsForToday = d.length;
+                            }
+                        );
+                }
+            );
+    }
 }

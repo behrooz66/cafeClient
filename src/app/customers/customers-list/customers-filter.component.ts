@@ -42,7 +42,6 @@ export class CustomersFilterComponent implements OnInit {
     ngOnInit(){
         this.showDeleted = Settings.customers.showDeletedCustomers;
         this.isManager = this._roles.isManager();
-        console.log(this.isManager);
     }
 
     // todo: more fields may need to be taken into account

@@ -36,6 +36,12 @@ export class Settings {
     }
 
     static reservations = {
+        byDate: 
+        {
+                startDate: null,
+                endDate: null
+        },
+        
         viewMode: "row", //or cards
         showDeletedReservations: true,
         pageSize: 10

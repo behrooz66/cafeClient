@@ -96,6 +96,10 @@ export class InboxComponent implements OnInit {
       let temp = this._record.getPageItems(this.messages, null, null, this.pageInfo);
       this.pageRecords = temp.data;
       this.pages = new Array(temp.numberOfPages);
+      if (this.pageRecords.length === 0 && this.pageInfo.index > 0) {
+          this.pageInfo.index--;
+          this.pageSetup();
+      }
   }
 
   private setPage(i) {
@@ -130,6 +134,7 @@ export class InboxComponent implements OnInit {
   }
 
   pageSizeChange(){
+      this.pageSetup();
       Settings.messages.pageSize = this.pageInfo.pageSize;
   }
 

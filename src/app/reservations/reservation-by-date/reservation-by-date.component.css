@@ -1,0 +1,15 @@
+.shown{
+    background-color: #e4f7dc;
+}
+
+.not-shown{
+    background-color: #ffdfd3
+}
+
+.cancelled {
+    background-color: #ffeec9;
+}
+
+.unknown {
+    background-color:#f4f5f7;
+}

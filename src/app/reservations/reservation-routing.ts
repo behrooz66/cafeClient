@@ -5,6 +5,7 @@ import { ReservationsListComponent } from './reservations-list/reservations-list
 import { ReservationDetailsComponent } from './reservation-details/reservation-details.component';
 import { ReservationEditComponent } from './reservation-edit/reservation-edit.component';
 import { ReservationAddComponent } from './reservation-add/reservation-add.component';
+import { ReservationByDateComponent } from './reservation-by-date/reservation-by-date.component';
 
 const routes:Routes = [
     {
@@ -23,6 +24,10 @@ const routes:Routes = [
         path: 'reservations/edit/:id',
         component: ReservationEditComponent
     },
+    {
+        path: 'reservations/by/date',
+        component: ReservationByDateComponent
+    }
 
 ];
 

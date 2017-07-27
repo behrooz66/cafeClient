@@ -20,7 +20,6 @@ export class ReportService {
       if (typeId !== null) {
           params += '&typeId=' + typeId.toString();
       }
-      console.log(params);
       return this._http.get(this.apiBase+"ordersMonthlySum" + params)
           .map(r => r.json());
   }
@@ -110,7 +109,7 @@ export class ReportService {
       if (typeId !== null) {
           params += '&typeId=' + typeId;
       }
-      console.log(params);
+    
       return this._http.get(this.apiBase + "giftCardsTopCustomers" + params)
           .map(r => r.json());
   }

@@ -20,7 +20,6 @@ export class GeocoderService {
 
   geoCode(address: string) {
       // todo: the auth token should be added to this code.
-      console.log("geo: ", this.baseUrl + address+"&json=1");
       return this._http.get(this.baseUrl + address+"&json=1")
           .map(res => res.json())
           .map(res => {

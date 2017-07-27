@@ -1,0 +1,123 @@
+<div class="panel panel-default"> 
+  <div class="panel-heading"> 
+      <h4>Reservations</h4>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+        <div class="col-md-6">  
+            <label>From:</label>
+            <date-picker [(ngModel)]="startDate"></date-picker><br/>
+        </div>
+        <div class="col-md-6">  
+            <label>To:</label>
+            <date-picker [(ngModel)]="endDate"></date-picker><br/>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="button" (click)="submit();">Show</button>
+  </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Date & Time
+                    </th>
+                    <th>
+                        Customer
+                    </th>
+                    <th>
+                        Guests
+                    </th>
+                    <th>
+                        Table
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                      Notes
+                    </th>
+                    <th>
+                        Controls
+                    </th>
+                </tr>
+            </thead>
+                <tr *ngFor="let r of pageRecords"  [class.shown] = "r.reservationStatus.status === 'Shown Up'"
+                                                   [class.not-shown]="r.reservationStatus.status === 'Not Shown'"
+                                                   [class.cancelled]="r.reservationStatus.status === 'Cancelled'" 
+                                                   [class.unknown]="r.reservationStatus.status === 'Unspecified'" >
+                    <td>
+                      {{r.date |date:'yyyy-MM-dd'}} <strong>{{r.time}}</strong>
+                    </td>
+                    <td>
+                      <a [routerLink]="['/customers/', r.customerId]"> {{r.customer.name}}</a>
+                    </td>
+                    <td>
+                      {{r.numberOfPeople}}
+                    </td>
+                    <td>
+                      {{r.table}}
+                    </td>
+                    <td>
+                      {{r.reservationStatus.status}}
+                    </td>
+                    <td>
+                      {{r.notes}}
+                    </td>
+                    <td>
+                      <div class="btn-group">
+                          <button class="btn btn-success btn-sm" type="button" (click)="markAs(r.id, 'Shown Up');" title="Mark As Shown Up">
+                              <!--<icon [type]="'happy'" [size]="2"></icon>-->
+                              &nbsp;
+                          </button>
+                          <button class="btn btn-warning btn-sm" type="button" (click)="markAs(r.id, 'Cancelled');" title="Mark As Cancelled">
+                              <!--<icon [type]="'sad'" [size]="2"></icon>-->
+                              &nbsp;
+                          </button>
+                          <button class="btn btn-danger btn-sm" type="button" (click)="markAs(r.id, 'Not Shown');" title="Mark As Not Shown">
+                              <!--<icon [type]="'angry'" [size]="2"></icon>-->
+                              &nbsp;
+                          </button>
+                          <button class="btn btn-default btn-sm" type="button" (click)="markAs(r.id, 'Unspecified');" title="Mark As Unknown">
+                              <!--<icon [type]="'circle'" [size]="1"></icon>-->
+                              &nbsp;
+                          </button>
+                      </div>
+                    </td>
+                </tr>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div id="paging" class="panel-footer">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" (click)="firstPage();">
+                <i class="glyphicon glyphicon-step-backward"></i> 
+            </button>
+            <button type="button"  class="btn btn-default" (click)="prevPage();" [disabled]="pageInfo.index<=0" [class.disabled]="pageInfo.index <= 0">
+                <i class="glyphicon glyphicon-chevron-left"></i> 
+            </button>
+            <button class="btn btn-default" *ngFor="let p of pages; let i=index;" type="button" (click)="setPage(i)" [class.active]="pageInfo.index === i">
+                {{i+1}}
+            </button>
+            <button type="button"  class="btn btn-default" (click)="nextPage();" [disabled]="pageInfo.index>=totalPages-1" [class.disabled]="pageInfo.index >= pages.length - 1">
+                <i class="glyphicon glyphicon-chevron-right"></i>
+            </button>
+            <button type="button"  class="btn btn-default" (click)="lastPage();">
+                <i class="glyphicon glyphicon-step-forward"></i>
+            </button>
+            <select class="form-control" style="width:65px;border-radius:10px;"  [(ngModel)]="pageInfo.pageSize" (change)="pageSizeChange();">
+                <option [ngValue]="3"> 3 </option>
+                <option [ngValue]="5" selected="true"> 5 </option>
+                <option [ngValue]="10"> 10 </option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<wait [visible]="waiting"></wait>

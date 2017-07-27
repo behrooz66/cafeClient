@@ -159,6 +159,22 @@ export class IconComponent implements OnInit {
       {
           type: "sent",
           path: "./assets/icons/sent.png"
+      },
+      {
+          type: "circle",
+          path: "./assets/icons/circle.png"
+      },
+      {
+          type: "sad",
+          path: "./assets/icons/sad.png"
+      },
+      {
+          type: "happy",
+          path: "./assets/icons/happy.png"
+      },
+      {
+          type: "angry",
+          path: "./assets/icons/angry.png"
       }
   ];
 

@@ -7,6 +7,7 @@ import { FlashMessageService } from './shared/flash-message/flash-message.servic
 @Component({
     selector: 'home',
     template: `
+        <a [routerLink]="['reservations/by/date']">Res!</a>
         <modal #m [size]=2 [type]="'confirm'" [canEscape]=true>
             <div class="content-head">
                 Confirmation

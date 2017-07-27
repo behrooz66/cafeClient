@@ -23,8 +23,8 @@ export class ReservationService {
           .map(r => r.json());
   }
 
-  getReservationsByRestaurant(restaurantId: number) {
-      return this._http.get(this.apiBase + "getByRestaurant")
+  getReservationsByRestaurant(startDate, endDate) {
+      return this._http.get(this.apiBase + "getByRestaurant/" + startDate + "/" + endDate)
           .map(r => r.json());
   }
 
@@ -51,6 +51,11 @@ export class ReservationService {
   delete(id: number) {
       return this._http.delete(this.apiBase + "delete/" + id)
             .map(r => r.json());
+  }
+
+  getTodayReservations()
+  {
+      
   }
 
 }

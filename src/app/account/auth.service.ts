@@ -22,15 +22,12 @@ export class AuthService {
 
   constructor(private _http:Http) 
   {
-      console.log("Auth Service Created!");
       this.isLoggedIn = localStorage.getItem('bdUsername') ? true: false;
       this.loggedIn.next(this.isLoggedIn);
-      console.log("broadcast: ", this.isLoggedIn);
   }
 
   login(username: string, password: string): Observable<Response>
   {
-      console.log("requesting token...");
       let body = "grant_type=password"
                 +"&client_id=" + Settings.loginInfo.client_id
                 +"&client_secret=" + Settings.loginInfo.client_secret
@@ -85,7 +82,6 @@ export class AuthService {
       let ro:RequestOptions = new RequestOptions({
           headers: header
       });
-      console.log("refreshing token...");
       return this._http.post(Settings.tokenEndpoint, body, ro)
           //.map(res => res.json())
           .map(data => {
@@ -168,7 +164,6 @@ export class AuthService {
 
   isManager() {
         let r = localStorage.getItem("bdRole"); 
-        console.log("R: ", r);
         if (this.isLoggedIn && r === "Manager")
             return true;
         return false;

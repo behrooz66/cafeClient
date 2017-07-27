@@ -102,7 +102,6 @@ export class GiftCardsListComponent implements OnInit, OnDestroy {
                   this.giftcards = d;
                   this.waiting = false;
                   this.filterAndPage();
-                  console.log(this.giftcards);
               },
               d => {
                   this.waiting = false;
@@ -194,7 +193,6 @@ export class GiftCardsListComponent implements OnInit, OnDestroy {
 
   filterAndPage(){
       this.waiting = true;
-      console.log(this.filtersInfo);
       let x = this._record.getPageItems(this.giftcards, this.filtersInfo, this.sortInfo, this.pageInfo);
       this.pageCards = x.data;
       this.pages = new Array(x.numberOfPages);
