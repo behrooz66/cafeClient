@@ -1,11 +1,90 @@
 <div class="row">
-    <div class="col-md-6 bdbox">
+    <div  class="col-md-6 bdbox">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <Strong><h4>Currnet Month</h4></Strong>
+                <table style="width:100%;">
+                    <tbody>
+                        <tr style="width:100%;">
+                            <td style="width:50%;">
+                                <h4>
+                                    Current Month
+                                </h4>
+                            </td>
+                            <td style="float: right;">
+                                <button type="button" class="btn btn-default btn-flat btn-sm pull-right" (click)="saveImageCurrentMonth();" title="Save as Image">
+                                    <icon [type]="'save'" [size]="2"></icon>
+                                </button>
+                            </td>
+                        </tr> 
+                    </tbody>
+                </table>
             </div>
             <div class="panel-body">
-                Current Month
+                <table class="table test">
+                    <tbody>
+                        <tr>
+                            <td>Orders:</td>
+                            <td>{{currentMonth.ordersNumber}}</td>
+                            <td>
+                                <i *ngIf="!currentMonth.oWait" class="glyphicon" [class.glyphicon-chevron-up]="currentMonth.ordersNumber > lastMonth.ordersNumber * multiplier"
+                                                     [class.glyphicon-chevron-down]="currentMonth.ordersNumber < lastMonth.ordersNumber * multiplier"
+                                                     [class.glyphicon-minus]="currentMonth.ordersNumber === lastMonth.ordersNumber * multiplier"
+                                                     [style.color]="currentMonth.ordersNumber > lastMonth.ordersNumber * multiplier ? 'limegreen' : (currentMonth.ordersNumber < lastMonth.ordersNumber * multiplier ? 'red' : 'gray')"
+                                    ></i>
+                            </td>
+                            <td><div class="pull-right">${{currentMonth.ordersRevenue | number:'1.2'}}</div></td>
+                            <td >
+                                <loading *ngIf="currentMonth.oWait"></loading>
+                                <i *ngIf="!currentMonth.oWait" class="glyphicon" [class.glyphicon-chevron-up]="currentMonth.ordersRevenue > lastMonth.ordersRevenue * multiplier"
+                                                     [class.glyphicon-chevron-down]="currentMonth.ordersRevenue < lastMonth.ordersRevenue * multiplier"
+                                                     [class.glyphicon-minus]="currentMonth.ordersRevenue === lastMonth.ordersRevenue * multiplier"
+                                                     [style.color]="currentMonth.ordersRevenue > lastMonth.ordersRevenue * multiplier ? 'limegreen' : (currentMonth.ordersRevenue < lastMonth.ordersRevenue * multiplier ? 'red' : 'gray')"
+                                    ></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Gift Cards</td> 
+                            <td>{{currentMonth.giftCardsNumber}}</td>
+                            <td>
+                                <i *ngIf="!currentMonth.gWait" class="glyphicon" [class.glyphicon-chevron-up]="currentMonth.giftCardsNumber > lastMonth.giftCardsNumber * multiplier"
+                                                     [class.glyphicon-chevron-down]="currentMonth.giftCardsNumber < lastMonth.giftCardsNumber * multiplier"
+                                                     [class.glyphicon-minus]="currentMonth.giftCardsNumber === lastMonth.giftCardsNumber * multiplier"
+                                                     [style.color]="currentMonth.giftCardsNumber > lastMonth.giftCardsNumber * multiplier ? 'limegreen' : (currentMonth.giftCardsNumber < lastMonth.giftCardsNumber * multiplier ? 'red' : 'gray')"
+                                    ></i>
+                            </td>
+                            <td><div class="pull-right">${{currentMonth.giftCardsRevenue | number:'1.2'}}</div></td>
+                            <td>
+                                <loading *ngIf="currentMonth.gWait"></loading>
+                                <i *ngIf="!currentMonth.gWait" class="glyphicon" [class.glyphicon-chevron-up]="currentMonth.giftCardsRevenue > lastMonth.giftCardsRevenue * multiplier"
+                                                     [class.glyphicon-chevron-down]="currentMonth.giftCardsRevenue < lastMonth.giftCardsRevenue * multiplier"
+                                                     [class.glyphicon-minus]="currentMonth.giftCardsRevenue === lastMonth.giftCardsRevenue * multiplier"
+                                                     [style.color]="currentMonth.giftCardsRevenue > lastMonth.giftCardsRevenue * multiplier ? 'limegreen' : (currentMonth.giftCardsRevenue < lastMonth.giftCardsRevenue * multiplier ? 'red' : 'gray')"
+                                    ></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Reservations</td> 
+                            <td>{{currentMonth.reservationsNumber}}</td>
+                            <td>
+                                <i *ngIf="!currentMonth.rWait" class="glyphicon" [class.glyphicon-chevron-up]="currentMonth.reservationsNumber > lastMonth.reservationsNumber * multiplier"
+                                                     [class.glyphicon-chevron-down]="currentMonth.reservationsNumber < lastMonth.reservationsNumber * multiplier"
+                                                     [class.glyphicon-minus]="currentMonth.reservationsNumber === lastMonth.reservationsNumber * multiplier"
+                                                     [style.color]="currentMonth.reservationsNumber > lastMonth.reservationsNumber * multiplier ? 'limegreen' : (currentMonth.reservationsNumber < lastMonth.reservationsNumber * multiplier ? 'red' : 'gray')"
+                                    ></i>
+                            </td>
+                            <td><div class="pull-right">${{currentMonth.reservationsRevenue | number:'1.2'}}</div></td>
+                            <td>
+                                <loading *ngIf="currentMonth.rWait"></loading>
+                                <i *ngIf="!currentMonth.rWait" class="glyphicon" [class.glyphicon-chevron-up]="currentMonth.reservationsRevenue > lastMonth.reservationsRevenue * multiplier"
+                                                     [class.glyphicon-chevron-down]="currentMonth.reservationsRevenue < lastMonth.reservationsRevenue * multiplier"
+                                                     [class.glyphicon-minus]="currentMonth.reservationsRevenue === lastMonth.reservationsRevenue * multiplier"
+                                                     [style.color]="currentMonth.reservationsRevenue > lastMonth.reservationsRevenue * multiplier ? 'limegreen' : (currentMonth.reservationsRevenue < lastMonth.reservationsRevenue * multiplier ? 'red' : 'gray')"
+                                    ></i>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -13,10 +92,52 @@
     <div class="col-md-6 bdbox">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <Strong><h4>Past Month</h4></Strong>
+                <table style="width:100%;">
+                    <tbody>
+                        <tr style="width:100%;">
+                            <td style="width:50%;">
+                                <h4>
+                                    Last Month
+                                </h4>
+                            </td>
+                            <td style="float: right;">
+                                <button type="button" class="btn btn-default btn-flat btn-sm pull-right" (click)=" saveImageLastMonth();" title="Save as Image">
+                                    <icon [type]="'save'" [size]="2"></icon>
+                                </button>
+                            </td>
+                        </tr> 
+                    </tbody>
+                </table>
             </div>
             <div class="panel-body">
-                Past months orders.
+                <table class="table test">
+                    <tbody>
+                        <tr>
+                            <td>Orders:</td>
+                            <td>{{lastMonth.ordersNumber}}</td>
+                            <td><div class="pull-right">${{lastMonth.ordersRevenue | number:'1.2'}}</div></td>
+                            <td>
+                                <loading *ngIf="lastMonth.oWait"></loading>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Gift Cards:</td>
+                            <td>{{lastMonth.giftCardsNumber}}</td>
+                            <td><div class="pull-right">${{lastMonth.giftCardsRevenue | number:'1.2'}}</div></td>
+                            <td>
+                                <loading *ngIf="lastMonth.gWait"></loading>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Reservations:</td>
+                            <td>{{lastMonth.reservationsNumber}}</td>
+                            <td><div class="pull-right">${{lastMonth.reservationsRevenue | number:'1.2'}}</div></td>
+                            <td>
+                                <loading *ngIf="lastMonth.rWait"></loading>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table> 
             </div>
         </div>
     </div>
@@ -28,10 +149,25 @@
     <div class="col-md-4 bdbox">
         <div class="panel panel-default">
           <div class="panel-heading">
-              Orders
+              <table style="width:100%;">
+                    <tbody>
+                        <tr style="width:100%;">
+                            <td style="width:50%;">
+                                <h4>
+                                    Orders
+                                </h4>
+                            </td>
+                            <td style="float: right;">
+                                <button type="button" class="btn btn-default btn-flat btn-sm pull-right" (click)="saveImageOrders();" title="Save as Image">
+                                    <icon [type]="'save'" [size]="2"></icon>
+                                </button>
+                            </td>
+                        </tr> 
+                    </tbody>
+                </table>
           </div>
           <div class="panel-body">
-              Current year orders.
+              <canvas #orders></canvas>
           </div>
         </div>
     </div>
@@ -39,26 +175,52 @@
     <div class="col-md-4 bdbox">
         <div class="panel panel-default">
           <div class="panel-heading">
-              Reservations
+              <table style="width:100%;">
+                    <tbody>
+                        <tr style="width:100%;">
+                            <td style="width:50%;">
+                                <h4>
+                                    Reservations
+                                </h4>
+                            </td>
+                            <td style="float: right;">
+                                <button type="button" class="btn btn-default btn-flat btn-sm pull-right" (click)="saveImageReservations();" title="Save as Image">
+                                    <icon [type]="'save'" [size]="2"></icon>
+                                </button>
+                            </td>
+                        </tr> 
+                    </tbody>
+                </table>
           </div>
           <div class="panel-body">
-              Current year reservations.
+              <canvas></canvas>
           </div>
         </div>
     </div>
 
     <div class="col-md-4 bdbox">
-        <div class="panel panel-default">
+        <div  class="panel panel-default">
           <div class="panel-heading">
-              Gift Cards
+              <table style="width:100%;">
+                    <tbody>
+                        <tr style="width:100%;">
+                            <td style="width:50%;">
+                                <h4>
+                                    Gift Cards
+                                </h4>
+                            </td>
+                            <td style="float: right;">
+                                <button type="button" class="btn btn-default btn-flat btn-sm pull-right" (click)="saveImageGiftCards()" title="Save as Image">
+                                    <icon [type]="'save'" [size]="2"></icon>
+                                </button>
+                            </td>
+                        </tr> 
+                    </tbody>
+                </table>
           </div>
           <div class="panel-body">
-              Current year gift cards.
+              <canvas></canvas>
           </div>
         </div>
     </div>
 </div>
-
-
-
-<report-order-records-map></report-order-records-map>

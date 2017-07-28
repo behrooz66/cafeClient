@@ -1,3 +1,8 @@
 .bdbox{
     =-border: 1px solid black;
 }
+
+table.test td 
+{
+    font-size: larger;
+}

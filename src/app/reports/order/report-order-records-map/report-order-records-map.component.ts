@@ -3,6 +3,7 @@ import { ReportService } from '../../report.service';
 import { OrderTypesService } from '../../../shared/order-types/order-types.service';
 import { CityService } from '../../../shared/city-select/city.service';
 import { FlashMessageService } from '../../../shared/flash-message/flash-message.service';
+import { FileDownloaderService } from '../../../shared/file-downloader.service';
 import { Settings } from '../../../settings';
 import * as moment from 'moment';
 import * as L from 'leaflet';
@@ -16,7 +17,8 @@ import 'leaflet.markercluster';
   providers: [
       ReportService,
       OrderTypesService,
-      CityService
+      CityService,
+      FileDownloaderService
   ]
 })
 export class ReportOrderRecordsMapComponent implements OnInit {
@@ -40,7 +42,8 @@ export class ReportOrderRecordsMapComponent implements OnInit {
   constructor(private _report: ReportService,
               private _flash: FlashMessageService,
               private _cityService: CityService,
-              private _ot: OrderTypesService) { }
+              private _ot: OrderTypesService,
+              private _file: FileDownloaderService) { }
 
   ngOnInit() 
   {
@@ -80,7 +83,8 @@ export class ReportOrderRecordsMapComponent implements OnInit {
   download() 
   {
       let csv = this.convertToCsv(this.data);
-      this.downloadCsv(csv);
+      //this.downloadCsv(csv);
+      this._file.saveCsv(csv, 'orders');
   }
 
   public renderMap(){
@@ -150,16 +154,16 @@ export class ReportOrderRecordsMapComponent implements OnInit {
       return str;
   }
 
-  private downloadCsv(csvString: string) 
-  {
-      let a = document.createElement("a");
-      a.setAttribute('style', 'display:none');
-      document.body.appendChild(a);
-      let blob = new Blob([csvString], {type: 'text/csv'});
-      let url = window.URL.createObjectURL(blob);
-      a.href = url;
-      a.download = 'orders.csv';
-      a.click();
-  }
+//   private downloadCsv(csvString: string) 
+//   {
+//       let a = document.createElement("a");
+//       a.setAttribute('style', 'display:none');
+//       document.body.appendChild(a);
+//       let blob = new Blob([csvString], {type: 'text/csv'});
+//       let url = window.URL.createObjectURL(blob);
+//       a.href = url;
+//       a.download = 'orders.csv';
+//       a.click();
+//   }
 
 }
