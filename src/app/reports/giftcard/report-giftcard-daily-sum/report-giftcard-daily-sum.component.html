@@ -31,14 +31,18 @@
 </div>
 
 
-<div class="panel panel-default" [hidden]="mode !== 'success'">
+<div class="panel panel-default" [hidden]="mode !== 'success' || data.length === 0">
     <div class="panel-body">
-        <canvas #chartRevenue ></canvas>
+        <canvas  #chartRevenue ></canvas>
     </div>
 </div>
 
-<div class="panel panel-default" [hidden]="mode !== 'success'">
+<div class="panel panel-default" [hidden]="mode !== 'success' || data.length === 0">
     <div class="panel-body">
         <canvas #chartQuantity ></canvas>
     </div>
+</div>
+
+<div class="alert alert-info text-center" *ngIf="mode === 'success' && data.length === 0">  
+    No data found for the selected period.
 </div>

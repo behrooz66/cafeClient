@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReportService } from '../../report.service';
+import { ReportOrderHelperService } from '../report-order-helper.service';
 import { FlashMessageService } from '../../../shared/flash-message/flash-message.service';
 import { Settings } from '../../../settings';
 import { Chart } from 'chart.js';
@@ -11,6 +12,7 @@ import * as moment from 'moment';
   styleUrls: ['./report-order-daily-sum.component.css'],
   providers:[
       ReportService,
+      ReportOrderHelperService
   ]
 })
 export class ReportOrderDailySumComponent implements OnInit {
@@ -28,7 +30,8 @@ export class ReportOrderDailySumComponent implements OnInit {
   @ViewChild('chartQuantity') chartQuantity;
   
   constructor(private _report: ReportService,
-              private _flash: FlashMessageService) { }
+              private _flash: FlashMessageService,
+              private _helper: ReportOrderHelperService) { }
 
   ngOnInit() {
       this.maxAllowedPeriod = Settings.reports.orders.dailySum.maximumPeriodAllowed;
@@ -44,8 +47,10 @@ export class ReportOrderDailySumComponent implements OnInit {
             .subscribe(
                 d => {
                     this.data = d;
-                    this.addTotals();
-                    this.normalizeData();
+                    this.data = this._helper.dailySum_addTotals(this.data);
+                    this.data = this._helper.dailySum_normalizeDate(this.data);
+                    this.data = this._helper.dailySum_addHead(this.data, this.dateFrom);
+                    this.data = this._helper.dailySum_addTail(this.data, this.dateTo);
                     this.drawChartRevenue();
                     this.drawChartQuantity();
                     this.mode = "success";
@@ -173,58 +178,6 @@ export class ReportOrderDailySumComponent implements OnInit {
       });
 
       chart.render();
-  }
-
-  private normalizeData() {
-      let index = -1;
-      while (index < this.data.length - 1) {
-          index++;
-          if (index + 1 >= this.data.length)
-              break;
-          let date = this.data[index].Date;
-          let date2 = this.data[index + 1].Date;
-          
-          if (this.isDateGap(date, date2)) {
-              this.fillTheGap(date, date2, index);
-          }
-      }
-  }
-
-// inserts an all-zero object everywhere there is gap between two actual days with non-zero values.
-  private fillTheGap(date1: string, date2: string, startIndex: number){
-      let d1 = moment(date1).format('YYYY-MM-DD');
-      let d2 = moment(date2).format('YYYY-MM-DD');
-      let d3 = moment(date1).add(1, 'days').format('YYYY-MM-DD');
-      while (d3 !== d2) {
-          this.data.splice(++startIndex, 0, {
-              Date: d3,
-              Catering_number: 0,
-              Catering_revenue: 0,
-              Delivery_number: 0,
-              Delivery_revenue: 0,
-              TakeOut_number: 0,
-              TakeOut_revenue: 0,
-              TotalRevenue: 0,
-              TotalNumber: 0
-          });
-          d3 = moment(d3).add(1, 'days').format('YYYY-MM-DD');
-      }
-
-  }
-
-  private isDateGap(date1: string, date2: string) {
-      let d1 = moment(date1);
-      let d2 = moment(date2);
-      return Math.abs(d1.diff(d2, 'days')) > 1 ? true : false
-  }
-
-// unifies the date format for all, and adds the total revenue and total number to each item.
-  private addTotals(){
-      this.data.forEach(e => {
-          if (e.Date.length > 10) e.Date = e.Date.substr(0, 10);
-          e.TotalRevenue = e.Delivery_revenue + e.TakeOut_revenue + e.Catering_revenue;
-          e.TotalNumber = e.Delivery_number + e.TakeOut_number + e.Catering_number;
-      });
   }
 
   private isWithinAllowedPeriodRange(){

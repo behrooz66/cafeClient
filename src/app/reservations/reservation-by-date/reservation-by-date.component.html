@@ -17,7 +17,11 @@
   </div>
 </div>
 
-<div class="panel panel-default">
+<div *ngIf="!waiting && reservations.length === 0" style="text-align: center;">
+    <h4>No reservations for the selected date range</h4>
+</div>
+
+<div *ngIf="reservations.length > 0" class="panel panel-default">
     <div class="panel-body">
         <table class="table">
             <thead>

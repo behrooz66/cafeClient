@@ -145,34 +145,30 @@
 
 
 <br/>
-<div class="row">
-    <div class="col-md-4 bdbox">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-              <table style="width:100%;">
-                    <tbody>
-                        <tr style="width:100%;">
-                            <td style="width:50%;">
-                                <h4>
-                                    Orders
-                                </h4>
-                            </td>
-                            <td style="float: right;">
-                                <button type="button" class="btn btn-default btn-flat btn-sm pull-right" (click)="saveImageOrders();" title="Save as Image">
-                                    <icon [type]="'save'" [size]="2"></icon>
-                                </button>
-                            </td>
-                        </tr> 
-                    </tbody>
-                </table>
-          </div>
-          <div class="panel-body">
-              <canvas #orders></canvas>
-          </div>
-        </div>
-    </div>
 
-    <div class="col-md-4 bdbox">
+<div class="row" >
+    <div class="col-md-4 col-sm-6 bdbox">
+        <div class="panel panel-default" >
+                    <div class="panel-heading">
+                        <h4>
+                            Orders - Current Quarter2
+                        </h4>
+                    </div>
+                    <div class="panel-body">
+                        <div [hidden]="!ordersQ.wait" class="text-center">
+                            <loading></loading>
+                        </div>
+                        <canvas [hidden]="ordersQ.empty" #orders ></canvas>
+                        <div [hidden]="!ordersQ.empty">
+                            No data available for the current quarter.
+                        </div>
+                        <div [hidden]="!ordersQ.error" style="color:red;">
+                                An error has occured...
+                        </div>
+                    </div>
+                </div>
+    </div>
+    <div class="col-md-4 col-sm-6 bdbox">
         <div class="panel panel-default">
           <div class="panel-heading">
               <table style="width:100%;">
@@ -193,12 +189,21 @@
                 </table>
           </div>
           <div class="panel-body">
-              <canvas></canvas>
+              <div [hidden]="!reservationsQ.wait" class="text-center">
+                  <loading></loading>
+              </div>
+              <canvas [hidden]="reservationsQ.empty" #reservations></canvas>
+              <div [hidden]="!reservationsQ.empty">
+                  No data available for the current quarter.
+              </div>
+              <div [hidden]="!reservationsQ.error" style="color:red;">
+                    An error has occured...
+              </div>
           </div>
         </div>
     </div>
 
-    <div class="col-md-4 bdbox">
+    <div class="col-md-4 col-sm-6 bdbox">
         <div  class="panel panel-default">
           <div class="panel-heading">
               <table style="width:100%;">
@@ -219,7 +224,16 @@
                 </table>
           </div>
           <div class="panel-body">
-              <canvas></canvas>
+              <div [hidden]="!giftCardsQ.wait" class="text-center">
+                  <loading></loading>
+              </div>
+              <canvas [hidden]="giftCardsQ.empty" #giftCards></canvas>
+              <div [hidden]="!giftCardsQ.empty">
+                  No data available for the current quarter.
+              </div>
+              <div [hidden]="!giftCardsQ.error" style="color:red;">
+                    An error has occured...
+              </div>
           </div>
         </div>
     </div>

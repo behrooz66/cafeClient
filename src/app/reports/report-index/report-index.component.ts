@@ -2,6 +2,10 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FileDownloaderService } from '../../shared/file-downloader.service';
 import { FlashMessageService } from '../../shared/flash-message/flash-message.service';
 import { ReportService } from '../report.service';
+import { ReportOrderHelperService } from '../order/report-order-helper.service';
+import { ReportReservationHelperService } from '../reservation/report-reservation-helper.service'
+import { ReportGiftCardHelperService } from '../giftcard/report-giftcard-helper.service';
+import { Chart } from 'chart.js';
 import * as moment from 'moment';
 
 @Component({
@@ -10,7 +14,10 @@ import * as moment from 'moment';
   styleUrls: ['./report-index.component.css'],
   providers: [
       FileDownloaderService,
-      ReportService
+      ReportService,
+      ReportOrderHelperService,
+      ReportReservationHelperService,
+      ReportGiftCardHelperService
   ]
 })
 export class ReportIndexComponent implements OnInit {
@@ -41,17 +48,45 @@ export class ReportIndexComponent implements OnInit {
       reservationsRevenue: 0,
       
       oWait: false,
+      oEmpty: false,
       gWait: false,
-      rWait: false
+      gEmpty: false,
+      rWait: false,
+      rEmpty: false
   };
 
+  ordersQ: any = 
+  {
+      wait: false,
+      empty: false,
+      error: false
+  }
 
+  reservationsQ: any =
+  {
+      wait: false,
+      empty: false,
+      error: false
+  }
 
+  giftCardsQ: any = 
+  {
+      wait: false,
+      empty: false,
+      error: false
+  }
+
+  @ViewChild('orders') ordersChart;
+  @ViewChild('reservations') reservationsChart;
+  @ViewChild('giftCards') giftCardsChart;
 
   constructor(
     private _file: FileDownloaderService,
     private _report: ReportService,
-    private _flash: FlashMessageService
+    private _flash: FlashMessageService,
+    private _helper: ReportOrderHelperService,
+    private _helperR: ReportReservationHelperService,
+    private _helperG: ReportGiftCardHelperService
   ) { }
 
   ngOnInit() 
@@ -59,6 +94,9 @@ export class ReportIndexComponent implements OnInit {
       this.calculateMultiplier();
       this.currentMonthSum();
       this.lastMonthSum();
+      this.ordersQuarter();
+      this.reservationsQuarter();
+      this.giftCardsQuarter();
   }
 
   currentMonthSum()
@@ -160,6 +198,213 @@ export class ReportIndexComponent implements OnInit {
           );
   }
 
+  ordersQuarter()
+  {
+      this.ordersQ.wait = true;
+      this.ordersQ.empty = false;
+      this.ordersQ.error = false;
+      let data = [];
+      this._report.getOrdersDailySum(this.getCurrentQuarterStart(), moment().format('YYYY-MM-DD'), 0)
+          .finally(() => this.ordersQ.wait = false)
+          .subscribe(
+              d => {
+                  data = d;
+                  if (data.length > 0) 
+                  {
+                    data = this._helper.dailySum_addTotals(data);
+                    data = this._helper.dailySum_normalizeDate(data);
+                    data = this._helper.dailySum_addHead(data, this.getCurrentQuarterStart());
+                    data = this._helper.dailySum_addTail(data, moment().format('YYYY-MM-DD'));
+                    let chart = new Chart(this.ordersChart.nativeElement.getContext('2d'),
+                        {
+                            type: 'line',
+                            data: {
+                                labels: data.map(x => x.Date),
+                                datasets: [
+                                    {
+                                        label: 'Revenue',
+                                        data: data.map(x => x.TotalRevenue),
+                                        backgroundColor: 'rgba(255, 110, 0, 0.0)',
+                                        borderColor: 'rgba(255, 110, 0, 1.0)',
+                                    }
+                                ]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    //text: 'Daily Sales Revenue',
+                                    fontSize: 16,
+                                    position: 'bottom'
+                                },
+                                scales:{
+                                    yAxes:[
+                                        { 
+                                            ticks: 
+                                            {
+                                                min: 0,
+                                                callback: 
+                                                    (value, index, values) => '$'+value
+                                            }
+                                        }
+                                    ]
+                                },
+                                legend: {
+                                    position: 'bottom',
+                                    display: false
+                                }
+                            }
+                        });
+                  }
+                  else 
+                  {
+                      this.ordersQ.empty = true;
+                  }
+              },
+              d => {
+                  this.ordersQ.error = true;
+              }
+          );
+
+      
+  }
+
+  reservationsQuarter()
+  {
+      this.reservationsQ.wait = true;
+      this.reservationsQ.empty = false;
+      this.reservationsQ.error = false;
+      let data = [];
+      this._report.getReservationsDailySum(this.getCurrentQuarterStart(), moment().format('YYYY-MM-DD'), 0)
+          .finally(() => this.reservationsQ.wait = false)
+          .subscribe(
+              d => {
+                  data = d;
+                  if (data.length > 0) 
+                  {
+                        data = this._helperR.dailySum_addTotals(data);
+                        data = this._helperR.dailySum_normalizeData(data);
+                        data = this._helperR.dailySum_addHead(data, this.getCurrentQuarterStart());
+                        data = this._helperR.dailySum_addTail(data, moment().format('YYYY-MM-DD'));
+                        let chart = new Chart(this.reservationsChart.nativeElement.getContext('2d'), {
+                                type: 'line',
+                                data: {
+                                    labels: data.map(x => x.Date),
+                                    datasets: [
+                                        {
+                                            label: 'Reservations',
+                                            data: data.map(x => x.TotalNumber),
+                                            backgroundColor: 'rgba(255, 110, 0, 0.0)',
+                                            borderColor: 'rgba(20, 1, 1, 1)',
+                                            borderWidth: 1
+                                        }
+                                    ]
+                                },
+                                options: {
+                                    title: {
+                                        display: true,
+                                        //text: 'Reservations',
+                                        fontSize: 16,
+                                        position: 'bottom',
+                                    },
+                                    scales: {
+                                        yAxes: [
+                                            {
+                                                ticks:
+                                                {
+                                                    min: 0,
+                                                    callback: 
+                                                        (value, index, values) => Math.floor(value) === value? value : null
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    legend: {
+                                        position: 'bottom',
+                                        display: false
+                                    }
+                                }
+                            });
+                    }
+                    else
+                    {
+                        this.reservationsQ.empty = true;
+                    }
+
+                //console.log(data);
+              },
+              d => {
+                  this.reservationsQ.error = true;
+              }
+          );
+      
+  }
+
+  giftCardsQuarter()
+  {
+      this.giftCardsQ.wait = true;
+      this.giftCardsQ.empty = false;
+      this.giftCardsQ.error = false;
+      let data = [];
+      this._report.getGiftCardsDailySum(this.getCurrentQuarterStart(), moment().format('YYYY-MM-DD'), 0)
+          .finally(() => this.giftCardsQ.wait = false)
+          .subscribe(
+              d => {
+                  data = d;
+                  console.log(data);
+                  if (data.length > 0)
+                  {
+                      data = this._helperG.dailySum_addTotals(data);
+                      data = this._helperG.dailySum_normalizeData(data);
+                      data = this._helperG.dailySum_addHead(data, this.getCurrentQuarterStart());
+                      data = this._helperG.dailySum_addTail(data, moment().format('YYYY-MM-DD'));
+                      let chart = new Chart(this.giftCardsChart.nativeElement.getContext('2d'), {
+                          type: 'line',
+                          data: {
+                              labels: data.map(x => x.Date),
+                              datasets: [
+                                  {
+                                      label: 'Revenue',
+                                      data: data.map(x => x.TotalRevenue),
+                                      backgroundColor: 'rgba(255, 110, 0, 0.0)',
+                                      borderColor: 'rgba(255, 110, 0, 1.0)',
+                                  }
+                              ]
+                          },
+                          options: {
+                              title: {
+                                  display: true,
+                                  fontSize: 16,
+                                  position: 'bottom'
+                              },
+                              scales: {
+                                  yAxes: [
+                                      {
+                                          ticks:
+                                          {
+                                              min: 0,
+                                              callback: (value, index, values) => '$'+value
+                                          }
+                                      }
+                                  ]
+                              },
+                              legend: {
+                                  position: 'bottom',
+                                  display: false
+                              }
+                          }
+                      });
+                  }
+                  else
+                  {
+                      this.giftCardsQ.empty = true;
+                  }
+              }, 
+              d => {
+                  this.giftCardsQ.error = true;
+              }
+          )
+  }
+
   private getCurrentMonthInfo(): any
   {
       var date = new Date(), y = date.getFullYear(), m = date.getMonth();
@@ -197,6 +442,21 @@ export class ReportIndexComponent implements OnInit {
       let m:number = +(today/total).toFixed(2);
       this.multiplier = m;
   }
+
+  private getFirstDayOfCurrentYear()
+  {
+      var thisYear = (new Date()).getFullYear();    
+      var start = new Date("1/1/" + thisYear);
+      var defaultStart = moment(start.valueOf()).format('YYYY-MM-DD');
+      return defaultStart;
+  }
+
+  private getCurrentQuarterStart()
+  {
+      return moment().quarter(moment().quarter()).startOf('quarter').format('YYYY-MM-DD');
+  }
+
+
 
 
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReportService } from '../../report.service';
+import { ReportGiftCardHelperService } from '../report-giftcard-helper.service';
 import { FlashMessageService } from '../../../shared/flash-message/flash-message.service';
 import { Settings } from '../../../settings';
 import { Chart } from 'chart.js';
@@ -11,6 +12,7 @@ import * as moment from 'moment';
   styleUrls: ['./report-giftcard-daily-sum.component.css'],
   providers:[
       ReportService,
+      ReportGiftCardHelperService
   ]
 })
 export class ReportGiftcardDailySumComponent implements OnInit {
@@ -28,7 +30,8 @@ export class ReportGiftcardDailySumComponent implements OnInit {
   @ViewChild('chartQuantity') chartQuantity;
 
   constructor(private _report: ReportService,
-              private _flash: FlashMessageService) { }
+              private _flash: FlashMessageService,
+              private _helper: ReportGiftCardHelperService) { }
 
   ngOnInit() 
   {
@@ -46,11 +49,19 @@ export class ReportGiftcardDailySumComponent implements OnInit {
             .subscribe(
                 d => {
                     this.data = d;
-                    this.addTotals();
-                    this.normalizeData();
-                    this.drawChartRevenue();
-                    this.drawChartQuantity();
+                    if (this.data.length !== 0) {
+                        this.data = this._helper.dailySum_addTotals(this.data);
+                        this.data = this._helper.dailySum_normalizeData(this.data);
+                        this.data = this._helper.dailySum_addHead(this.data, this.dateFrom);
+                        this.data = this._helper.dailySum_addTail(this.data, this.dateTo);
+                        this.drawChartRevenue();
+                        this.drawChartQuantity();
+                    }
+                    else {
+                        //this._flash.addMessage("Info", "No data found for the selected period.", false, "warning", 2500, 2);
+                    }
                     this.mode = "success";
+                    
                 },
                 d => {
                     this._flash.addMessage("Error", "Error in generating the report.", true, "danger", 2500, 2);

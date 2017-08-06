@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReportService } from '../../report.service';
+import { ReportReservationHelperService } from '../report-reservation-helper.service';
 import { FlashMessageService } from '../../../shared/flash-message/flash-message.service';
 import { Settings } from '../../../settings';
 import { Chart } from 'chart.js';
@@ -11,6 +12,7 @@ import * as moment from 'moment';
   styleUrls: ['./report-reservation-daily-sum.component.css'],
   providers:[
       ReportService,
+      ReportReservationHelperService
   ]
 })
 export class ReportReservationDailySumComponent implements OnInit {
@@ -27,7 +29,9 @@ export class ReportReservationDailySumComponent implements OnInit {
   @ViewChild('chartQuantity') chartQuantity;
   
   constructor(private _report: ReportService,
-              private _flash: FlashMessageService) { }
+              private _flash: FlashMessageService,
+              private _helper: ReportReservationHelperService)
+  { }
 
   ngOnInit() 
   {
@@ -46,8 +50,10 @@ export class ReportReservationDailySumComponent implements OnInit {
             .subscribe(
                 d => {
                     this.data = d;
-                    this.addTotals();
-                    this.normalizeData();
+                    // this.addTotals();
+                    // this.normalizeData();
+                    this.data = this._helper.dailySum_addTotals(this.data);
+                    this.data = this._helper.dailySum_normalizeData(this.data);
                     this.drawChartRevenue();
                     this.drawChartQuantity();
                     this.mode = "success";
@@ -185,61 +191,61 @@ export class ReportReservationDailySumComponent implements OnInit {
 
   // ********************************//
 
-  private normalizeData() 
-  {
-      let index = -1;
-      while (index < this.data.length - 1) {
-          index++;
-          if (index + 1 >= this.data.length)
-              break;
-          let date = this.data[index].Date;
-          let date2 = this.data[index + 1].Date;
+//   private normalizeData() 
+//   {
+//       let index = -1;
+//       while (index < this.data.length - 1) {
+//           index++;
+//           if (index + 1 >= this.data.length)
+//               break;
+//           let date = this.data[index].Date;
+//           let date2 = this.data[index + 1].Date;
           
-          if (this.isDateGap(date, date2)) {
-              this.fillTheGap(date, date2, index);
-          }
-      }
-  }
+//           if (this.isDateGap(date, date2)) {
+//               this.fillTheGap(date, date2, index);
+//           }
+//       }
+//   }
 
-  // inserts an all-zero object everywhere there is gap between two actual days with non-zero values.
-  private fillTheGap(date1: string, date2: string, startIndex: number)
-  {
-      let d1 = moment(date1).format('YYYY-MM-DD');
-      let d2 = moment(date2).format('YYYY-MM-DD');
-      let d3 = moment(date1).add(1, 'days').format('YYYY-MM-DD');
-      while (d3 !== d2) {
-          this.data.splice(++startIndex, 0, {
-              Date: d3,
-              ShownUp_revenue: 0,
-              ShownUp_number: 0,
-              NotShown_revenue: 0,
-              NotShown_number: 0,
-              Cancelled_revenue: 0,
-              Cancelled_number: 0,
-              Unspecified_revenue: 0,
-              Unspecified_number: 0,
-              TotalRevenue: 0,
-              TotalNumber: 0
-          });
-          d3 = moment(d3).add(1, 'days').format('YYYY-MM-DD');
-      }
+//   // inserts an all-zero object everywhere there is gap between two actual days with non-zero values.
+//   private fillTheGap(date1: string, date2: string, startIndex: number)
+//   {
+//       let d1 = moment(date1).format('YYYY-MM-DD');
+//       let d2 = moment(date2).format('YYYY-MM-DD');
+//       let d3 = moment(date1).add(1, 'days').format('YYYY-MM-DD');
+//       while (d3 !== d2) {
+//           this.data.splice(++startIndex, 0, {
+//               Date: d3,
+//               ShownUp_revenue: 0,
+//               ShownUp_number: 0,
+//               NotShown_revenue: 0,
+//               NotShown_number: 0,
+//               Cancelled_revenue: 0,
+//               Cancelled_number: 0,
+//               Unspecified_revenue: 0,
+//               Unspecified_number: 0,
+//               TotalRevenue: 0,
+//               TotalNumber: 0
+//           });
+//           d3 = moment(d3).add(1, 'days').format('YYYY-MM-DD');
+//       }
 
-  }
+//   }
 
-  private isDateGap(date1: string, date2: string) {
-      let d1 = moment(date1);
-      let d2 = moment(date2);
-      return Math.abs(d1.diff(d2, 'days')) > 1 ? true : false
-  }
+//   private isDateGap(date1: string, date2: string) {
+//       let d1 = moment(date1);
+//       let d2 = moment(date2);
+//       return Math.abs(d1.diff(d2, 'days')) > 1 ? true : false
+//   }
 
-  // unifies the date format for all, and adds the total revenue and total number to each item.
-  private addTotals(){
-      this.data.forEach(e => {
-          if (e.Date.length > 10) e.Date = e.Date.substr(0, 10);
-          e.TotalRevenue = e.ShownUp_revenue + e.Unspecified_revenue;
-          e.TotalNumber = e.ShownUp_number + e.NotShown_number + e.Cancelled_number + e.Unspecified_number;
-      });
-  }
+//   // unifies the date format for all, and adds the total revenue and total number to each item.
+//   private addTotals(){
+//       this.data.forEach(e => {
+//           if (e.Date.length > 10) e.Date = e.Date.substr(0, 10);
+//           e.TotalRevenue = e.ShownUp_revenue + e.Unspecified_revenue;
+//           e.TotalNumber = e.ShownUp_number + e.NotShown_number + e.Cancelled_number + e.Unspecified_number;
+//       });
+//   }
 
   private isWithinAllowedPeriodRange(){
       if (Math.abs(moment(this.dateFrom).diff(moment(this.dateTo), "months")) > this.maxAllowedPeriod)

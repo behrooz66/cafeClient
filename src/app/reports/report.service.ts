@@ -116,6 +116,7 @@ export class ReportService {
 
   getGiftCardsDailySum(dateFrom: string, dateTo: string, typeId: number){
       let params: string = '?dateFrom=' + dateFrom + '&dateTo=' + dateTo + '&typeId=' + typeId.toString();
+      console.log(params);
       return this._http.get(this.apiBase + "giftCardsDailySum" + params)
           .map(r => r.json());
   }

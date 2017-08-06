@@ -154,16 +154,6 @@ export class ReportOrderRecordsMapComponent implements OnInit {
       return str;
   }
 
-//   private downloadCsv(csvString: string) 
-//   {
-//       let a = document.createElement("a");
-//       a.setAttribute('style', 'display:none');
-//       document.body.appendChild(a);
-//       let blob = new Blob([csvString], {type: 'text/csv'});
-//       let url = window.URL.createObjectURL(blob);
-//       a.href = url;
-//       a.download = 'orders.csv';
-//       a.click();
-//   }
+
 
 }

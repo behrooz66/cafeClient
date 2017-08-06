@@ -16,6 +16,7 @@ import { ReportGiftcardDailySumComponent } from './giftcard/report-giftcard-dail
 import { ReportGiftcardMonthlySumComponent } from './giftcard/report-giftcard-monthly-sum/report-giftcard-monthly-sum.component';
 import { ReportGiftcardRecordsMapComponent } from './giftcard/report-giftcard-records-map/report-giftcard-records-map.component';
 import { ReportGiftcardTopCustomersComponent } from './giftcard/report-giftcard-top-customers/report-giftcard-top-customers.component';
+import { ReportOrderIndexComponent } from './order/report-order-index/report-order-index.component';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { ReportGiftcardTopCustomersComponent } from './giftcard/report-giftcard-
     ReportGiftcardDailySumComponent,
     ReportGiftcardMonthlySumComponent,
     ReportGiftcardRecordsMapComponent,
-    ReportGiftcardTopCustomersComponent
+    ReportGiftcardTopCustomersComponent,
+    ReportOrderIndexComponent
   ],
   exports: [
     ReportIndexComponent
