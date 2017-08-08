@@ -30,10 +30,12 @@ export class ReportReservationDailySumComponent implements OnInit {
   @ViewChild('chartRevenue') chartRevenue;
   @ViewChild('chartQuantity') chartQuantity;
   
-  constructor(private _report: ReportService,
-              private _flash: FlashMessageService,
-              private _helper: ReportReservationHelperService,
-              private _chart: ChartService)
+  constructor(
+        private _report: ReportService,
+        private _flash: FlashMessageService,
+        private _helper: ReportReservationHelperService,
+        private _chart: ChartService
+        )
   { }
 
   ngOnInit() 
@@ -52,9 +54,16 @@ export class ReportReservationDailySumComponent implements OnInit {
           this._report.getReservationsDailySum(this.dateFrom, this.dateTo, this.statusId)
             .subscribe(
                 d => {
-                    this.data = this._helper.dailySum_chartData(d, this.dateFrom, this.dateTo);
-                    this.drawChartRevenue();
-                    this.drawChartQuantity();
+                    if (d.length > 0)
+                    {
+                        this.data = this._helper.dailySum_chartData(d, this.dateFrom, this.dateTo);
+                        this.drawChartRevenue();
+                        this.drawChartQuantity();
+                    }
+                    else 
+                    {
+                        // todo do something
+                    }
                     this.mode = "success";
                 },
                 d => {

@@ -4,6 +4,7 @@ import { ReportGiftCardHelperService } from '../report-giftcard-helper.service';
 import { FlashMessageService } from '../../../shared/flash-message/flash-message.service';
 import { Settings } from '../../../settings';
 import { Chart } from 'chart.js';
+import { ChartService, LineChartDataset } from '../../../shared/chart.service';
 import * as moment from 'moment';
 
 @Component({
@@ -12,7 +13,8 @@ import * as moment from 'moment';
   styleUrls: ['./report-giftcard-daily-sum.component.css'],
   providers:[
       ReportService,
-      ReportGiftCardHelperService
+      ReportGiftCardHelperService,
+      ChartService
   ]
 })
 export class ReportGiftcardDailySumComponent implements OnInit {
@@ -31,7 +33,8 @@ export class ReportGiftcardDailySumComponent implements OnInit {
 
   constructor(private _report: ReportService,
               private _flash: FlashMessageService,
-              private _helper: ReportGiftCardHelperService) { }
+              private _helper: ReportGiftCardHelperService,
+              private _chart: ChartService) { }
 
   ngOnInit() 
   {
@@ -48,8 +51,8 @@ export class ReportGiftcardDailySumComponent implements OnInit {
           this._report.getGiftCardsDailySum(this.dateFrom, this.dateTo, this.typeId)
             .subscribe(
                 d => {
-                    this.data = d;
-                    if (this.data.length !== 0) {
+                    if (d.length !== 0) 
+                    {
                         this.data = this._helper.dailySum_chartData(d, this.dateFrom, this.dateTo);
                         this.drawChartRevenue();
                         this.drawChartQuantity();
@@ -74,108 +77,110 @@ export class ReportGiftcardDailySumComponent implements OnInit {
 
   drawChartRevenue()
   {
-      let chart = new Chart(this.chartRevenue.nativeElement.getContext('2d'), {
-          type: 'line',
-          data: {
-              labels: this.data.map(x => x.Date),
-              datasets: [
-                  {
-                      label: 'Total',
-                      data: this.data.map(x => x.TotalRevenue),
-                      backgroundColor: 'rgba(255, 110, 0, 0.0)',
-                      borderColor: 'rgba(255, 110, 0, 1.0)'
-                  },
-                  {
-                      label: 'Purchase',
-                      data: this.data.map(x => x.Purchase_revenue),
-                      backgroundColor: 'rgba(0, 255, 17, 0.2)',
-                      borderColor: 'rgba(92, 194, 86, 1)'
-                  },
-                  {
-                      label: 'Coupon',
-                      data: this.data.map(x => x.Coupon_revenue),
-                      backgroundColor: 'rgba(0, 123, 255, 0.2)',
-                      borderColor: 'rgba(0, 123, 255, 1)'
-                  }
-              ]
-          },
-          options:{
-              title: {
-                  display: true,
-                  text: 'Daily Sales Revenue',
-                  fontSize: 16
-              },
-              scales:{
-                  yAxes:[
-                      { 
-                          ticks: 
-                          {
-                              min: 0,
-                              callback: 
-                                (value, index, values) => '$'+value
-                          }
-                      }
-                  ]
-              }
-          }
-      });
+      let datasets: LineChartDataset[] =
+      [
+            {
+                label: 'Total',
+                data: this.data.map(x => x.TotalRevenue),
+                backgroundColor: 'rgba(255, 110, 0, 0.0)',
+                borderColor: 'rgba(255, 110, 0, 1.0)',
+                borderDash: [1, 0]
+            },
+            {
+                label: 'Purchase',
+                data: this.data.map(x => x.Purchase_revenue),
+                backgroundColor: 'rgba(0, 255, 17, 0.2)',
+                borderColor: 'rgba(92, 194, 86, 1)',
+                borderDash: [1, 0]
+            },
+            {
+                label: 'Coupon',
+                data: this.data.map(x => x.Coupon_revenue),
+                backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                borderColor: 'rgba(0, 123, 255, 1)',
+                borderDash: [1, 0]
+            }
+      ];
 
+      let options = 
+      {
+            title: {
+                display: true,
+                text: 'Daily Sales Revenue',
+                fontSize: 16
+            },
+            scales:{
+                yAxes:[
+                    { 
+                        ticks: 
+                        {
+                            min: 0,
+                            callback: 
+                            (value, index, values) => '$'+value
+                        }
+                    }
+                ]
+            }
+      }
+
+      let chart = this._chart.lineChart(this.chartRevenue, this.data.map(x => x.Date), datasets, options);
       chart.render();
   }
 
 
   drawChartQuantity()
   {
-      let chart = new Chart(this.chartQuantity.nativeElement.getContext('2d'), {
-          type: 'line',
-          data: {
-              labels: this.data.map(x => x.Date),
-              datasets: [
-                  {
-                      label: 'Total',
-                      data: this.data.map(x => x.TotalNumber),
-                      backgroundColor: 'rgba(255, 110, 0, 0.0)',
-                      borderColor: 'rgba(255, 110, 0, 1.0)'
-                  },
-                  {
-                      label: 'Purchase',
-                      data: this.data.map(x => x.Purchase_number),
-                      backgroundColor: 'rgba(0, 255, 17, 0.2)',
-                      borderColor: 'rgba(92, 194, 86, 1)'
-                  },
-                  {
-                      label: 'Coupon',
-                      data: this.data.map(x => x.Coupon_number),
-                      backgroundColor: 'rgba(0, 123, 255, 0.2)',
-                      borderColor: 'rgba(0, 123, 255, 1)'
-                  }
-              ]
-          },
-          options:{
-              title: {
-                  display: true,
-                  text: 'Daily Sales Quantity',
-                  fontSize: 16
-              },
-              scales:{
-                  yAxes:[
-                      { 
-                          ticks: 
-                          {
-                              min: 0,
-                              callback: 
-                                (value, index, values) => Math.floor(value) === value? value : null
-                          }
-                      }
-                  ]
-              }
-          }
-      });
+      let datasets: LineChartDataset[] = 
+        [
+            {
+                label: 'Total',
+                data: this.data.map(x => x.TotalNumber),
+                backgroundColor: 'rgba(255, 110, 0, 0.0)',
+                borderColor: 'rgba(255, 110, 0, 1.0)',
+                borderDash: [1, 0]
+            },
+            {
+                label: 'Purchase',
+                data: this.data.map(x => x.Purchase_number),
+                backgroundColor: 'rgba(0, 255, 17, 0.2)',
+                borderColor: 'rgba(92, 194, 86, 1)',
+                borderDash: [1, 0]
+            },
+            {
+                label: 'Coupon',
+                data: this.data.map(x => x.Coupon_number),
+                backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                borderColor: 'rgba(0, 123, 255, 1)',
+                borderDash: [1, 0]
+            }
+        ];
 
+      let options = 
+        {
+            title: {
+                display: true,
+                text: 'Daily Sales Quantity',
+                fontSize: 16
+            },
+            scales:{
+                yAxes:[
+                    { 
+                        ticks: 
+                        {
+                            min: 0,
+                            callback: 
+                            (value, index, values) => Math.floor(value) === value? value : null
+                        }
+                    }
+                ]
+            }
+        }
+
+      let chart = this._chart.lineChart(this.chartQuantity, this.data.map(x => x.Date), datasets, options);
       chart.render();
   }
 
-
+  /*
   private normalizeData() 
   {
       let index = -1;
@@ -228,7 +233,7 @@ export class ReportGiftcardDailySumComponent implements OnInit {
           e.TotalRevenue = e.Purchase_revenue + e.Coupon_revenue;
           e.TotalNumber = e.Purchase_number + e.Coupon_number;
       });
-  }
+  }*/
 
   private isWithinAllowedPeriodRange()
   {

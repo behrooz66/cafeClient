@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReportService } from '../../report.service';
 import { FlashMessageService } from '../../../shared/flash-message/flash-message.service';
 import { Settings } from '../../../settings';
+import { ReportReservationHelperService } from '../report-reservation-helper.service';
 import { ChartService, BarChartDataset, BarChartOptions, 
          DoughnutChartDataset, DoughnutChartOptions} from '../../../shared/chart.service';
 import { Chart } from 'chart.js';
@@ -12,7 +13,8 @@ import { Chart } from 'chart.js';
   styleUrls: ['./report-reservation-monthly-sum.component.css'],
   providers: [
       ReportService,
-      ChartService
+      ChartService,
+      ReportReservationHelperService
   ]
 })
 export class ReportReservationMonthlySumComponent implements OnInit {
@@ -25,14 +27,13 @@ export class ReportReservationMonthlySumComponent implements OnInit {
 
   @ViewChild('revenueBar') revenueBar;
   @ViewChild('quantityBar') quantityBar;
-  @ViewChild('revenuePie') revenuePie;
+  //@ViewChild('revenuePie') revenuePie;
   @ViewChild('quantityPie') quantityPie;
 
   constructor(private _report: ReportService,
               private _flash: FlashMessageService,
-              private _chart: ChartService) { }
-
-
+              private _chart: ChartService,
+              private _helper: ReportReservationHelperService) { }
 
   ngOnInit() 
   {
@@ -60,44 +61,7 @@ export class ReportReservationMonthlySumComponent implements OnInit {
 
   revenueBarChart() 
   {
-      let months: string[] = [];
-      let statuses: string[] = [];
-      let datasets: any[] = [];
-      
-      this.data.forEach(element => {
-          months.push(element.Month);
-      });
-
-      this.data[0].Statuses.forEach(e => {
-          statuses.push(e.Status);
-      });
-      
-      let colorIndex = 0;
-      statuses.forEach(status => {
-          let ds = {
-              label: status,
-              data: [],
-              backgroundColor: Settings.reports.chartColors[colorIndex++]
-          };
-          
-          for (let i=0; i<this.data.length; i++){
-              ds.data.push(this.getRevenueData(status, i));
-          }
-          datasets.push(ds);
-      });
-
-      statuses.push("Total");
-
-      datasets.push({
-          label: "Total",
-          data: [],
-          backgroundColor: Settings.reports.chartColors[5]
-      });
-
-      this.data.forEach(el => {
-          datasets[datasets.length-1].data.push(el.TotalRevenue);
-      });
-
+      let result = this._helper.monthlySum_prepareDataForRevenueBarChart(this.data);
       let options = new BarChartOptions();
       options.title = {
                   display: true,
@@ -116,52 +80,14 @@ export class ReportReservationMonthlySumComponent implements OnInit {
               };
       
 
-      let chart = this._chart.BarChart(this.revenueBar, months, datasets, options);
+      let chart = this._chart.BarChart(this.revenueBar, result.labels, result.datasets, options);
       chart.render();
   }
 
   
   quantityBarChart()
   {
-      let months: string[] = [];
-      let statuses: string[] = [];
-      let datasets: any[] = [];
-      
-      this.data.forEach(element => {
-          months.push(element.Month);
-      });
-
-      this.data[0].Statuses.forEach(e => {
-          statuses.push(e.Status);
-      });
-      
-      let colorIndex = 0;
-      statuses.forEach(status => {
-          let ds = {
-              label: status,
-              data: [],
-              backgroundColor: Settings.reports.chartColors[colorIndex++]
-          };
-          
-          for (let i=0; i<this.data.length; i++){
-              ds.data.push(this.getQuantityData(status, i));
-          }
-          datasets.push(ds);
-      });
-
-      statuses.push("Total");
-
-      datasets.push({
-          label: "Total",
-          data: [],
-          backgroundColor: Settings.reports.chartColors[5]
-      });
-
-      this.data.forEach(el => {
-          console.log(el);
-          datasets[datasets.length-1].data.push(el.TotalReservations);
-      });
-
+      let result = this._helper.monthlySum_prepareDataForQuantityBarChart(this.data);
       let options = new BarChartOptions();
       options = {
           title: {
@@ -184,47 +110,13 @@ export class ReportReservationMonthlySumComponent implements OnInit {
                   ]
               }
       };
-
-      let chart = this._chart.BarChart(this.quantityBar, months, datasets, options);
+      let chart = this._chart.BarChart(this.quantityBar, result.labels, result.datasets, options);
       chart.render();
   }
 
   quantityPieChart() 
   {
-      let statuses: string[] = [];
-      let datasets: any[] = [];
-      let sums: number[] = [];
-
-      this.data[0].Statuses.forEach(e => {
-          statuses.push(e.Status);
-      });
-
-      for (let t=0; t<statuses.length; t++){
-          sums[t] = 0;
-          for (let i=0; i<this.data.length; i++){
-              sums[t] += this.getQuantityData(statuses[t], i);
-          }
-      }
-
-      let ds = {
-          data: sums,
-          backgroundColor: [
-                Settings.reports.chartColors[0],
-                Settings.reports.chartColors[1],
-                Settings.reports.chartColors[2],
-            ]
-      };
-
-      let dss: DoughnutChartDataset[] = [
-          {
-              data: sums,
-              backgroundColor: [
-                  Settings.reports.chartColors[0],
-                  Settings.reports.chartColors[1],
-                  Settings.reports.chartColors[2],
-              ]
-          }
-      ]
+      let result = this._helper.monthlySum_prepareDataForQuantityPieChart(this.data);
     
       let options = new DoughnutChartOptions();
       options.title = {
@@ -233,9 +125,9 @@ export class ReportReservationMonthlySumComponent implements OnInit {
           fontSize: 14
       };
 
-      let chart = this._chart.DoughnutChart(this.quantityPie, statuses, dss, options);
+      let chart = this._chart.DoughnutChart(this.quantityPie, result.labels, result.datasets, options);
       chart.render();
-    }
+  }
 
 
   private getRevenueData(status: string, index: number): number 

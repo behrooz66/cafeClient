@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Settings } from '../../settings';
 import * as moment from 'moment';
 
 @Injectable()
@@ -81,4 +82,178 @@ export class ReportGiftCardHelperService {
         return data;
     }
 
+    //*** Monthly Sum */
+
+    public monthlySum_prepareDataForRevenueBarChart(data: any[])
+    {
+        let months: string[] = [];
+        let types: string[] = [];
+        let datasets: any[] = [];
+        
+        data.forEach(element => {
+            months.push(element.Month);
+        });
+
+        data[0].Types.forEach(e => {
+            types.push(e.Type);
+        });
+        
+        let colorIndex = 0;
+        types.forEach(type => {
+            let ds = {
+                label: type,
+                data: [],
+                backgroundColor: Settings.reports.chartColors[colorIndex++]
+            };
+            
+            for (let i=0; i < data.length; i++){
+                ds.data.push(this.monthlySum_getRevenueData(data, type, i));
+            }
+            datasets.push(ds);
+        });
+
+        types.push("Total");
+
+        datasets.push({
+            label: "Total",
+            data: [],
+            backgroundColor: Settings.reports.chartColors[5]
+        });
+
+        data.forEach(el => {
+            datasets[datasets.length-1].data.push(el.TotalRevenue);
+        });
+
+        return {
+            labels: months,
+            datasets: datasets
+        }
+
+    }
+
+    public monthlySum_prepareDataForQuantityBarChart(data: any[])
+    {
+        let months: string[] = [];
+        let types: string[] = [];
+        let datasets: any[] = [];
+        
+        data.forEach(element => {
+            months.push(element.Month);
+        });
+
+        data[0].Types.forEach(e => {
+            types.push(e.Type);
+        });
+        
+        let colorIndex = 0;
+        types.forEach(type => {
+            let ds = {
+                label: type,
+                data: [],
+                backgroundColor: Settings.reports.chartColors[colorIndex++]
+            };
+            
+            for (let i=0; i < data.length; i++){
+                ds.data.push(this.monthlySum_getQuantityData(data, type, i));
+            }
+            datasets.push(ds);
+        });
+
+        types.push("Total");
+
+        datasets.push({
+            label: "Total",
+            data: [],
+            backgroundColor: Settings.reports.chartColors[5]
+        });
+
+        data.forEach(el => {
+            datasets[datasets.length-1].data.push(el.TotalGiftCards);
+        });
+
+        return {
+            labels: months,
+            datasets: datasets
+        }
+    }
+
+    public monthlySum_prepareDataForRevenuePieChart(data: any[])
+    {
+        let types: string[] = [];
+        let datasets: any[] = [];
+        let sums: number[] = [];
+
+        data[0].Types.forEach(e => {
+            types.push(e.Type);
+        });
+
+        for (let t=0; t<types.length; t++){
+            sums[t] = 0;
+            for (let i=0; i < data.length; i++){
+                sums[t] += this.monthlySum_getRevenueData(data, types[t], i);
+            }
+            sums[t] = Math.round(sums[t] * 100) / 100;
+        }
+
+        let dss = [
+            {
+                data: sums,
+                backgroundColor: [
+                    Settings.reports.chartColors[0],
+                    Settings.reports.chartColors[1],
+                    Settings.reports.chartColors[2],
+                ]
+            }
+        ];
+
+        return {
+            labels: types,
+            datasets: dss
+        }
+    }
+
+    public monthlySum_prepareDataForQuantityPieChart(data: any[])
+    {
+        let types: string[] = [];
+        let datasets: any[] = [];
+        let sums: number[] = [];
+
+        data[0].Types.forEach(e => {
+            types.push(e.Type);
+        });
+
+        for (let t=0; t<types.length; t++){
+            sums[t] = 0;
+            for (let i=0; i < data.length; i++){
+                sums[t] += this.monthlySum_getQuantityData(data, types[t], i);
+            }
+        }
+
+        let dss = [
+            {
+                data: sums,
+                backgroundColor: [
+                    Settings.reports.chartColors[0],
+                    Settings.reports.chartColors[1],
+                    Settings.reports.chartColors[2],
+                ]
+            }
+        ];
+
+        return {
+            labels: types,
+            datasets: dss
+        }
+
+    }
+
+  private monthlySum_getRevenueData(data: any[], type: string, index: number): number 
+  {
+      return data[index].Types.filter(d => d.Type === type)[0].Revenue;
+  }
+
+  private monthlySum_getQuantityData(data: any[], type: string, index: number): number 
+  {
+      return data[index].Types.filter(d => d.Type === type)[0].Count;
+  }
 }
