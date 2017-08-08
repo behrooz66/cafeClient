@@ -4,9 +4,17 @@ import * as moment from 'moment';
 @Injectable()
 export class ReportReservationHelperService {
 
-  dailySum_normalizeData(data: any[]): any[] 
+  dailySum_chartData(data: any[], startDate, endDate)
   {
-      console.log(data);
+        data = this.dailySum_addTotals(data);
+        data = this.dailySum_normalizeData(data);
+        data = this.dailySum_addHead(data, startDate);
+        data = this.dailySum_addTail(data, endDate);
+        return data;
+  }
+
+  private dailySum_normalizeData(data: any[]): any[] 
+  {
       let index = -1;
       while (index < data.length - 1) 
       {
@@ -55,8 +63,7 @@ export class ReportReservationHelperService {
       return Math.abs(d1.diff(d2, 'days')) > 1 ? true : false
   }
 
-  // unifies the date format for all, and adds the total revenue and total number to each item.
-  dailySum_addTotals(data: any[]){
+  private dailySum_addTotals(data: any[]){
       data.forEach(e => {
           if (e.Date.length > 10) e.Date = e.Date.substr(0, 10);
           e.TotalRevenue = e.ShownUp_revenue + e.Unspecified_revenue;
@@ -65,14 +72,14 @@ export class ReportReservationHelperService {
       return data;
   }
 
-  dailySum_addHead(data: any[], startDate): any[] 
+  private dailySum_addHead(data: any[], startDate): any[] 
   {
       startDate = moment(startDate).add(-1, 'days').format('YYYY-MM-DD');
       data = this.fillTheGap(data, startDate, data[0].Date, -1);
       return data;
   }
 
-  dailySum_addTail(data: any[], endDate): any[] 
+  private dailySum_addTail(data: any[], endDate): any[] 
   {
       endDate = moment(endDate).add(1, 'days').format('YYYY-MM-DD');
       data = this.fillTheGap(data, data[data.length-1].Date, endDate, data.length);

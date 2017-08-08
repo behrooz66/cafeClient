@@ -46,11 +46,7 @@ export class ReportOrderDailySumComponent implements OnInit {
           this._report.getOrdersDailySum(this.dateFrom, this.dateTo, this.typeId)
             .subscribe(
                 d => {
-                    this.data = d;
-                    this.data = this._helper.dailySum_addTotals(this.data);
-                    this.data = this._helper.dailySum_normalizeDate(this.data);
-                    this.data = this._helper.dailySum_addHead(this.data, this.dateFrom);
-                    this.data = this._helper.dailySum_addTail(this.data, this.dateTo);
+                    this.data = this._helper.dailySum_chartData(d, this.dateFrom, this.dateTo);
                     this.drawChartRevenue();
                     this.drawChartQuantity();
                     this.mode = "success";

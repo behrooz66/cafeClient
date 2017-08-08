@@ -50,10 +50,7 @@ export class ReportGiftcardDailySumComponent implements OnInit {
                 d => {
                     this.data = d;
                     if (this.data.length !== 0) {
-                        this.data = this._helper.dailySum_addTotals(this.data);
-                        this.data = this._helper.dailySum_normalizeData(this.data);
-                        this.data = this._helper.dailySum_addHead(this.data, this.dateFrom);
-                        this.data = this._helper.dailySum_addTail(this.data, this.dateTo);
+                        this.data = this._helper.dailySum_chartData(d, this.dateFrom, this.dateTo);
                         this.drawChartRevenue();
                         this.drawChartQuantity();
                     }

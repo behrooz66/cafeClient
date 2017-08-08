@@ -91,12 +91,12 @@ export class ReportIndexComponent implements OnInit {
 
   ngOnInit() 
   {
-      this.calculateMultiplier();
-      this.currentMonthSum();
-      this.lastMonthSum();
-      this.ordersQuarter();
-      this.reservationsQuarter();
-      this.giftCardsQuarter();
+    //   this.calculateMultiplier();
+    //   this.currentMonthSum();
+    //   this.lastMonthSum();
+    //   this.ordersQuarter();
+    //   this.reservationsQuarter();
+    //   this.giftCardsQuarter();
   }
 
   currentMonthSum()
@@ -211,10 +211,7 @@ export class ReportIndexComponent implements OnInit {
                   data = d;
                   if (data.length > 0) 
                   {
-                    data = this._helper.dailySum_addTotals(data);
-                    data = this._helper.dailySum_normalizeDate(data);
-                    data = this._helper.dailySum_addHead(data, this.getCurrentQuarterStart());
-                    data = this._helper.dailySum_addTail(data, moment().format('YYYY-MM-DD'));
+                    data = this._helper.dailySum_chartData(data, this.getCurrentQuarterStart(), moment().format('YYYY-MM-DD'));
                     let chart = new Chart(this.ordersChart.nativeElement.getContext('2d'),
                         {
                             type: 'line',
@@ -281,10 +278,7 @@ export class ReportIndexComponent implements OnInit {
                   data = d;
                   if (data.length > 0) 
                   {
-                        data = this._helperR.dailySum_addTotals(data);
-                        data = this._helperR.dailySum_normalizeData(data);
-                        data = this._helperR.dailySum_addHead(data, this.getCurrentQuarterStart());
-                        data = this._helperR.dailySum_addTail(data, moment().format('YYYY-MM-DD'));
+                        data = this._helperR.dailySum_chartData(data, this.getCurrentQuarterStart(), moment().format('YYYY-MM-DD'));
                         let chart = new Chart(this.reservationsChart.nativeElement.getContext('2d'), {
                                 type: 'line',
                                 data: {
@@ -353,10 +347,7 @@ export class ReportIndexComponent implements OnInit {
                   console.log(data);
                   if (data.length > 0)
                   {
-                      data = this._helperG.dailySum_addTotals(data);
-                      data = this._helperG.dailySum_normalizeData(data);
-                      data = this._helperG.dailySum_addHead(data, this.getCurrentQuarterStart());
-                      data = this._helperG.dailySum_addTail(data, moment().format('YYYY-MM-DD'));
+                      data = this._helperG.dailySum_chartData(data, this.getCurrentQuarterStart(), moment().format('YYYY-MM-DD'));
                       let chart = new Chart(this.giftCardsChart.nativeElement.getContext('2d'), {
                           type: 'line',
                           data: {

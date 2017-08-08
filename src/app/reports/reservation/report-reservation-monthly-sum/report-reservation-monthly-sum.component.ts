@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReportService } from '../../report.service';
 import { FlashMessageService } from '../../../shared/flash-message/flash-message.service';
 import { Settings } from '../../../settings';
+import { ChartService, BarChartDataset, BarChartOptions, 
+         DoughnutChartDataset, DoughnutChartOptions} from '../../../shared/chart.service';
 import { Chart } from 'chart.js';
 
 @Component({
@@ -9,7 +11,8 @@ import { Chart } from 'chart.js';
   templateUrl: './report-reservation-monthly-sum.component.html',
   styleUrls: ['./report-reservation-monthly-sum.component.css'],
   providers: [
-      ReportService
+      ReportService,
+      ChartService
   ]
 })
 export class ReportReservationMonthlySumComponent implements OnInit {
@@ -26,7 +29,8 @@ export class ReportReservationMonthlySumComponent implements OnInit {
   @ViewChild('quantityPie') quantityPie;
 
   constructor(private _report: ReportService,
-              private _flash: FlashMessageService) { }
+              private _flash: FlashMessageService,
+              private _chart: ChartService) { }
 
 
 
@@ -54,8 +58,8 @@ export class ReportReservationMonthlySumComponent implements OnInit {
             );
   }
 
-
-  revenueBarChart(){
+  revenueBarChart() 
+  {
       let months: string[] = [];
       let statuses: string[] = [];
       let datasets: any[] = [];
@@ -94,19 +98,13 @@ export class ReportReservationMonthlySumComponent implements OnInit {
           datasets[datasets.length-1].data.push(el.TotalRevenue);
       });
 
-      let chart = new Chart(this.revenueBar.nativeElement.getContext('2d'), {
-          type: 'bar',
-          data: {
-              labels: months,
-              datasets: datasets
-          },
-          options:{
-              title: {
+      let options = new BarChartOptions();
+      options.title = {
                   display: true,
                   text: 'Recorded Revenue by Month',
                   fontSize: 16
-              },
-              scales:{
+              };
+      options.scales = {
                   yAxes:[
                       {
                           ticks: {
@@ -115,14 +113,14 @@ export class ReportReservationMonthlySumComponent implements OnInit {
                           }
                       }
                   ]
-              }
-          }
-      });
+              };
+      
 
+      let chart = this._chart.BarChart(this.revenueBar, months, datasets, options);
       chart.render();
   }
 
-
+  
   quantityBarChart()
   {
       let months: string[] = [];
@@ -160,17 +158,13 @@ export class ReportReservationMonthlySumComponent implements OnInit {
       });
 
       this.data.forEach(el => {
-          datasets[datasets.length-1].data.push(el.TotalOrders);
+          console.log(el);
+          datasets[datasets.length-1].data.push(el.TotalReservations);
       });
 
-      let chart = new Chart(this.quantityBar.nativeElement.getContext('2d'), {
-          type: 'bar',
-          data: {
-              labels: months,
-              datasets: datasets
-          },
-          options:{
-              title: {
+      let options = new BarChartOptions();
+      options = {
+          title: {
                   display: true,
                   text: 'Number of Reservations by Month',
                   fontSize: 16
@@ -189,12 +183,11 @@ export class ReportReservationMonthlySumComponent implements OnInit {
                       }
                   ]
               }
-          }
-      });
+      };
 
+      let chart = this._chart.BarChart(this.quantityBar, months, datasets, options);
       chart.render();
   }
-
 
   quantityPieChart() 
   {
@@ -213,31 +206,36 @@ export class ReportReservationMonthlySumComponent implements OnInit {
           }
       }
 
-      let chart = new Chart(this.quantityPie.nativeElement.getContext('2d'), {
-          type: 'doughnut',
-          data: {
-              datasets: [
-                  {
-                      data: sums,
-                      backgroundColor: [
-                          Settings.reports.chartColors[0],
-                          Settings.reports.chartColors[1],
-                          Settings.reports.chartColors[2],
-                      ]
-                  }
-              ],
-              labels: statuses
-          },
-          options: {
-              title: {
-                  display: true,
-                  text: 'Reservation Status Ratios',
-                  fontSize: 14
-              }
+      let ds = {
+          data: sums,
+          backgroundColor: [
+                Settings.reports.chartColors[0],
+                Settings.reports.chartColors[1],
+                Settings.reports.chartColors[2],
+            ]
+      };
+
+      let dss: DoughnutChartDataset[] = [
+          {
+              data: sums,
+              backgroundColor: [
+                  Settings.reports.chartColors[0],
+                  Settings.reports.chartColors[1],
+                  Settings.reports.chartColors[2],
+              ]
           }
-      });
+      ]
+    
+      let options = new DoughnutChartOptions();
+      options.title = {
+          display: true,
+          text: 'Reservation Status Ratios',
+          fontSize: 14
+      };
+
+      let chart = this._chart.DoughnutChart(this.quantityPie, statuses, dss, options);
       chart.render();
-  }
+    }
 
 
   private getRevenueData(status: string, index: number): number 
