@@ -24,6 +24,7 @@ export class ReportOrderDailySumComponent implements OnInit {
   dateTo: string;
   typeId: number = 0;
   mode: string;
+  empty: boolean = false;
 
   //setting:
   maxAllowedPeriod: number; // in months...
@@ -44,6 +45,7 @@ export class ReportOrderDailySumComponent implements OnInit {
   }
 
   refresh() {
+      this.empty = false;
       if (this.isWithinAllowedPeriodRange())
       {
           this.mode = "loading";
@@ -58,7 +60,7 @@ export class ReportOrderDailySumComponent implements OnInit {
                     }
                     else 
                     {
-                        //todo: do something...
+                        this.empty = true;
                     }
                     this.mode = "success";
                 },
@@ -109,7 +111,7 @@ export class ReportOrderDailySumComponent implements OnInit {
 
       let options = {
               title: {
-                  display: true,
+                  display: false,
                   text: 'Daily Sales Revenue',
                   fontSize: 16
               },
@@ -124,6 +126,9 @@ export class ReportOrderDailySumComponent implements OnInit {
                           }
                       }
                   ]
+              },
+              legend: {
+                  position: 'bottom'
               }
           };
       
@@ -167,7 +172,7 @@ export class ReportOrderDailySumComponent implements OnInit {
 
       let options = {
               title: {
-                  display: true,
+                  display: false,
                   text: 'Daily Sales Quantity',
                   fontSize: 16
               },
@@ -182,6 +187,9 @@ export class ReportOrderDailySumComponent implements OnInit {
                           }
                       }
                   ]
+              },
+              legend: {
+                  position: 'bottom'
               }
           };
 

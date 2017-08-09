@@ -94,6 +94,11 @@ export class LineChartOptions
             }
         ]
     }
+
+    legend: {
+        display: boolean,
+        position: string
+    }
 }
 
 export class BarChartOptions

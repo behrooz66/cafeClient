@@ -24,6 +24,7 @@ export class ReportReservationDailySumComponent implements OnInit {
   dateTo: string;
   statusId: number = 0;
   mode: string;
+  empty: boolean = false;
 
   maxAllowedPeriod: number;
 
@@ -48,6 +49,7 @@ export class ReportReservationDailySumComponent implements OnInit {
 
   refresh() 
   {
+      this.empty = false;
       if (this.isWithinAllowedPeriodRange())
       {
           this.mode = "loading";
@@ -62,7 +64,7 @@ export class ReportReservationDailySumComponent implements OnInit {
                     }
                     else 
                     {
-                        // todo do something
+                        this.empty = true;
                     }
                     this.mode = "success";
                 },
@@ -104,22 +106,27 @@ export class ReportReservationDailySumComponent implements OnInit {
           },
       ];
 
-      let options = new LineChartOptions();
-      options.title = {
-          display: true,
-          text: 'Daily Reservations [Recorded] Revenue',
-          fontSize: 16
-      };
-      options.scales = {
-          yAxes: [
-              {
-                  ticks: {
-                      min: 0,
-                      callback: (value, index, values) => '$'+value
-                  }
-              }
-          ]
-      };
+      //let options = new LineChartOptions();
+      let options = {
+          title: {
+                display: false,
+                text: 'Daily Reservations [Recorded] Revenue',
+                fontSize: 16
+            },
+            scales: {
+                yAxes: [
+                    {
+                        ticks: {
+                            min: 0,
+                            callback: (value, index, values) => '$'+value
+                        }
+                    }
+                ]
+            },
+            legend: {
+                position: 'bottom'
+            }
+      }
       let chart = this._chart.lineChart(this.chartRevenue, this.data.map(x => x.Date), datasets, options);
       chart.render();
   }
@@ -164,22 +171,27 @@ export class ReportReservationDailySumComponent implements OnInit {
                       borderDash: [1, 0]
                   },
       ];
-      let options = new LineChartOptions();
-      options.title = {
-          display: true,
-          text: 'Daily Reservation Numbers',
-          fontSize: 16
-      };
-      options.scales = {
-          yAxes: [
-            {
-                ticks: {
-                    min: 0,
-                    callback: (value, index, values) => Math.floor(value) === value? value : null
+      //let options = new LineChartOptions();
+      let options = {
+          title: {
+                display: false,
+                text: 'Daily Reservation Numbers',
+                fontSize: 16
+            },
+         scales: {
+            yAxes: [
+                {
+                    ticks: {
+                        min: 0,
+                        callback: (value, index, values) => Math.floor(value) === value? value : null
+                    }
                 }
+            ]
+            },
+            legend: {
+                position: 'bottom'
             }
-          ]
-      };
+      }
 
       let chart = this._chart.lineChart(this.chartQuantity, this.data.map(x => x.Date), datasets, options);
       chart.render();

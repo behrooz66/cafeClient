@@ -25,66 +25,18 @@
     </div>
 </div>
 
-    <div [hidden]="viewMode !== 'dailySum'">
-        <report-order-daily-sum></report-order-daily-sum>
+<div [hidden]="viewMode !== 'dailySum'">
+        <report-giftcard-daily-sum></report-giftcard-daily-sum>
     </div>
 
     <div [hidden]="viewMode !== 'monthlySum'">
-        <report-order-monthly-sum></report-order-monthly-sum>
+        <report-giftcard-monthly-sum></report-giftcard-monthly-sum>
     </div>
 
     <div [hidden]="viewMode !== 'topCustomers'">
-        <report-order-top-customers></report-order-top-customers>
+        <report-giftcard-top-customers></report-giftcard-top-customers>
     </div>
 
     <div [hidden]="viewMode !== 'recordsMap'">
-        <report-order-records-map></report-order-records-map>
+        <report-giftcard-records-map></report-giftcard-records-map>
     </div>
-
-
-
-<!--<div class="row">
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Current Month
-            </div>
-            <div class="panel-body">
-                
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Last Month
-            </div>
-            <div class="panel-body">
-                
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Current Quarter
-            </div>
-            <div class="panel-body">
-                
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Current Year
-            </div>
-            <div class="panel-body">
-                
-            </div>
-        </div>
-    </div>
-</div>-->

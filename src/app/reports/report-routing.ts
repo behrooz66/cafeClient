@@ -7,6 +7,8 @@ import { ReportOrderDailySumComponent } from './order/report-order-daily-sum/rep
 import { ReportOrderMonthlySumComponent } from './order/report-order-monthly-sum/report-order-monthly-sum.component';
 import { ReportOrderRecordsMapComponent } from './order/report-order-records-map/report-order-records-map.component';
 import { ReportOrderTopCustomersComponent } from './order/report-order-top-customers/report-order-top-customers.component';
+import { ReportGiftcardIndexComponent } from './giftcard/report-giftcard-index/report-giftcard-index.component';
+import { ReportReservationIndexComponent } from './reservation/report-reservation-index/report-reservation-index.component';
 
 const routes: Routes = [
     {
@@ -16,6 +18,14 @@ const routes: Routes = [
     {
         path: 'reports/orders',
         component: ReportOrderIndexComponent
+    },
+    {
+        path: 'reports/giftcards',
+        component: ReportGiftcardIndexComponent
+    },
+    {
+        path: 'reports/reservations',
+        component: ReportReservationIndexComponent
     }
 ]
 

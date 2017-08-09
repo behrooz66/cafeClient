@@ -1,48 +1,54 @@
 <div class="container">
-
   <div class="panel panel-default">
+      <div class="panel-heading">
+            <strong>Reservations Top Customers</strong>
+      </div>
       <div class="panel-body">
           <div class="row">
-              <div class="col-sm-3">
+              <div class="col-md-4">
                   <label>Date From:</label>
                   <date-picker [(ngModel)]="dateFrom"></date-picker>
               </div>
-              <div class="col-sm-3">
+              <div class="col-md-4">
                   <label>Date To:</label>
                   <date-picker [(ngModel)]="dateTo"></date-picker>
               </div>
-              <div class="col-sm-3">
-                  <label>Minimum Number of Reservations:</label>
-                  <price-input [(ngModel)]="minReservations"></price-input>
+              <div class="col-md-4">
+                  <br/>
+                  <input type="checkbox" [(ngModel)]="includeUnspecified" >
+                  Include Unspecified
+                  
               </div>
               <div class="col-sm-3">
-                  <label>Minimum Revenue:</label>
-                  <price-input [(ngModel)]="minRevenue"></price-input>
+                  
               </div>
           </div>
           <div class="row">
-              <div class="col-sm-12">
-                  <input type="checkbox" [(ngModel)]="includeUnspecified" >
-                  Include Unspecified
+              <div class="col-md-4">
+                  <label>Minimum Number of Reservations:</label>
+                  <price-input [(ngModel)]="minReservations"></price-input>
+              </div>
+              <div class="col-md-4">
+                  <label>Minimum Revenue:</label>
+                  <price-input [(ngModel)]="minRevenue"></price-input>
+              </div>
+              <div class="col-md-4">
+                  
               </div>
           </div>
-          <div class="row"> 
-              <div class="col-sm-12">
-                <br/>
-                <button type="button" class="btn btn-primary pull-right" (click)="refresh();">
-                    Submit
-                    &nbsp;<icon [type]="'report'" [size]="2"></icon>
-                </button>
-                <div class="pull-right">&nbsp;&nbsp;&nbsp;</div>
-                <loading *ngIf="mode==='loading'" class="pull-right"></loading>
-              </div>
-          </div>
+          <br/>
+          <button type="button" class="btn btn-primary" (click)="refresh();" [disabled]="mode === 'loading'">
+                Submit
+                &nbsp;<icon [type]="'report'" [size]="2"></icon>
+            </button>
+            &nbsp;&nbsp;&nbsp;<loading *ngIf="mode==='loading'"></loading>
+          
       </div>
   </div>
 
   <div id="customers" *ngIf="data.length > 0  && mode ==='success'" class="panel panel-default">
       <div class="panel-heading">
-          <h4>Top Customers Within the Selected Period</h4>
+          <strong>Top Customers Within the Selected Period</strong>
       </div>
       <div class="panel-body">
           <table class="table">

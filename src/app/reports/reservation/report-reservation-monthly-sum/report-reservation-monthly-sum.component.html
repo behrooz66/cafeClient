@@ -1,41 +1,74 @@
-<div class="panel panel-default">
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-3">
-                <label>Start Date:</label>
-                <month-picker [date]="'2017-01'" [(ngModel)]="startDate"></month-picker>
-                <br/>
-                <button class="btn btn-primary" type="button" (click)="refresh();">
-                    Submit
-                    &nbsp;<icon [type]="'report'" [size]="2"></icon>
-                    <loading *ngIf="mode==='loading'"></loading>
-                </button>
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>Reservations Monthly Summaries</strong>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-5">
+                    <label>Start Date:</label>
+                    <month-picker [date]="'2017-01'" [(ngModel)]="startDate"></month-picker>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-5">
+                    <label>End Date:</label>
+                    <month-picker [date]="'2017-02'" [(ngModel)]="endDate"></month-picker>
+                </div>
             </div>
-            <div class="col-md-3">
-                <label>End Date:</label>
-                <month-picker [date]="'2017-02'" [(ngModel)]="endDate"></month-picker>
-            </div>
-            
-            <div class="col-md-3">
-                <!--<canvas #revenuePie></canvas>-->
-                Nothing here...!
-            </div>
+            <br/>
+            <button class="btn btn-primary" type="button" (click)="refresh();" [disabled]="mode === 'loading'">
+                Submit
+                &nbsp;<icon [type]="'report'" [size]="2"></icon>
+            </button>
+            &nbsp;&nbsp;&nbsp;<loading *ngIf="mode==='loading'"></loading>
+        </div>
+    </div>
+</div>   
 
-            <div class="col-md-3">
-                <canvas #quantityPie></canvas>
+<div class="container" *ngIf="empty">
+    <div class="alert alert-warning ctrls">
+        No data found for the selected period.
+    </div>
+</div>
+
+<div [hidden]="mode !== 'success' || empty">
+    <div class="row">
+        <div class="col-lg-6 col-md-10 col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>Reservations [Recorded] Revenue</strong>
+                </div>
+                <div class="panel-body">
+                    <canvas #revenueBar ></canvas>
+                </div>
             </div>
         </div>
-        <br/>
-        <hr/>
-        <div class="row">
-            <div class="col-md-6">
-                <canvas #revenueBar ></canvas>
+        <div class="col-lg-6 col-md-10 col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>Reservations Numbers</strong>
+                </div>
+                <div class="panel-body">
+                    <canvas #quantityBar ></canvas>
+                </div>
             </div>
-            <div class="col-md-6">
-                <canvas #quantityBar ></canvas>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-md-3 col-sm-2 col-xs-2"></div>
+        <div class="col-lg-4 col-md-6 col-sm-8 col-xs-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                   <strong> Reservations Ratios</strong>
+                </div>
+                <div class="panel-body">
+                    <canvas #quantityPie></canvas>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+
 
 

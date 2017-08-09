@@ -22,6 +22,10 @@ export class ReportOrderMonthlySumComponent implements OnInit {
   data;
   startDate: string = "";
   endDate: string = "";
+
+  mode: string;
+  empty: boolean = false;
+
   @ViewChild('revenueBar') revenueBar;
   @ViewChild('quantityBar') quantityBar;
   @ViewChild('revenuePie') revenuePie;
@@ -39,10 +43,12 @@ export class ReportOrderMonthlySumComponent implements OnInit {
 
   refresh() 
   {
+      this.mode = "loading";
+      this.empty = false;
       this._report.getOrdersMonthlySum(this.startDate+"-10",this.endDate+"-10" , null)
             .subscribe(
                 d => {
-                    if (d.length > 0)
+                    if (!this.noResult(d))
                     {
                         this.data = d;
                         this.revenueBarChart();
@@ -52,10 +58,12 @@ export class ReportOrderMonthlySumComponent implements OnInit {
                     }
                     else 
                     {
-                        // todo do something
+                        this.empty = true;
                     }
+                    this.mode = "success";
                 },
                 d => {
+                    this.mode = "error";
                     this._flash.addMessage("Error", "Error in generating report.", true, "danger", 3000, 2);
                 }
             );
@@ -66,7 +74,7 @@ export class ReportOrderMonthlySumComponent implements OnInit {
       let result = this._helper.monthlySum_prepareDataForRevenueBarChart(this.data);
       let options = {
             title: {
-                display: true,
+                display: false,
                 text: 'Revenue by Month',
                 fontSize: 16
             },
@@ -79,6 +87,10 @@ export class ReportOrderMonthlySumComponent implements OnInit {
                         }
                     }
                 ]
+            },
+            legend:
+            {
+                position: 'bottom'
             }
         }
       let chart = this._chart.BarChart(this.revenueBar, result.labels, result.datasets, options);
@@ -90,7 +102,7 @@ export class ReportOrderMonthlySumComponent implements OnInit {
       let result = this._helper.monthlySum_prepareDataForQuantityBarChart(this.data);
       let options = {
             title: {
-                display: true,
+                display: false,
                 text: 'Number of Orders by Month',
                 fontSize: 16
             },
@@ -107,6 +119,10 @@ export class ReportOrderMonthlySumComponent implements OnInit {
                         }
                     }
                 ]
+            },
+            legend:
+            {
+                position: 'bottom'
             }
         };
 
@@ -119,9 +135,13 @@ export class ReportOrderMonthlySumComponent implements OnInit {
       let result = this._helper.monthlySum_prepareDataForRevenuePieChart(this.data);
       let options = {
             title: {
-                display: true,
+                display: false,
                 text: 'Revenue Ratios by Order Type',
                 fontSize: 14
+            },
+            legend:
+            {
+                position: 'bottom'
             }
         };
       let chart = this._chart.DoughnutChart(this.revenuePie, result.labels, result.datasets, options);
@@ -132,10 +152,14 @@ export class ReportOrderMonthlySumComponent implements OnInit {
       let result = this._helper.monthlySum_prepareDataForQuantityPieChart(this.data);
       let options = {
               title: {
-                  display: true,
+                  display: false,
                   text: 'Number of Orders Ratios by Order Type',
                   fontSize: 14
-              }
+              },
+              legend:
+                {
+                    position: 'bottom'
+                }
           };
       let chart = this._chart.DoughnutChart(this.quantityPie, result.labels, result.datasets, options);
       chart.render();
@@ -151,6 +175,15 @@ export class ReportOrderMonthlySumComponent implements OnInit {
       return this.data[index].Types.filter(d => d.Type === type)[0].Count;
   }
 
+  private noResult(d: any[]): boolean
+  {
+      let x = true;
+      d.forEach(e => {
+          if (e.TotalOrders !== 0)
+            x = false;
+      });
+      return x;
+  }
   
   
 

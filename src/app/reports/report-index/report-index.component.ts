@@ -6,6 +6,7 @@ import { ReportOrderHelperService } from '../order/report-order-helper.service';
 import { ReportReservationHelperService } from '../reservation/report-reservation-helper.service'
 import { ReportGiftCardHelperService } from '../giftcard/report-giftcard-helper.service';
 import { Chart } from 'chart.js';
+import { ChartService } from '../../shared/chart.service';
 import * as moment from 'moment';
 
 @Component({
@@ -17,7 +18,8 @@ import * as moment from 'moment';
       ReportService,
       ReportOrderHelperService,
       ReportReservationHelperService,
-      ReportGiftCardHelperService
+      ReportGiftCardHelperService,
+      ChartService
   ]
 })
 export class ReportIndexComponent implements OnInit {
@@ -80,23 +82,26 @@ export class ReportIndexComponent implements OnInit {
   @ViewChild('reservations') reservationsChart;
   @ViewChild('giftCards') giftCardsChart;
 
+  @ViewChild('trial') trial;
+
   constructor(
     private _file: FileDownloaderService,
     private _report: ReportService,
     private _flash: FlashMessageService,
     private _helper: ReportOrderHelperService,
     private _helperR: ReportReservationHelperService,
-    private _helperG: ReportGiftCardHelperService
+    private _helperG: ReportGiftCardHelperService,
+    private _chart: ChartService
   ) { }
 
   ngOnInit() 
   {
-    //   this.calculateMultiplier();
-    //   this.currentMonthSum();
-    //   this.lastMonthSum();
-    //   this.ordersQuarter();
-    //   this.reservationsQuarter();
-    //   this.giftCardsQuarter();
+       this.calculateMultiplier();
+       this.currentMonthSum();
+       this.lastMonthSum();
+       this.ordersQuarter();
+       this.reservationsQuarter();
+       this.giftCardsQuarter();
   }
 
   currentMonthSum()
@@ -200,69 +205,52 @@ export class ReportIndexComponent implements OnInit {
 
   ordersQuarter()
   {
-      this.ordersQ.wait = true;
-      this.ordersQ.empty = false;
-      this.ordersQ.error = false;
-      let data = [];
-      this._report.getOrdersDailySum(this.getCurrentQuarterStart(), moment().format('YYYY-MM-DD'), 0)
-          .finally(() => this.ordersQ.wait = false)
-          .subscribe(
-              d => {
-                  data = d;
-                  if (data.length > 0) 
-                  {
-                    data = this._helper.dailySum_chartData(data, this.getCurrentQuarterStart(), moment().format('YYYY-MM-DD'));
-                    let chart = new Chart(this.ordersChart.nativeElement.getContext('2d'),
-                        {
-                            type: 'line',
-                            data: {
-                                labels: data.map(x => x.Date),
-                                datasets: [
+        this.ordersQ.wait = true;
+        this.ordersQ.empty = false;
+        this.ordersQ.error = false;
+
+        let s = this.getCurrentQuarterStart();
+        let e = moment().format('YYYY-MM-DD');
+        this._report.getOrdersMonthlySum(s, e, 0)
+            .finally(
+                () => this.ordersQ.wait = false
+            )
+            .subscribe(
+                d => 
+                {
+                    if (d.length > 0)
+                    {
+                        let x = this._helper.monthlySum_prepareDataForRevenueBarChart(d);
+                        let options = {
+                            title: {
+                                display: false,
+                                text: 'Revenue by Month',
+                                fontSize: 16
+                            },
+                            scales:{
+                                yAxes:[
                                     {
-                                        label: 'Revenue',
-                                        data: data.map(x => x.TotalRevenue),
-                                        backgroundColor: 'rgba(255, 110, 0, 0.0)',
-                                        borderColor: 'rgba(255, 110, 0, 1.0)',
+                                        ticks: {
+                                            min: 0,
+                                            callback: (value, index, values) => '$' + value
+                                        }
                                     }
                                 ]
                             },
-                            options: {
-                                title: {
-                                    display: true,
-                                    //text: 'Daily Sales Revenue',
-                                    fontSize: 16,
-                                    position: 'bottom'
-                                },
-                                scales:{
-                                    yAxes:[
-                                        { 
-                                            ticks: 
-                                            {
-                                                min: 0,
-                                                callback: 
-                                                    (value, index, values) => '$'+value
-                                            }
-                                        }
-                                    ]
-                                },
-                                legend: {
-                                    position: 'bottom',
-                                    display: false
-                                }
+                            legend: {
+                                position: 'bottom'
                             }
-                        });
-                  }
-                  else 
-                  {
-                      this.ordersQ.empty = true;
-                  }
-              },
-              d => {
-                  this.ordersQ.error = true;
-              }
-          );
-
-      
+                        };
+                    let chart = this._chart.BarChart(this.ordersChart, x.labels, x.datasets, options);
+                    chart.render(); 
+                    }
+                    else 
+                        this.ordersQ.empty = true;
+                },
+                d => {
+                    this.ordersQ.error = true;
+                }
+            );      
   }
 
   reservationsQuarter()
@@ -270,67 +258,50 @@ export class ReportIndexComponent implements OnInit {
       this.reservationsQ.wait = true;
       this.reservationsQ.empty = false;
       this.reservationsQ.error = false;
-      let data = [];
-      this._report.getReservationsDailySum(this.getCurrentQuarterStart(), moment().format('YYYY-MM-DD'), 0)
+      
+      let s = this.getCurrentQuarterStart();
+      let e = moment().format('YYYY-MM-DD');
+      this._report.getReservationsMonthlySum(s, e, 0)
           .finally(() => this.reservationsQ.wait = false)
           .subscribe(
               d => {
-                  data = d;
-                  if (data.length > 0) 
+                  if (d.length > 0)
                   {
-                        data = this._helperR.dailySum_chartData(data, this.getCurrentQuarterStart(), moment().format('YYYY-MM-DD'));
-                        let chart = new Chart(this.reservationsChart.nativeElement.getContext('2d'), {
-                                type: 'line',
-                                data: {
-                                    labels: data.map(x => x.Date),
-                                    datasets: [
-                                        {
-                                            label: 'Reservations',
-                                            data: data.map(x => x.TotalNumber),
-                                            backgroundColor: 'rgba(255, 110, 0, 0.0)',
-                                            borderColor: 'rgba(20, 1, 1, 1)',
-                                            borderWidth: 1
-                                        }
-                                    ]
-                                },
-                                options: {
-                                    title: {
-                                        display: true,
-                                        //text: 'Reservations',
-                                        fontSize: 16,
-                                        position: 'bottom',
-                                    },
-                                    scales: {
-                                        yAxes: [
-                                            {
-                                                ticks:
-                                                {
-                                                    min: 0,
-                                                    callback: 
-                                                        (value, index, values) => Math.floor(value) === value? value : null
+                      let x = this._helperR.monthlySum_prepareDataForQuantityBarChart(d);
+                      let options = {
+                            title: {
+                                display: false,
+                                text: 'Reservations by Month',
+                                fontSize: 16
+                            },
+                            scales:{
+                                yAxes:[
+                                    {
+                                        ticks: {
+                                            min: 0,
+                                            callback: function(value, index, values) {
+                                                if (Math.floor(value) === value) {
+                                                    return value;
                                                 }
                                             }
-                                        ]
-                                    },
-                                    legend: {
-                                        position: 'bottom',
-                                        display: false
+                                        }
                                     }
-                                }
-                            });
-                    }
-                    else
-                    {
-                        this.reservationsQ.empty = true;
-                    }
-
-                //console.log(data);
+                                ]
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        };
+                        let chart = this._chart.BarChart(this.reservationsChart, x.labels, x.datasets, options);
+                        chart.render();
+                  }
+                  else 
+                      this.reservationsQ.empty = true;
               },
               d => {
                   this.reservationsQ.error = true;
               }
           );
-      
   }
 
   giftCardsQuarter()
@@ -338,62 +309,48 @@ export class ReportIndexComponent implements OnInit {
       this.giftCardsQ.wait = true;
       this.giftCardsQ.empty = false;
       this.giftCardsQ.error = false;
-      let data = [];
-      this._report.getGiftCardsDailySum(this.getCurrentQuarterStart(), moment().format('YYYY-MM-DD'), 0)
-          .finally(() => this.giftCardsQ.wait = false)
-          .subscribe(
-              d => {
-                  data = d;
-                  console.log(data);
-                  if (data.length > 0)
-                  {
-                      data = this._helperG.dailySum_chartData(data, this.getCurrentQuarterStart(), moment().format('YYYY-MM-DD'));
-                      let chart = new Chart(this.giftCardsChart.nativeElement.getContext('2d'), {
-                          type: 'line',
-                          data: {
-                              labels: data.map(x => x.Date),
-                              datasets: [
-                                  {
-                                      label: 'Revenue',
-                                      data: data.map(x => x.TotalRevenue),
-                                      backgroundColor: 'rgba(255, 110, 0, 0.0)',
-                                      borderColor: 'rgba(255, 110, 0, 1.0)',
-                                  }
-                              ]
-                          },
-                          options: {
-                              title: {
-                                  display: true,
-                                  fontSize: 16,
-                                  position: 'bottom'
-                              },
-                              scales: {
-                                  yAxes: [
-                                      {
-                                          ticks:
-                                          {
-                                              min: 0,
-                                              callback: (value, index, values) => '$'+value
-                                          }
-                                      }
-                                  ]
-                              },
-                              legend: {
-                                  position: 'bottom',
-                                  display: false
-                              }
-                          }
-                      });
-                  }
-                  else
-                  {
-                      this.giftCardsQ.empty = true;
-                  }
-              }, 
-              d => {
-                  this.giftCardsQ.error = true;
-              }
-          )
+     
+        let s = this.getCurrentQuarterStart();
+        let e = moment().format('YYYY-MM-DD');
+        this._report.getGiftCardssMonthlySum(s, e)
+            .finally(() => this.giftCardsQ.wait = false)
+            .subscribe(
+                d => 
+                {
+                    if (d.length > 0) 
+                    {
+                        let x = this._helperG.monthlySum_prepareDataForRevenueBarChart(d);
+                        let options = {
+                            title: {
+                                display: false,
+                                text: 'Revenue by Month',
+                                fontSize: 16
+                            },
+                            scales:{
+                                yAxes:[
+                                    {
+                                        ticks: {
+                                            min: 0,
+                                            callback: (value, index, values) => '$' + value
+                                        }
+                                    }
+                                ]
+                            },
+                            legend: {
+                                position: 'bottom'
+                            }
+                        };
+                        let chart = this._chart.BarChart(this.giftCardsChart, x.labels, x.datasets, options);
+                        chart.render();
+                    }
+                    else 
+                        this.giftCardsQ.empty = true;
+                },
+                d => 
+                {
+                    this.giftCardsQ.error = true;
+                }
+            );
   }
 
   private getCurrentMonthInfo(): any

@@ -24,6 +24,7 @@ export class ReportReservationMonthlySumComponent implements OnInit {
   endDate: string = "";
 
   mode: string;
+  empty: boolean = false;
 
   @ViewChild('revenueBar') revenueBar;
   @ViewChild('quantityBar') quantityBar;
@@ -43,13 +44,21 @@ export class ReportReservationMonthlySumComponent implements OnInit {
   refresh() 
   {
       this.mode = "loading";
+      this.empty = false;
       this._report.getReservationsMonthlySum(this.startDate+"-10",this.endDate+"-10" , null)
             .subscribe(
                 d => {
-                    this.data = d;
-                    this.revenueBarChart();
-                    this.quantityBarChart();
-                    this.quantityPieChart();
+                    if (!this.noResult(d))
+                    {
+                        this.data = d;
+                        this.revenueBarChart();
+                        this.quantityBarChart();
+                        this.quantityPieChart();
+                    }
+                    else 
+                    {
+                        this.empty = true;
+                    }
                     this.mode = "success";
                 },
                 d => {
@@ -62,13 +71,15 @@ export class ReportReservationMonthlySumComponent implements OnInit {
   revenueBarChart() 
   {
       let result = this._helper.monthlySum_prepareDataForRevenueBarChart(this.data);
-      let options = new BarChartOptions();
-      options.title = {
-                  display: true,
+      //let options = new BarChartOptions();
+
+      let options = {
+            title: {
+                  display: false,
                   text: 'Recorded Revenue by Month',
                   fontSize: 16
-              };
-      options.scales = {
+              },
+            scales: {
                   yAxes:[
                       {
                           ticks: {
@@ -77,7 +88,11 @@ export class ReportReservationMonthlySumComponent implements OnInit {
                           }
                       }
                   ]
-              };
+              },
+              legend: {
+                    position: 'bottom'
+                }
+      };
       
 
       let chart = this._chart.BarChart(this.revenueBar, result.labels, result.datasets, options);
@@ -88,10 +103,10 @@ export class ReportReservationMonthlySumComponent implements OnInit {
   quantityBarChart()
   {
       let result = this._helper.monthlySum_prepareDataForQuantityBarChart(this.data);
-      let options = new BarChartOptions();
-      options = {
+      //let options = new BarChartOptions();
+      let options = {
           title: {
-                  display: true,
+                  display: false,
                   text: 'Number of Reservations by Month',
                   fontSize: 16
               },
@@ -108,6 +123,10 @@ export class ReportReservationMonthlySumComponent implements OnInit {
                           }
                       }
                   ]
+              },
+              legend:
+              {
+                  position: 'bottom'
               }
       };
       let chart = this._chart.BarChart(this.quantityBar, result.labels, result.datasets, options);
@@ -118,11 +137,17 @@ export class ReportReservationMonthlySumComponent implements OnInit {
   {
       let result = this._helper.monthlySum_prepareDataForQuantityPieChart(this.data);
     
-      let options = new DoughnutChartOptions();
-      options.title = {
-          display: true,
-          text: 'Reservation Status Ratios',
-          fontSize: 14
+      //let options = new DoughnutChartOptions();
+      let options = {
+          title: {
+            display: false,
+            text: 'Reservation Status Ratios',
+            fontSize: 14
+        },
+        legend:
+              {
+                  position: 'bottom'
+              }
       };
 
       let chart = this._chart.DoughnutChart(this.quantityPie, result.labels, result.datasets, options);
@@ -138,6 +163,16 @@ export class ReportReservationMonthlySumComponent implements OnInit {
   private getQuantityData(status: string, index: number): number 
   {
       return this.data[index].Statuses.filter(d => d.Status === status)[0].Count;
+  }
+
+  private noResult(d: any[]): boolean
+  {
+      let x = true;
+      d.forEach(e => {
+          if (e.TotalReservations !== 0)
+            x = false;
+      });
+      return x;
   }
 
 }

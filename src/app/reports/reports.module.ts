@@ -17,6 +17,8 @@ import { ReportGiftcardMonthlySumComponent } from './giftcard/report-giftcard-mo
 import { ReportGiftcardRecordsMapComponent } from './giftcard/report-giftcard-records-map/report-giftcard-records-map.component';
 import { ReportGiftcardTopCustomersComponent } from './giftcard/report-giftcard-top-customers/report-giftcard-top-customers.component';
 import { ReportOrderIndexComponent } from './order/report-order-index/report-order-index.component';
+import { ReportGiftcardIndexComponent } from './giftcard/report-giftcard-index/report-giftcard-index.component';
+import { ReportReservationIndexComponent } from './reservation/report-reservation-index/report-reservation-index.component';
 
 @NgModule({
   imports: [
@@ -40,7 +42,9 @@ import { ReportOrderIndexComponent } from './order/report-order-index/report-ord
     ReportGiftcardMonthlySumComponent,
     ReportGiftcardRecordsMapComponent,
     ReportGiftcardTopCustomersComponent,
-    ReportOrderIndexComponent
+    ReportOrderIndexComponent,
+    ReportGiftcardIndexComponent,
+    ReportReservationIndexComponent
   ],
   exports: [
     ReportIndexComponent

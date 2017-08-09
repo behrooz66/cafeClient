@@ -1,0 +1,42 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <button class="btn btn-block" type="button" (click)="setViewMode('dailySum')" [class.btn-success]="viewMode==='dailySum'">
+                        Daily Summaries
+                    </button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-block" type="button" (click)="setViewMode('monthlySum')" [class.btn-success]="viewMode==='monthlySum'">
+                        Monthly Summaries
+                    </button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-block" type="button" (click)="setViewMode('topCustomers')" [class.btn-success]="viewMode==='topCustomers'">
+                        Top Customers
+                    </button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-block" type="button" (click)="setViewMode('recordsMap')" [class.btn-success]="viewMode==='recordsMap'">
+                        Details & Distribution
+                    </button>
+                </div>
+            </div>
+    </div>
+</div>
+
+<div [hidden]="viewMode !== 'dailySum'">
+    <report-reservation-daily-sum></report-reservation-daily-sum>
+</div>
+
+<div [hidden]="viewMode !== 'monthlySum'">
+    <report-reservation-monthly-sum></report-reservation-monthly-sum>
+</div>
+
+<div [hidden]="viewMode !== 'topCustomers'">
+    <report-reservation-top-customers></report-reservation-top-customers>
+</div>
+
+<div [hidden]="viewMode !== 'recordsMap'">
+    <report-reservation-records-map></report-reservation-records-map>
+</div>

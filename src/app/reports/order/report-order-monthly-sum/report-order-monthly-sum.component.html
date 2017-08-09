@@ -1,40 +1,86 @@
-
-<div class="panel panel-default">
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-3">
-                <label>Start Date:</label>
-                <month-picker [date]="'2017-01'" [(ngModel)]="startDate"></month-picker>
-                <br/>
-                <button class="btn btn-primary" type="button" (click)="refresh();">
-                    Submit
-                    &nbsp;<icon [type]="'report'" [size]="2"></icon>
-                </button>
-            </div>
-            <div class="col-md-3">
-                <label>End Date:</label>
-                <month-picker [date]="'2017-02'" [(ngModel)]="endDate"></month-picker>
-            </div>
-            
-            <div class="col-md-3">
-                <canvas #revenuePie></canvas>
-            </div>
-
-            <div class="col-md-3">
-                <canvas #quantityPie></canvas>
-            </div>
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>Orders Monthly Summaries</strong>
         </div>
-        <br/>
-        <hr/>
-        <div class="row">
-            <div class="col-md-6">
-                <canvas #revenueBar ></canvas>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-5">
+                    <label>Start Date:</label>
+                    <month-picker [date]="'2017-01'" [(ngModel)]="startDate"></month-picker>
+                </div>
+                <div class="col-md-1">
+
+                </div>
+                <div class="col-md-5">
+                    <label>End Date:</label>
+                    <month-picker [date]="'2017-02'" [(ngModel)]="endDate"></month-picker>
+                </div>
+                <div class="col-md-1">
+
+                </div>
             </div>
-            <div class="col-md-6">
-                <canvas #quantityBar ></canvas>
-            </div>
+            <br/>
+            <button class="btn btn-primary" type="button" (click)="refresh();" [disabled]="mode === 'loading'">
+                Submit
+                &nbsp;<icon [type]="'report'" [size]="2"></icon>
+            </button>
+            &nbsp;&nbsp;&nbsp;
+            <loading *ngIf="mode==='loading'"></loading>
         </div>
     </div>
 </div>
 
+<div class="container" *ngIf="empty">
+    <div class="alert alert-warning ctrls">
+        No data found for the selected period.
+    </div>
+</div>
 
+<div [hidden]="mode !== 'success' || empty">
+    <div class="row">
+        <div class="col-lg-6 col-md-10 col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>Orders Revenue by Month</strong>
+                </div>
+                <div class="panel-body">
+                    <canvas #revenueBar ></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-10 col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>Orders Quantity by Month</strong>
+                </div>
+                <div class="panel-body">
+                    <canvas #quantityBar ></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-0 col-sm-2"></div>
+        <div class="col-lg-3 col-md-6 col-sm-8 col-xs-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>Orders Revenue Ratios</strong>
+                </div>
+                <div class="panel-body">
+                    <canvas #revenuePie></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-8 col-xs-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                   <strong> Orders Quantity Ratios</strong>
+                </div>
+                <div class="panel-body">
+                    <canvas #quantityPie></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

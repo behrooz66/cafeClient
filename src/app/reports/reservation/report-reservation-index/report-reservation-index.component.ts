@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Settings } from '../../../settings';
 
 @Component({
-  selector: 'report-order-index',
-  templateUrl: './report-order-index.component.html',
-  styleUrls: ['./report-order-index.component.css']
+  selector: 'app-report-reservation-index',
+  templateUrl: './report-reservation-index.component.html',
+  styleUrls: ['./report-reservation-index.component.css']
 })
-export class ReportOrderIndexComponent implements OnInit {
+export class ReportReservationIndexComponent implements OnInit {
 
   viewMode: string; //dailySum, monthlySum, recordsMap, topCustomers
-  
+
   constructor() { }
 
   ngOnInit() 
@@ -22,4 +22,5 @@ export class ReportOrderIndexComponent implements OnInit {
       this.viewMode = mode;
       Settings.reports.orders.viewMode = mode;
   }
+
 }

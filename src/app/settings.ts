@@ -49,6 +49,7 @@ export class Settings {
 
     static reports = {
         orders: {
+            viewMode: "dailySum",
             topCustomers: {
                 pageSize : 5
             },
@@ -57,6 +58,7 @@ export class Settings {
             }
         },
         reservations: {
+            viewMode: "dailySum",
             topCustomers: {
                 pageSize : 5
             },
@@ -65,6 +67,7 @@ export class Settings {
             }
         },
         giftCards: {
+            viewMode: "dailySum",
             topCustomers:{
                 pageSize : 5
             },

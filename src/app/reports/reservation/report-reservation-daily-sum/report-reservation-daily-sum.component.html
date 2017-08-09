@@ -1,48 +1,72 @@
-<div class="panel panel-default">
-    <div class="panel-body">
-        <div class="row" style="max-width: 1024px;">
-            <div class="col-sm-4">
-                <label>Date From:</label>
-                <date-picker [(ngModel)]="dateFrom"></date-picker>
-            </div>
-            <div class="col-sm-4">
-                <label>Date To:</label>
-                <date-picker [(ngModel)]="dateTo"></date-picker>
-            </div>
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>Reservations Daily Summaries</strong>
         </div>
-        <br/>
-        <div class="row" style="max-width: 1024px;">
-            <div class="col-sm-4">
-                <button type="button" class="btn btn-primary" (click)="refresh();" [disabled]="mode === 'loading'">
-                    Submit
-                    &nbsp;<icon [type]="'report'" [size]="2"></icon>
-                </button>
-                &nbsp;&nbsp;&nbsp;
-                <loading *ngIf="mode==='loading'"></loading>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-5">
+                    <label>Date From:</label>
+                    <date-picker [(ngModel)]="dateFrom"></date-picker>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-5">
+                    <label>Date To:</label>
+                    <date-picker [(ngModel)]="dateTo"></date-picker>
+                </div>
+                <div class="col-md-1"></div>
             </div>
-            <div class="col-sm-4">
-                <div *ngIf="mode === 'exceed'" class="alert alert-warning"> 
-                    The maximum period length you can generate this report for is {{maxAllowedPeriod}} months. Please adjust the date parameters accordingly.
+            <br/>
+            <button type="button" class="btn btn-primary" (click)="refresh();" [disabled]="mode === 'loading'">
+                Submit
+                &nbsp;<icon [type]="'report'" [size]="2"></icon>
+            </button>
+            &nbsp;&nbsp;&nbsp;
+            <loading *ngIf="mode==='loading'"></loading>
+            <div class="row" style="max-width: 1024px;">
+                <div class="col-sm-4">
+                    
+                </div>
+                <div class="col-sm-4">
+                    
                 </div>
             </div>
+            
         </div>
-        
     </div>
 </div>
 
-
-
-
-
-
-<div class="panel panel-default" [hidden]="mode !== 'success'">
-    <div class="panel-body">
-        <canvas #chartRevenue ></canvas>
+<div class="container" *ngIf="mode === 'exceed'">
+    <div  class="alert alert-warning"> 
+        The maximum period length you can generate this report for is {{maxAllowedPeriod}} months. Please adjust the date parameters accordingly.
     </div>
 </div>
 
-<div class="panel panel-default" [hidden]="mode !== 'success'">
-    <div class="panel-body">
-        <canvas #chartQuantity ></canvas>
+<div class="container" *ngIf="empty">
+    <div class="alert alert-warning ctrls">
+        No data found for the selected period.
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 col-md-10 col-sm-12">
+        <div class="panel panel-default" [hidden]="mode !== 'success' || empty">
+            <div class="panel-heading">
+                <strong>Daily Revenues</strong>
+            </div>
+            <div class="panel-body" >
+                <canvas #chartQuantity></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-10 col-sm-12">
+        <div class="panel panel-default" [hidden]="mode !== 'success' || empty">
+            <div class="panel-heading">
+                <strong>Daily Reservations</strong>
+            </div>
+            <div class="panel-body">
+                <canvas #chartRevenue ></canvas>
+            </div>
+        </div>
     </div>
 </div>

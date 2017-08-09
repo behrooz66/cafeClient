@@ -24,6 +24,7 @@ export class ReportGiftcardDailySumComponent implements OnInit {
   dateTo: string;
   typeId: number = 0;
   mode: string;
+  empty: boolean = false;
 
   //setting:
   maxAllowedPeriod: number; // in months...
@@ -48,6 +49,7 @@ export class ReportGiftcardDailySumComponent implements OnInit {
       if (this.isWithinAllowedPeriodRange())
       {
           this.mode = "loading";
+          this.empty = false;
           this._report.getGiftCardsDailySum(this.dateFrom, this.dateTo, this.typeId)
             .subscribe(
                 d => {
@@ -59,9 +61,9 @@ export class ReportGiftcardDailySumComponent implements OnInit {
                     }
                     else {
                         //this._flash.addMessage("Info", "No data found for the selected period.", false, "warning", 2500, 2);
+                        this.empty = true;
                     }
                     this.mode = "success";
-                    
                 },
                 d => {
                     this._flash.addMessage("Error", "Error in generating the report.", true, "danger", 2500, 2);
@@ -105,7 +107,7 @@ export class ReportGiftcardDailySumComponent implements OnInit {
       let options = 
       {
             title: {
-                display: true,
+                display: false,
                 text: 'Daily Sales Revenue',
                 fontSize: 16
             },
@@ -120,6 +122,9 @@ export class ReportGiftcardDailySumComponent implements OnInit {
                         }
                     }
                 ]
+            },
+            legend: {
+                position: 'bottom'
             }
       }
 
@@ -158,7 +163,7 @@ export class ReportGiftcardDailySumComponent implements OnInit {
       let options = 
         {
             title: {
-                display: true,
+                display: false,
                 text: 'Daily Sales Quantity',
                 fontSize: 16
             },
@@ -173,6 +178,9 @@ export class ReportGiftcardDailySumComponent implements OnInit {
                         }
                     }
                 ]
+            },
+            legend: {
+                position: 'bottom'
             }
         }
 
