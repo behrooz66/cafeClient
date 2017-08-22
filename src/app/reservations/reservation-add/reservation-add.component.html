@@ -32,12 +32,11 @@
             <textarea class="form-control" rows="3" formControlName="notes" [(ngModel)]="reservation.notes"></textarea>
             <br/>
             <button class="btn btn-primary" type="submit" [disabled]="newReservationForm.invalid">Save</button>
-            <button class="btn btn-default" type="button" (click)="cancel()">Cancel</button>
+            <!--<button class="btn btn-default" type="button" (click)="cancel()">Cancel</button>-->
+            <a [routerLink]="['/customers/', reservation.customerId]" class="btn btn-default">Cancel</a>
         </form>
     </div>
 </div>
-
-{{reservation | json}}
 
 <modal #mOnSumbitValidation [size]=2 [type]="'dialog'" [canEscape]=true [hasHeader]="true" [style]="'danger'">
     <div class="content-head">

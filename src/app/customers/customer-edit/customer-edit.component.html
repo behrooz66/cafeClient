@@ -52,7 +52,7 @@
             
             <br/>
             <button class="btn btn-primary" type="submit" [disabled]="!this.editCustomerForm.valid">Update</button>
-            <button type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
+            <a class="btn btn-default" [routerLink]="['/customers/', customer.id]">Cancel</a>
         </form>
     </div>
 

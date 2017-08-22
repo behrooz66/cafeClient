@@ -8,7 +8,7 @@
             </span>
             <customers-filter [source]="customers" (on-change)="filter($event)"></customers-filter>
             <span class="input-group-btn">
-                <a class="btn btn-default" [routerLink]="['/customers/add']"><icon [type]="'add'" [size]="1"></icon>&nbsp;&nbsp;Create</a>
+                <a class="btn btn-default" [routerLink]="['/customers/add']"><icon [type]="'add'" [size]="1"></icon>&nbsp;&nbsp;New</a>
             </span>
         </div>
     </div>
@@ -27,9 +27,6 @@
                     </th>
                     <th>
                         Phone Numbers
-                    </th>
-                    <th>
-                        summary
                     </th>
                     <th>
                         Controls
@@ -73,9 +70,6 @@
                         <span *ngIf="c.otherPhone">{{c.otherPhone}} <br/></span>
                     </td>
                     <td>
-                        Brief purchase summary
-                    </td>
-                    <td>
                         <div *ngIf="!c.deleted" class="btn-group" role="group">
                             <button type="button" class="btn btn-default btn-sm" (click)="edit(c.id)" title="Edit Customer">
                                 <icon [type]="'edit'" [size]="1"></icon>
@@ -98,35 +92,38 @@
 
         </table>
     </div>
+    <div class="panel-footer">  
+        <div id="paging">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" (click)="firstPage();">
+                    <i class="glyphicon glyphicon-step-backward"></i> 
+                </button>
+                <button type="button"  class="btn btn-default" (click)="prevPage();" [disabled]="index<=0" [class.disabled]="pageOptions.index <= 0">
+                    <i class="glyphicon glyphicon-chevron-left"></i> 
+                </button>
+                <button class="btn btn-default" *ngFor="let p of pages; let i=index;" type="button" (click)="setPage(i)" [class.active]="pageOptions.index === i">
+                    {{i+1}}
+                </button>
+                <button type="button"  class="btn btn-default" (click)="nextPage();" [disabled]="index>=totalPages-1" [class.disabled]="pageOptions.index >= pages.length - 1">
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </button>
+                <button type="button"  class="btn btn-default" (click)="lastPage();">
+                    <i class="glyphicon glyphicon-step-forward"></i>
+                </button>
+                <select class="form-control" style="width:65px;border-radius:10px;" (change)="pagingSetup();" [(ngModel)]="pageOptions.pageSize">
+                    <option [ngValue]="3"> 3 </option>
+                    <option [ngValue]="5" selected="true"> 5 </option>
+                    <option [ngValue]="10"> 10 </option>
+                </select>
+            </div>
+            <div id="page-sizes">
+                
+            </div>
+        </div>
+    </div>
 </div>
 
-<div id="paging">
-    <div class="btn-group">
-        <button type="button" class="btn btn-default" (click)="firstPage();">
-            <i class="glyphicon glyphicon-step-backward"></i> 
-        </button>
-        <button type="button"  class="btn btn-default" (click)="prevPage();" [disabled]="index<=0" [class.disabled]="pageOptions.index <= 0">
-            <i class="glyphicon glyphicon-chevron-left"></i> 
-        </button>
-        <button class="btn btn-default" *ngFor="let p of pages; let i=index;" type="button" (click)="setPage(i)" [class.active]="pageOptions.index === i">
-            {{i+1}}
-        </button>
-        <button type="button"  class="btn btn-default" (click)="nextPage();" [disabled]="index>=totalPages-1" [class.disabled]="pageOptions.index >= pages.length - 1">
-            <i class="glyphicon glyphicon-chevron-right"></i>
-        </button>
-        <button type="button"  class="btn btn-default" (click)="lastPage();">
-            <i class="glyphicon glyphicon-step-forward"></i>
-        </button>
-        <select class="form-control" style="width:65px;border-radius:10px;" (change)="pagingSetup();" [(ngModel)]="pageOptions.pageSize">
-            <option [ngValue]="3"> 3 </option>
-            <option [ngValue]="5" selected="true"> 5 </option>
-            <option [ngValue]="10"> 10 </option>
-        </select>
-    </div>
-    <div id="page-sizes">
-        
-    </div>
-</div>
+
 
 <modal #mConfirmDelete [size]=2 [type]="'confirm'" [canEscape]=true [hasHeader]=true [style]="'danger'" (on-close)="mConfirmDeleteClose($event);">
     <div class="content-head">

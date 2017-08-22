@@ -10,12 +10,53 @@
         </div>
         <div *ngIf="!waiting.customerSummary">
             <h3>{{customer.name}}</h3>
+            <div class="row">
+                <div class="col-md-3 col-sm-5">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>Address:</td>
+                                <td><strong>{{customer.address? customer.address : '-'}}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Postal Code:</td>
+                                <td><strong>{{customer.postalCode? customer.postalCode : '-'}}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-3 col-sm-5">
+                    <table class="table text-left">
+                        <tbody>
+                            <tr>
+                                <td>Cell Phone:</td>
+                                <td><strong>{{customer.cell? customer.cell : '-'}}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Home Phone:</td>
+                                <td><strong>{{customer.home? customer.home : '-'}}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Work Phone:</td>
+                                <td><strong>{{customer.work? customer.work : '-'}}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Other Phone:</td>
+                                <td><strong>{{customer.otherPhone? customer.otherPhone : '-'}}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6 col-sm-2">
+
+                </div>
+            </div>
         </div>
 
     </div>
 
     <div class="panel-footer">
-        <a class="btn btn-default" [routerLink]="['/customers/edit', customer.id]">
+        <a class="btn btn-default" [routerLink]="['/customers/edit', customer.id]" title="Edit Customer">
                 <icon [type]="'edit'" [size]="1"></icon>
         </a>
         <button type="button" class="btn btn-default " (click)="delete(customer.id)" title="Delete Customer">
@@ -27,7 +68,10 @@
 
     <div class="row">
         <div class="col-md-4">
-            <div class="panel panel-primary">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Orders Summary</h4>
+                </div>
                 <div class="panel-body">
                     <div class="full" *ngIf="waiting.orderSummary">
                         <loading ></loading>
@@ -74,7 +118,10 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="panel panel-primary">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Gift Cards Summary</h4>
+                </div>
                 <div class="panel-body">
                     <div class="full" *ngIf="waiting.giftCardSummary">
                         <loading ></loading>
@@ -120,7 +167,10 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="panel panel-primary">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Reservations Summary</h4>
+                </div>
                 <div class="panel-body">
                     <div class="full" *ngIf="waiting.reservationSummary">
                         <loading ></loading>

@@ -3,18 +3,14 @@
     <section class="sidebar">
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-        <li class="treeview">
+        <!--<li class="treeview">
           <a routerLink="">
             <icon [type]="'home2'" [size]="2"></icon> &nbsp;<span>Home</span>
           </a>
-        </li>
+        </li>-->
         <li *ngIf="isLoggedIn" class="treeview">
           <a routerLink="customers">
             <icon [type]="'customers'" [size]="2"></icon> &nbsp;<span>Customers</span>
-            <!--<tr>
-                <td></td>
-                <td></td>
-            </tr>-->
           </a>
         </li>
         

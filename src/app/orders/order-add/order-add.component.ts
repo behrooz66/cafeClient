@@ -62,11 +62,6 @@ export class OrderAddComponent implements OnInit, OnDestroy {
       this.sub.unsubscribe();
   }
 
-  cancel(){
-      this.waiting = true;
-      this._flashMessage.addMessage("Error", "Unable to update the customer. Please contact support if this recurring.", false, "danger", 2500, 2);
-  }
-
   submit(){
       if (this.onSubmitValidation()){
           this.mOnSubmitValidation.open();

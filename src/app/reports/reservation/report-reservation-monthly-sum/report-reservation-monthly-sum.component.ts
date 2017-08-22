@@ -31,6 +31,12 @@ export class ReportReservationMonthlySumComponent implements OnInit {
   //@ViewChild('revenuePie') revenuePie;
   @ViewChild('quantityPie') quantityPie;
 
+  // chart objects
+  chartQuantityBar: Chart;
+  chartRevenueBar: Chart;
+  chartQuantityPie: Chart;
+
+
   constructor(private _report: ReportService,
               private _flash: FlashMessageService,
               private _chart: ChartService,
@@ -94,11 +100,13 @@ export class ReportReservationMonthlySumComponent implements OnInit {
                 }
       };
       
-
-      let chart = this._chart.BarChart(this.revenueBar, result.labels, result.datasets, options);
-      chart.render();
+      if (this.chartRevenueBar)
+         this.chartRevenueBar.destroy();
+      this.chartRevenueBar = this._chart.BarChart(this.revenueBar, result.labels, result.datasets, options);
+      this.chartRevenueBar.render();
   }
 
+  
   
   quantityBarChart()
   {
@@ -129,8 +137,12 @@ export class ReportReservationMonthlySumComponent implements OnInit {
                   position: 'bottom'
               }
       };
-      let chart = this._chart.BarChart(this.quantityBar, result.labels, result.datasets, options);
-      chart.render();
+      
+      if (this.chartQuantityBar)
+        this.chartQuantityBar.destroy();
+
+      this.chartQuantityBar = this._chart.BarChart(this.quantityBar, result.labels, result.datasets, options);
+      this.chartQuantityBar.render();
   }
 
   quantityPieChart() 
@@ -150,8 +162,10 @@ export class ReportReservationMonthlySumComponent implements OnInit {
               }
       };
 
-      let chart = this._chart.DoughnutChart(this.quantityPie, result.labels, result.datasets, options);
-      chart.render();
+      if (this.chartQuantityPie)
+          this.chartQuantityPie.destroy();
+      this.chartQuantityPie = this._chart.DoughnutChart(this.quantityPie, result.labels, result.datasets, options);
+      this.chartQuantityPie.render();
   }
 
 

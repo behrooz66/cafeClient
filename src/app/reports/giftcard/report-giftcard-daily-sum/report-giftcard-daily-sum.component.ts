@@ -32,6 +32,10 @@ export class ReportGiftcardDailySumComponent implements OnInit {
   @ViewChild('chartRevenue') chartRevenue;
   @ViewChild('chartQuantity') chartQuantity;
 
+  // chart objects
+  chartRevenueLine: Chart;
+  chartQuantityLine: Chart;
+
   constructor(private _report: ReportService,
               private _flash: FlashMessageService,
               private _helper: ReportGiftCardHelperService,
@@ -127,9 +131,11 @@ export class ReportGiftcardDailySumComponent implements OnInit {
                 position: 'bottom'
             }
       }
+      if (this.chartRevenueLine)
+         this.chartRevenueLine.destroy();
 
-      let chart = this._chart.lineChart(this.chartRevenue, this.data.map(x => x.Date), datasets, options);
-      chart.render();
+      this.chartRevenueLine = this._chart.lineChart(this.chartRevenue, this.data.map(x => x.Date), datasets, options);
+      this.chartRevenueLine.render();
   }
 
 
@@ -183,65 +189,13 @@ export class ReportGiftcardDailySumComponent implements OnInit {
                 position: 'bottom'
             }
         }
-
-      let chart = this._chart.lineChart(this.chartQuantity, this.data.map(x => x.Date), datasets, options);
-      chart.render();
+      if (this.chartQuantityLine)
+         this.chartQuantityLine.destroy();
+      this.chartQuantityLine = this._chart.lineChart(this.chartQuantity, this.data.map(x => x.Date), datasets, options);
+      this.chartQuantityLine.render();
   }
 
-  /*
-  private normalizeData() 
-  {
-      let index = -1;
-      while (index < this.data.length - 1) {
-          index++;
-          if (index + 1 >= this.data.length)
-              break;
-          let date = this.data[index].Date;
-          let date2 = this.data[index + 1].Date;
-          
-          if (this.isDateGap(date, date2)) {
-              this.fillTheGap(date, date2, index);
-          }
-      }
-  }
-
-  // inserts an all-zero object everywhere there is gap between two actual days with non-zero values.
-  private fillTheGap(date1: string, date2: string, startIndex: number)
-  {
-      let d1 = moment(date1).format('YYYY-MM-DD');
-      let d2 = moment(date2).format('YYYY-MM-DD');
-      let d3 = moment(date1).add(1, 'days').format('YYYY-MM-DD');
-      while (d3 !== d2) {
-          this.data.splice(++startIndex, 0, {
-              Date: d3,
-              Purchase_revenue: 0,
-              Purchase_number: 0,
-              Coupon_revenue: 0,
-              Coupon_number: 0,
-              TotalRevenue: 0,
-              TotalNumber: 0
-          });
-          d3 = moment(d3).add(1, 'days').format('YYYY-MM-DD');
-      }
-
-  }
-
-  private isDateGap(date1: string, date2: string) 
-  {
-      let d1 = moment(date1);
-      let d2 = moment(date2);
-      return Math.abs(d1.diff(d2, 'days')) > 1 ? true : false
-  }
-
-  // unifies the date format for all, and adds the total revenue and total number to each item.
-  private addTotals()
-  {
-      this.data.forEach(e => {
-          if (e.Date.length > 10) e.Date = e.Date.substr(0, 10);
-          e.TotalRevenue = e.Purchase_revenue + e.Coupon_revenue;
-          e.TotalNumber = e.Purchase_number + e.Coupon_number;
-      });
-  }*/
+  
 
   private isWithinAllowedPeriodRange()
   {

@@ -94,10 +94,6 @@ export class CustomerEditComponent implements OnInit, OnDestroy {
       this.sub.unsubscribe();
   }
 
-  cancel() {
-      //todo redirect somewhere!
-  }
-
   toggleNoAddress() {
     this.customer.noAddress = !this.customer.noAddress;
   }

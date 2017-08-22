@@ -20,12 +20,10 @@
             <textarea rows="3" class="form-control" [(ngModel)]="order.notes" formControlName="notes"></textarea><br/>
 
             <button type="submit" class="btn btn-primary" [disabled]="this.newOrderForm.invalid">Save</button>
-            <button type="button" class="btn btn-default" (click)="cancel();" >Cancel</button>
+            <a [routerLink]="['/customers/', order.customerId]" class="btn btn-default">Cancel</a>
         </form>
     </div>
 </div>
-
-{{order | json}}
 
 <modal #mOnSumbitValidation [size]=2 [type]="'dialog'" [canEscape]=true [hasHeader]="true" [style]="'danger'">
     <div class="content-head">

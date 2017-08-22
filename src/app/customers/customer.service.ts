@@ -44,6 +44,12 @@ export class CustomerService {
             .map(r => r.json());
   }
 
+  unarchiveCustomer(id: number)
+  {
+      return this._http.put(this.apiBase + "unarchive/" + id, null)
+            .map(r => r.json());
+  }
+
   getHistory(id: number) {
       return this._http.get(this.apiBase + "history/" + id)
             .map(r => r.json());

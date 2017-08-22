@@ -78,17 +78,18 @@ export class CustomersListComponent implements OnInit {
       if ($event.result === true) {
           this.waiting = true;
           this._customerService.archiveCustomer(this.deleteCandidateId)
+              .finally(() => this.waiting = false)
               .subscribe(d => {
-                  let index = this.filteredCustomers.indexOf(this.filteredCustomers.filter(x => x.id == this.deleteCandidateId)[0]);
-                  this.filteredCustomers[index].deleted = true;
-                  if (!Settings.customers.showDeletedCustomers)
-                      this.filteredCustomers.splice(index, 1);
-                  this.pagingSetup();
-                  this.waiting = false;
-                  this._flashMessage.addMessage("", "Customer successfully deleted.", true, "success", 2500, 2);
+                //   let index = this.filteredCustomers.indexOf(this.filteredCustomers.filter(x => x.id == this.deleteCandidateId)[0]);
+                //   this.filteredCustomers[index].deleted = true;
+                //   if (!Settings.customers.showDeletedCustomers)
+                //       this.filteredCustomers.splice(index, 1);
+                //   this.pagingSetup();
+                //   this.waiting = false;
+                //   this._flashMessage.addMessage("", "Customer successfully deleted.", true, "success", 2500, 2);
+                this.refresh();
               },
               d => {
-                  this.waiting = false;
                   this._flashMessage.addMessage("Error", "Could not delete customer. Please contact support if this is recurring.", false, "danger", 2500, 2);
               });
      }
@@ -103,18 +104,36 @@ export class CustomersListComponent implements OnInit {
       if ($event.result === true){
           this.waiting = true;
           this._customerService.deleteCustomer(this.permanentDeleteCandidateId)
+                .finally(() => this.waiting = false)
                 .subscribe(d => {
-                    let index = this.filteredCustomers.indexOf(this.filteredCustomers.filter(x => x.id == this.deleteCandidateId)[0]);
-                    this.filteredCustomers.splice(index, 1);
-                    this.pagingSetup();
-                    this.waiting = false;
-                    this._flashMessage.addMessage("", "Customer successfully deleted.", true, "success", 2500, 2); 
+                    // let index = this.filteredCustomers.indexOf(this.filteredCustomers.filter(x => x.id == this.deleteCandidateId)[0]);
+                    // this.filteredCustomers.splice(index, 1);
+                    // this.pagingSetup();
+                    // this.waiting = false;
+                    // this._flashMessage.addMessage("", "Customer successfully deleted.", true, "success", 2500, 2); 
+                    this.refresh();
                 },
                 d => {
-                    this.waiting = false;
                     this._flashMessage.addMessage("Error", "Could not delete customer. Please contact support if this is recurring.", false, "danger", 2500, 2);
                 });
       }
+  }
+
+  undelete(id)
+  {
+      this.waiting = true;
+      this._customerService.unarchiveCustomer(id)
+            .finally(() => this.waiting = false)
+            .subscribe(
+                d =>
+                {
+                    this.refresh();
+                },
+                d => 
+                {
+                    this._flashMessage.addMessage("Error", "Operation failed.", false, "danger", 2500, 2);
+                }
+            );
   }
 
   addOrder(id){

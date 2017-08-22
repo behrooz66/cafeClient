@@ -31,6 +31,11 @@ export class ReportReservationDailySumComponent implements OnInit {
   @ViewChild('chartRevenue') chartRevenue;
   @ViewChild('chartQuantity') chartQuantity;
   
+  // chart objects
+  chartRevenueLine: Chart;
+  chartQuantityLine: Chart;
+
+
   constructor(
         private _report: ReportService,
         private _flash: FlashMessageService,
@@ -127,8 +132,10 @@ export class ReportReservationDailySumComponent implements OnInit {
                 position: 'bottom'
             }
       }
-      let chart = this._chart.lineChart(this.chartRevenue, this.data.map(x => x.Date), datasets, options);
-      chart.render();
+      if (this.chartRevenueLine)
+         this.chartRevenueLine.destroy();
+      this.chartRevenueLine = this._chart.lineChart(this.chartRevenue, this.data.map(x => x.Date), datasets, options);
+      this.chartRevenueLine.render();
   }
 
   
@@ -193,8 +200,10 @@ export class ReportReservationDailySumComponent implements OnInit {
             }
       }
 
-      let chart = this._chart.lineChart(this.chartQuantity, this.data.map(x => x.Date), datasets, options);
-      chart.render();
+      if (this.chartQuantityLine)
+         this.chartQuantityLine.destroy();
+      this.chartQuantityLine = this._chart.lineChart(this.chartQuantity, this.data.map(x => x.Date), datasets, options);
+      this.chartQuantityLine.render();
 
   }
 
